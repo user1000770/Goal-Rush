@@ -403,25 +403,19 @@ canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
   } catch {}
   const cs = [1100, 1900, 3200];
   let ho = true;
-  const yi = (e, a) =>
-    Math.max(
-      1,
-      Math.min(
-        ho ? Math.max(devicePixelRatio || 1, 2) : devicePixelRatio || 1,
-        4096 / Math.max(e, a),
-        Math.sqrt(14e6 / (e * a)),
-        ho ? 99 : cs[di] / Math.max(e, a),
-        ho ? 99 : Math.sqrt(3.2e6 / (e * a)),
-      ),
-    );
+  // [res] fixed 1080p-class render: long side always 1920px, never changes between menu and match
+  const yi = (e, a) => Math.max(0.5, Math.min(1920 / Math.max(e, a), 4096 / Math.max(e, a)));
+  // [size] real viewport: largest of the measurements, so full screen never leaves an uncovered strip
+  const vpW = () => Math.max(innerWidth, (document.body && document.body.clientWidth) || 0);
+  const vpH = () => Math.max(innerHeight, (document.body && document.body.clientHeight) || 0, (window.visualViewport ? visualViewport.height + visualViewport.offsetTop : 0));
   let ot,
     lt,
-    Qe = yi(innerWidth, innerHeight);
+    Qe = yi(vpW(), vpH());
   let hl = false;
   function ul() {
     be.t = -1e9;
-    const e = innerWidth,
-      a = innerHeight;
+    const e = vpW(),
+      a = vpH();
     Qe = yi(e, a);
     hl = matchMedia("(pointer:coarse)").matches && e > a;
     const n = pe.style;
@@ -466,13 +460,13 @@ canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
     if (be() !== b) se(40);
   });
   ul();
-  let rzW__ = innerWidth,
-    rzH__ = innerHeight,
+  let rzW__ = vpW(),
+    rzH__ = vpH(),
     rzD__ = devicePixelRatio;
   const rzCheck__ = () => {
-    if (innerWidth !== rzW__ || innerHeight !== rzH__ || devicePixelRatio !== rzD__) {
-      rzW__ = innerWidth;
-      rzH__ = innerHeight;
+    if (vpW() !== rzW__ || vpH() !== rzH__ || devicePixelRatio !== rzD__) {
+      rzW__ = vpW();
+      rzH__ = vpH();
       rzD__ = devicePixelRatio;
       ul();
       se(40);
@@ -9910,7 +9904,7 @@ function rdmDec__(code) {
     document.fonts.addEventListener("loadingdone", () => se(90));
   } catch {}
   for (const e of ["pointerdown", "pointerup", "touchend", "click"]) addEventListener(e, () => at.init(), { capture: true, passive: true });
-  const i0 = (e) => (hl ? [innerHeight - e.clientY, e.clientX] : [e.clientX, e.clientY]);
+  const i0 = (e) => (hl ? [vpH() - e.clientY, e.clientX] : [e.clientX, e.clientY]);
   const Gl = () => Math.max(0.6, Math.min(1, Math.min(ot, lt) / 560));
   const s0 = "goalrush_layout_v3",
     Ul = () => ({
@@ -20469,10 +20463,7 @@ t.save();
     rzCheck__();
     {
       const f = !d || !!Kt || J === 2 || J === 3;
-      if (f !== ho) {
-        ho = f;
-        ul();
-      }
+      ho = f;
     }
     ts = e;
     const a = Math.max(0, (e - V0) / 1e3),
