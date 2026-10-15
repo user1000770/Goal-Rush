@@ -428,7 +428,7 @@ html,body{background:#000}
     return lim > 0 ? Math.min(m, lim) : m;
   };
   // iPhone in a normal Safari tab: the large-viewport (100lvh) and body measurements include the area behind the browser bars, which pushed bottom buttons off screen. Use the visible window only there.
-  const tabMode__ = () => isIPhone__ && !isStandalone__();
+  const tabMode__ = () => isIPhone__; // iPhone (tab or Home Screen): lay out to the real window only; forcing the taller physical screen height made the canvas taller than the window, so the bottom buttons were clipped
   const vpW = () => {
     if (tabMode__()) return clampScr__(innerWidth, false);
     const m = Math.max(innerWidth, (document.body && document.body.clientWidth) || 0, (lvEl() && lvEl().offsetWidth) || 0);
