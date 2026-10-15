@@ -14354,7 +14354,7 @@ t.save();
         const th = title ? 22 : 0,
           chh = 16 + th + lines.length * lh,
           cx0 = s / 2 - cw / 2,
-          cy = (BD ? bdHB : 56) + slide;
+          cy = (BD ? bdHB : 58 + Math.max(be() / i, 0) * 0.9) + slide;
         t.save();
         t.globalAlpha = fade;
         t.fillStyle = "rgba(0,0,0,.35)";
@@ -18141,7 +18141,7 @@ t.save();
       i = d.hs != null ? d.hs : 0,
       s = Bo(),
       r = 27,
-      c = a - r - 14 - o * 0.6,
+      c = a - r - 14 - (hl ? o * 0.6 : 0),
       h = n * 0.595;
     if (Ta)
       l(0, 0, a, n, () => {
@@ -18259,8 +18259,8 @@ t.save();
     t.scale(e, e);
     if (!ze) {
       const f = 34,
-        i = a - f - 8 - o,
-        s = 56 + o * 0.5;
+        i = a - f - 8 - (hl ? o : 0),
+        s = BD ? Math.max(58 + o * 0.9, bdHB + 6) : 58 + o * 0.9;
       t.globalAlpha = 0.9;
       Ca(i, s, f, f, Te.slate, 8, 3);
       t.fillStyle = "#fff";
@@ -20406,8 +20406,33 @@ t.save();
       } catch {}
     } catch {}
   }
-  addEventListener("error", (ev) => grLogErr__(ev.error || ev.message));
-  addEventListener("unhandledrejection", (ev) => grLogErr__(ev.reason));
+  // [errors] ignore harmless outside-script errors (Firebase / fonts) so they never flash the red banner
+  const outsideErr__ = (r) => {
+    try {
+      if (!r) return true;
+      const s = String((r.stack || "") + (r.message || "") + (r.code || "") + (typeof r === "string" ? r : ""));
+      return /gstatic\.com|firebase|firestore|auth\/|permission-denied|Failed to fetch dynamically/i.test(s);
+    } catch { return false; }
+  };
+  addEventListener("error", (ev) => {
+    if (!ev.error && /^script error/i.test(ev.message || "")) return; // cross-origin, no details, harmless
+    if (ev.error && outsideErr__(ev.error)) return;
+    grLogErr__(ev.error || ev.message);
+  });
+  addEventListener("unhandledrejection", (ev) => {
+    if (outsideErr__(ev.reason)) { ev.preventDefault(); return; }
+    grLogErr__(ev.reason);
+  });
+  let bgT__ = 0;
+  function bgSync__(e) {
+    if (e - bgT__ < 500) return;
+    bgT__ = e;
+    try {
+      const x = hl ? 2 : pe.width >> 1, y = hl ? pe.height >> 1 : pe.height - 3;
+      const d = t.getImageData(x, y, 1, 1).data;
+      if (d[3] > 200) document.documentElement.style.background = document.body.style.background = "rgb(" + d[0] + "," + d[1] + "," + d[2] + ")";
+    } catch {}
+  }
   function oi(e) {
     try {
       oiCore__(e);
@@ -20451,6 +20476,7 @@ t.save();
         }
       } catch {}
     }
+    bgSync__(e);
     requestAnimationFrame(oi);
   }
   function oiCore__(e) {
