@@ -407,8 +407,16 @@ canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
   const yi = (e, a) => Math.max(0.5, Math.min(1920 / Math.max(e, a), 4096 / Math.max(e, a)));
   // [size] real viewport: largest of the measurements, so full screen never leaves an uncovered strip
   const lvEl = () => document.getElementById("lv");
-  const vpW = () => Math.max(innerWidth, (document.body && document.body.clientWidth) || 0, (lvEl() && lvEl().offsetWidth) || 0);
-  const vpH = () => Math.max(innerHeight, (document.body && document.body.clientHeight) || 0, (lvEl() && lvEl().offsetHeight) || 0, (window.visualViewport ? visualViewport.height + visualViewport.offsetTop : 0));
+  const isStandalone__ = () => { try { return navigator.standalone === true || matchMedia("(display-mode: standalone)").matches; } catch { return false; } };
+  // Home Screen apps on iPhone can report a window shorter than the screen (home-indicator strip left uncovered), so use the physical screen size when it is only slightly larger
+  const scrFix__ = (cur, isH) => {
+    if (!isStandalone__() || !window.screen) return 0;
+    const portrait = innerHeight >= innerWidth, hi = Math.max(screen.width, screen.height), lo = Math.min(screen.width, screen.height);
+    const s = (portrait === isH) ? hi : lo;
+    return s - cur > 0 && s - cur <= 120 ? s : 0;
+  };
+  const vpW = () => { const m = Math.max(innerWidth, (document.body && document.body.clientWidth) || 0, (lvEl() && lvEl().offsetWidth) || 0); return Math.max(m, scrFix__(m, false)); };
+  const vpH = () => { const m = Math.max(innerHeight, (document.body && document.body.clientHeight) || 0, (lvEl() && lvEl().offsetHeight) || 0, (window.visualViewport ? visualViewport.height + visualViewport.offsetTop : 0)); return Math.max(m, scrFix__(m, true)); };
   let ot,
     lt,
     Qe = yi(vpW(), vpH());
