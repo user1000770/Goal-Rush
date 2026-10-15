@@ -412,14 +412,33 @@ html,body{background:#000}
   const lvEl = () => document.getElementById("lv");
   const isStandalone__ = () => { try { return navigator.standalone === true || matchMedia("(display-mode: standalone)").matches; } catch { return false; } };
   // Home Screen apps on iPhone can report a window shorter than the screen (home-indicator strip left uncovered), so use the physical screen size when it is only slightly larger
+  const isIPhone__ = /iPhone|iPod/.test(navigator.userAgent);
+  // iOS reports innerWidth/innerHeight (and body/visualViewport) one step late after a rotation, so trust the CSS orientation media query and never let the viewport exceed the physical screen
+  const por__ = () => { try { return matchMedia("(orientation: portrait)").matches; } catch { return innerHeight >= innerWidth; } };
   const scrFix__ = (cur, isH) => {
     if (!isStandalone__() || !window.screen) return 0;
-    const portrait = innerHeight >= innerWidth, hi = Math.max(screen.width, screen.height), lo = Math.min(screen.width, screen.height);
-    const s = (portrait === isH) ? hi : lo;
+    const hi = Math.max(screen.width, screen.height), lo = Math.min(screen.width, screen.height);
+    const s = (por__() === isH) ? hi : lo;
     return s - cur > 0 ? s : 0;
   };
-  const vpW = () => { const m = Math.max(innerWidth, (document.body && document.body.clientWidth) || 0, (lvEl() && lvEl().offsetWidth) || 0); return Math.max(m, scrFix__(m, false)); };
-  const vpH = () => { const m = Math.max(innerHeight, (document.body && document.body.clientHeight) || 0, (lvEl() && lvEl().offsetHeight) || 0, (window.visualViewport ? visualViewport.height + visualViewport.offsetTop : 0)); return Math.max(m, scrFix__(m, true)); };
+  const clampScr__ = (m, isH) => {
+    if (!isIPhone__ || !window.screen) return m;
+    const hi = Math.max(screen.width, screen.height), lo = Math.min(screen.width, screen.height);
+    const lim = (por__() === isH) ? hi : lo;
+    return lim > 0 ? Math.min(m, lim) : m;
+  };
+  // iPhone in a normal Safari tab: the large-viewport (100lvh) and body measurements include the area behind the browser bars, which pushed bottom buttons off screen. Use the visible window only there.
+  const tabMode__ = () => isIPhone__ && !isStandalone__();
+  const vpW = () => {
+    if (tabMode__()) return clampScr__(innerWidth, false);
+    const m = Math.max(innerWidth, (document.body && document.body.clientWidth) || 0, (lvEl() && lvEl().offsetWidth) || 0);
+    return clampScr__(Math.max(m, scrFix__(m, false)), false);
+  };
+  const vpH = () => {
+    if (tabMode__()) return clampScr__(innerHeight, true);
+    const m = Math.max(innerHeight, (document.body && document.body.clientHeight) || 0, (lvEl() && lvEl().offsetHeight) || 0, (window.visualViewport ? visualViewport.height + visualViewport.offsetTop : 0));
+    return clampScr__(Math.max(m, scrFix__(m, true)), true);
+  };
   let ot,
     lt,
     Qe = yi(vpW(), vpH());
@@ -429,7 +448,7 @@ html,body{background:#000}
     const e = vpW(),
       a = vpH();
     Qe = yi(e, a);
-    hl = matchMedia("(pointer:coarse)").matches && e > a;
+    hl = matchMedia("(pointer:coarse)").matches && (isIPhone__ ? !por__() : e > a);
     const n = pe.style;
     if (hl) {
       ot = a;
@@ -501,6 +520,12 @@ html,body{background:#000}
     try { matchMedia(q).addEventListener("change", rzForce__); } catch {}
   }
   addEventListener("touchstart", rzForce__, { once: true, passive: true });
+  // iOS rotation: the new size arrives late, so re-measure a few times after every rotation
+  {
+    const rzLate__ = () => { for (const ms of [50, 150, 350, 700, 1200]) setTimeout(rzForce__, ms); };
+    addEventListener("orientationchange", rzLate__);
+    try { matchMedia("(orientation: portrait)").addEventListener("change", rzLate__); } catch {}
+  }
   // Full screen on tap in any browser that supports it (Android, iPad, desktop); re-enters on the next tap if the player exits
   {
     const inApp = matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches || navigator.standalone === true;
@@ -21989,4 +22014,33 @@ t.save();
   }
   setInterval(u, 500); u();
 })();
-</script></body></html>
+</script><script>
+(function(){
+  // iPhone cannot go full screen from a browser tab: only a Home Screen launch removes the bars, so tell the player once
+  var ua = navigator.userAgent;
+  if (!/iPhone|iPod/.test(ua)) return;
+  if (navigator.standalone === true) return;
+  try { if (matchMedia("(display-mode: standalone)").matches) return; } catch (e) {}
+  try { if (localStorage.getItem("grInstallHint") === "1") return; } catch (e) {}
+  function show(){
+    if (document.getElementById("grHint")) return;
+    var d = document.createElement("div");
+    d.id = "grHint";
+    d.style.cssText = "position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:100000;box-sizing:border-box;background:#151d66;color:#fff;border:3px solid #000;border-radius:14px;padding:10px 40px 10px 12px;font:15px/1.25 'Lilita One','Arial Black',sans-serif;box-shadow:0 4px 0 #0b102a;touch-action:auto;text-align:center";
+    d.innerHTML = 'FOR FULL SCREEN: tap <b style="color:#ffd23f">Share</b> <span style="font-size:18px">\u2B06\uFE0E</span> then <b style="color:#ffd23f">Add to Home Screen</b>, and play from the new icon.' +
+      '<button id="grHintX" aria-label="Close" style="position:absolute;right:6px;top:6px;width:30px;height:30px;border:2px solid #000;border-radius:8px;background:#ff4d5e;color:#fff;font:18px/1 \'Lilita One\',Arial,sans-serif;padding:0">\u00D7</button>';
+    document.body.appendChild(d);
+    function close(ev){
+      if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+      try { localStorage.setItem("grInstallHint", "1"); } catch (e) {}
+      if (d.parentNode) d.parentNode.removeChild(d);
+    }
+    var x = document.getElementById("grHintX");
+    x.addEventListener("click", close);
+    x.addEventListener("touchend", close);
+    setTimeout(function(){ if (d.parentNode) d.parentNode.removeChild(d); }, 15000);
+  }
+  setTimeout(show, 2500);
+})();
+</script>
+</body></html>
