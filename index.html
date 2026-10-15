@@ -22,7 +22,8 @@ html,body{height:100%;margin:0;background:#14201a;overflow:hidden;touch-action:n
 #blk{position:fixed;inset:0;z-index:9;background:linear-gradient(#4a1fc4,#3a1a98);align-items:center;justify-content:center;text-align:center;font-family:'Lilita One','Luckiest Guy','Arial Black',Impact,sans-serif;color:#fff;padding:24px}
 #blk .bx{max-width:460px}#blk .bt{font-size:clamp(34px,7vw,56px);color:#ffd23f;-webkit-text-stroke:2px #000;paint-order:stroke fill;margin-bottom:18px}#blk .bm{font-size:clamp(20px,4vw,28px);margin-bottom:10px;-webkit-text-stroke:1px #000;paint-order:stroke fill}#blk .bs{font-size:clamp(15px,3vw,19px);color:#cdbcff;font-family:'Lilita One','Arial Black',sans-serif;-webkit-text-stroke:.6px #000;paint-order:stroke fill}
 canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
-</style></head><body><div id="tf" style="position:fixed;left:0;top:0;right:0;height:calc(env(safe-area-inset-top,0px) * 1.2);background:linear-gradient(rgba(6,10,28,.55),rgba(6,10,28,0));pointer-events:none;z-index:5"></div><div id="lv" style="position:fixed;left:0;top:0;width:100vw;width:100lvw;height:100vh;height:100lvh;visibility:hidden;pointer-events:none"></div><div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
+html,body{background:#000}
+</style></head><body><div id="lv" style="position:fixed;left:0;top:0;width:100vw;width:100lvw;height:100vh;height:100lvh;visibility:hidden;pointer-events:none"></div><div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
 <div id="blk" style="display:none"><div class="bx"><div class="bt">GOAL RUSH</div><div class="bm">This game is made for mobile.</div><div class="bs">Open this page on your phone or tablet to play.</div></div></div>
 <canvas id="c"></canvas>
 <script>
@@ -415,7 +416,7 @@ canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
     if (!isStandalone__() || !window.screen) return 0;
     const portrait = innerHeight >= innerWidth, hi = Math.max(screen.width, screen.height), lo = Math.min(screen.width, screen.height);
     const s = (portrait === isH) ? hi : lo;
-    return s - cur > 0 && s - cur <= 120 ? s : 0;
+    return s - cur > 0 ? s : 0;
   };
   const vpW = () => { const m = Math.max(innerWidth, (document.body && document.body.clientWidth) || 0, (lvEl() && lvEl().offsetWidth) || 0); return Math.max(m, scrFix__(m, false)); };
   const vpH = () => { const m = Math.max(innerHeight, (document.body && document.body.clientHeight) || 0, (lvEl() && lvEl().offsetHeight) || 0, (window.visualViewport ? visualViewport.height + visualViewport.offsetTop : 0)); return Math.max(m, scrFix__(m, true)); };
