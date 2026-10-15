@@ -500,20 +500,25 @@ canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
     try { matchMedia(q).addEventListener("change", rzForce__); } catch {}
   }
   addEventListener("touchstart", rzForce__, { once: true, passive: true });
-  // Android browser tab: go full screen on the first tap (Home Screen app is already full screen)
+  // Full screen on tap in any browser that supports it (Android, iPad, desktop); re-enters on the next tap if the player exits
   {
     const inApp = matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches || navigator.standalone === true;
     const de = document.documentElement;
-    if (!inApp && /Android/i.test(navigator.userAgent) && de.requestFullscreen && document.fullscreenEnabled) {
-      let tried = false;
+    const rq = de.requestFullscreen || de.webkitRequestFullscreen;
+    const fsOk = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+    if (!inApp && rq && fsOk) {
       const goFs = () => {
-        if (tried || document.fullscreenElement) return;
-        tried = true;
-        try { de.requestFullscreen({ navigationUI: "hide" }).catch(() => {}); } catch {}
+        if (document.fullscreenElement || document.webkitFullscreenElement) return;
+        try {
+          const p = rq.call(de, { navigationUI: "hide" });
+          const after = () => { try { screen.orientation.lock("portrait").catch(() => {}); } catch {} rzForce__(); };
+          if (p && p.then) p.then(after, () => {}); else after();
+        } catch {}
       };
       addEventListener("touchend", goFs, { capture: true });
       addEventListener("click", goFs, { capture: true });
     }
+    addEventListener("webkitfullscreenchange", rzForce__);
   }
   let j = 1600,
     F = 1600;
