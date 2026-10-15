@@ -17,7 +17,7 @@
 <style>
 :root{background:#14201a}
 html{height:100%;height:-webkit-fill-available;overscroll-behavior:none}
-body{position:fixed;inset:0;width:100%;height:100%;overscroll-behavior:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+body{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;min-height:-webkit-fill-available;overscroll-behavior:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0;background:#14201a;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;font-family:'Lilita One','Luckiest Guy','Arial Black',Impact,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
 #blk{position:fixed;inset:0;z-index:9;background:linear-gradient(#4a1fc4,#3a1a98);align-items:center;justify-content:center;text-align:center;font-family:'Lilita One','Luckiest Guy','Arial Black',Impact,sans-serif;color:#fff;padding:24px}
 #blk .bx{max-width:460px}#blk .bt{font-size:clamp(34px,7vw,56px);color:#ffd23f;-webkit-text-stroke:2px #000;paint-order:stroke fill;margin-bottom:18px}#blk .bm{font-size:clamp(20px,4vw,28px);margin-bottom:10px;-webkit-text-stroke:1px #000;paint-order:stroke fill}#blk .bs{font-size:clamp(15px,3vw,19px);color:#cdbcff;font-family:'Lilita One','Arial Black',sans-serif;-webkit-text-stroke:.6px #000;paint-order:stroke fill}
@@ -428,7 +428,8 @@ html,body{background:#241a86}
     return lim > 0 ? Math.min(m, lim) : m;
   };
   // iPhone in a normal Safari tab: the large-viewport (100lvh) and body measurements include the area behind the browser bars, which pushed bottom buttons off screen. Use the visible window only there.
-  const tabMode__ = () => isIPhone__; // iPhone (tab or Home Screen): lay out to the real window only; forcing the taller physical screen height made the canvas taller than the window, so the bottom buttons were clipped
+  // [fullscreen] iPhone Safari tab: visible window only. iPhone Home Screen app: stretch over the whole physical screen (status bar to home indicator); be() then keeps UI clear of the notch (top) and buttons clear of the home bar (bottom)
+  const tabMode__ = () => isIPhone__ && !isStandalone__();
   const vpW = () => {
     if (tabMode__()) return clampScr__(innerWidth, false);
     const m = Math.max(innerWidth, (document.body && document.body.clientWidth) || 0, (lvEl() && lvEl().offsetWidth) || 0);
@@ -3374,7 +3375,7 @@ function rdmDec__(code) {
       const a = document.getElementById("sa");
       const n = getComputedStyle(a);
       be.v = Math.min(56, (hl ? parseFloat(n.paddingLeft) : parseFloat(n.paddingTop)) || 0);
-      if (!be.v && !hl && isIPhone__ && window.screen && Math.max(screen.width, screen.height) >= 812) be.v = 47; // notched iPhone reporting no inset: keep content clear of the notch
+      if (!be.v && !hl && isIPhone__ && isStandalone__() && window.screen && Math.max(screen.width, screen.height) >= 812) be.v = 47; // notched iPhone reporting no inset: keep content clear of the notch
       be.b = (hl ? parseFloat(n.paddingRight) : parseFloat(n.paddingBottom)) || 0;
       be.x = hl ? 0 : Math.max(0, vpH() - innerHeight);
       if (!hl && isStandalone__()) {
@@ -20472,15 +20473,22 @@ t.save();
     if (outsideErr__(ev.reason)) { ev.preventDefault(); return; }
     grLogErr__(ev.reason);
   });
-  let bgT__ = 0;
+  let bgT__ = 0, bgC__ = "";
   function bgSync__(e) {
-    return; // disabled: the page background no longer follows the canvas colour (it caused colour shifts outside the game area)
-    if (e - bgT__ < 500) return;
+    if (e - bgT__ < 250) return;
     bgT__ = e;
     try {
-      const x = hl ? 2 : pe.width >> 1, y = hl ? pe.height >> 1 : pe.height - 3;
+      const x = hl ? 2 : pe.width >> 1, y = hl ? pe.height >> 1 : 3;
       const d = t.getImageData(x, y, 1, 1).data;
-      if (d[3] > 200) document.documentElement.style.background = document.body.style.background = "rgb(" + d[0] + "," + d[1] + "," + d[2] + ")";
+      if (d[3] > 200) {
+        const c = "rgb(" + d[0] + "," + d[1] + "," + d[2] + ")";
+        if (c !== bgC__) {
+          bgC__ = c;
+          document.documentElement.style.background = document.body.style.background = c;
+          const m = document.querySelector('meta[name="theme-color"]');
+          if (m) m.setAttribute("content", c);
+        }
+      }
     } catch {}
   }
   function oi(e) {
