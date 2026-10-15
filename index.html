@@ -525,7 +525,7 @@ canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
     document.fonts.load('20px "Lilita One"');
     document.fonts.load('20px "Luckiest Guy"');
   } catch {}
-  const sa = () => Math.max(0.35, Math.min(1.5, Math.min(ot, lt) / 780));
+  const sa = () => Math.max(0.35, Math.min(1.5, Math.max(Math.min(ot, lt) / 780, lt / F, ot / j)));
   addEventListener(
     "wheel",
     (e) => {
@@ -541,7 +541,7 @@ canvas{position:fixed;top:0;left:0;display:block;transform-origin:0 0}
     const n = sa(),
       o = ot / 2 / n,
       l = lt / 2 / n,
-      f = (g, p, x) => (x > 2 * p ? Math.max(p - yo, Math.min(x - p + yo, g)) : x / 2),
+      f = (g, p, x) => (x > 2 * p ? Math.max(p, Math.min(x - p, g)) : x / 2),
       i = d && !d.alive && d.rsp > 0,
       s = BD ? bdSpot(d) : Je && Je[d.id],
       r = i && s ? s[0] : d.x + d.vx * 0.15,
@@ -19383,7 +19383,7 @@ t.save();
     const n = sa(),
       o = ot / 2 / n,
       l = lt / 2 / n,
-      f = (c, h, u) => (u > 2 * h ? Math.max(h - yo, Math.min(u - h + yo, c)) : u / 2),
+      f = (c, h, u) => (u > 2 * h ? Math.max(h, Math.min(u - h, c)) : u / 2),
       i = f($.x, o, j),
       s = f($.y, l, F),
       r = a ? 1 : 1 - Math.exp(-e * 5);
