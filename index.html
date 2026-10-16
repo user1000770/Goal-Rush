@@ -2,6 +2,10 @@
 <html lang="en"><head><meta charset="utf-8">
 <title>Goal Rush</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#241a86">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&display=swap" rel="stylesheet">
 <style>
 :root{background:#241a86;color-scheme:dark}
@@ -10,6 +14,8 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:#241a86;overflow:
 body{position:fixed;inset:0;height:-webkit-fill-available}
 @supports (height:100dvh){body{height:100dvh}}
 canvas{position:absolute;top:0;left:0;display:block;transform-origin:0 0}
+/* status-bar fade: dark at the very top, melting into whatever menu/background is below. No UI lives here. */
+body::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) + 30px);background:linear-gradient(to bottom,rgba(20,14,90,.92) 0%,rgba(20,14,90,.55) 45%,rgba(20,14,90,0) 100%);pointer-events:none;z-index:2147483000}
 #blk{position:fixed;inset:0;z-index:9;background:linear-gradient(#4a1fc4,#3a1a98);align-items:center;justify-content:center;text-align:center;font-family:'Lilita One','Luckiest Guy','Arial Black',Impact,sans-serif;color:#fff;padding:24px}
 #blk .bx{max-width:460px}#blk .bt{font-size:clamp(34px,7vw,56px);color:#ffd23f;-webkit-text-stroke:2px #000;paint-order:stroke fill;margin-bottom:18px}#blk .bm{font-size:clamp(20px,4vw,28px);margin-bottom:10px;-webkit-text-stroke:1px #000;paint-order:stroke fill}#blk .bs{font-size:clamp(15px,3vw,19px);color:#cdbcff;font-family:'Lilita One','Arial Black',sans-serif;-webkit-text-stroke:.6px #000;paint-order:stroke fill}
 </style></head><body><div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
