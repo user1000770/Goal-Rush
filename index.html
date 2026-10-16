@@ -4,13 +4,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&display=swap" rel="stylesheet">
 <style>
-:root{background:#241a86}
-html{height:100%;overscroll-behavior:none}
-body{position:relative;width:100%;height:100%;overscroll-behavior:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;background:#14201a;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;font-family:'Lilita One','Luckiest Guy','Arial Black',Impact,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+:root{background:#241a86;color-scheme:dark}
+/* Safari-safe full-size layout: dynamic viewport units track the collapsing toolbars, fill-available is the older-Safari fallback */
+html,body{margin:0;padding:0;width:100%;height:100%;background:#241a86;overflow:hidden;overscroll-behavior:none;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%;font-family:'Lilita One','Luckiest Guy','Arial Black',Impact,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+body{position:fixed;inset:0;height:-webkit-fill-available}
+@supports (height:100dvh){body{height:100dvh}}
 canvas{position:absolute;top:0;left:0;display:block;transform-origin:0 0}
-html,body{background:#241a86}
+#blk{position:fixed;inset:0;z-index:9;background:linear-gradient(#4a1fc4,#3a1a98);align-items:center;justify-content:center;text-align:center;font-family:'Lilita One','Luckiest Guy','Arial Black',Impact,sans-serif;color:#fff;padding:24px}
+#blk .bx{max-width:460px}#blk .bt{font-size:clamp(34px,7vw,56px);color:#ffd23f;-webkit-text-stroke:2px #000;paint-order:stroke fill;margin-bottom:18px}#blk .bm{font-size:clamp(20px,4vw,28px);margin-bottom:10px;-webkit-text-stroke:1px #000;paint-order:stroke fill}#blk .bs{font-size:clamp(15px,3vw,19px);color:#cdbcff;font-family:'Lilita One','Arial Black',sans-serif;-webkit-text-stroke:.6px #000;paint-order:stroke fill}
 </style></head><body><div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
+<div id="blk" style="display:none"><div class="bx"><div class="bt">GOAL RUSH</div><div class="bm">This game is made for mobile.</div><div class="bs">Open this page on your phone or tablet to play.</div></div></div>
 <canvas id="c"></canvas>
 <script>
 (function () {
@@ -394,11 +397,13 @@ html,body{background:#241a86}
   // [res] native-resolution render: follows the device pixel ratio (iPhone 12 = 3x). MAX_RENDER_SCALE / MAX_LONG_SIDE are the performance caps; lower them if a phone ever feels slow
   const MAX_RENDER_SCALE = 3, MAX_LONG_SIDE = 3200; // 3200 lets Pro Max / Plus iPhones (932pt tall) render at a full 3x
   const yi = (e, a) => Math.max(0.5, Math.min(window.devicePixelRatio || 1, MAX_RENDER_SCALE, MAX_LONG_SIDE / Math.max(e, a), 4096 / Math.max(e, a)));
-  // [size] full screen = html/body 100%, canvas measures body, no edge padding
+  // [size] The page is one fixed, full-size body (100dvh, Safari-safe). The canvas fills it exactly.
+  // Size is read from the body, never from pinch-zoom state, so zooming or the collapsing Safari toolbars
+  // can't make the game jump. Everything funnels through one rAF-debounced resize path.
   const isIPhone__ = /iPhone|iPod/.test(navigator.userAgent);
   const por__ = () => { try { return matchMedia("(orientation: portrait)").matches; } catch { return innerHeight >= innerWidth; } };
-  const vpW = () => document.body.clientWidth || innerWidth;
-  const vpH = () => document.body.clientHeight || innerHeight;
+  const vpW = () => Math.round(document.body.clientWidth || document.documentElement.clientWidth || innerWidth);
+  const vpH = () => Math.round(document.body.clientHeight || document.documentElement.clientHeight || innerHeight);
   let ot,
     lt,
     Qe = yi(vpW(), vpH());
@@ -408,6 +413,7 @@ html,body{background:#241a86}
     const e = vpW(),
       a = vpH();
     Qe = yi(e, a);
+    // phones are portrait-only: when held sideways the whole canvas is turned upright
     hl = matchMedia("(pointer:coarse)").matches && (isIPhone__ ? !por__() : e > a);
     const n = pe.style;
     if (hl) {
@@ -430,26 +436,10 @@ html,body{background:#241a86}
     const o = Math.round(ot * Qe),
       l = Math.round(lt * Qe);
     if (pe.width === o && pe.height === l) return;
-    pe.width = o; // whole device pixels, so the browser never has to resample (blur) the canvas
+    pe.width = o; // whole device pixels, so the browser never resamples (blurs) the canvas
     pe.height = l;
     se(90);
   }
-  {
-    const e = () => {
-      try {
-        const a = screen.orientation;
-        if (a && a.lock) a.lock("portrait").catch(() => {});
-      } catch {}
-    };
-    e();
-    addEventListener("touchstart", e, { once: true, passive: true });
-    addEventListener("click", e, { once: true });
-  }
-  addEventListener("resize", () => {
-    const b = be.v;
-    ul();
-    if (be() !== b) se(40);
-  });
   ul();
   let rzW__ = vpW(),
     rzH__ = vpH(),
@@ -464,26 +454,42 @@ html,body{background:#241a86}
     }
   };
   const rzForce__ = () => {
+    const b = be.v;
     ul();
     rzCheck__();
+    if (be() !== b) se(40);
     se(40);
   };
-  for (const ev of ["pageshow", "orientationchange", "fullscreenchange", "load", "focus"]) addEventListener(ev, rzForce__);
+  let rzQ__ = 0;
+  const rzSoon__ = () => {
+    if (rzQ__) return;
+    rzQ__ = requestAnimationFrame(() => {
+      rzQ__ = 0;
+      rzForce__();
+    });
+  };
+  addEventListener("resize", rzSoon__);
+  addEventListener("pageshow", rzSoon__);
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) rzForce__();
+    if (!document.hidden) rzSoon__();
   });
-  for (const ms of [150, 600, 1500, 3000, 6000]) setTimeout(rzForce__, ms);
-  // Home Screen / full screen: the first measurement is often stale, so re-measure on every mode, size and orientation change
-  if (window.visualViewport) visualViewport.addEventListener("resize", rzForce__);
-  try { new ResizeObserver(rzForce__).observe(document.body); } catch {}
-  try { screen.orientation.addEventListener("change", rzForce__); } catch {}
-  addEventListener("touchstart", rzForce__, { once: true, passive: true });
-  // iOS rotation: the new size arrives late, so re-measure a few times after every rotation
-  {
-    const rzLate__ = () => { for (const ms of [50, 150, 350, 700, 1200]) setTimeout(rzForce__, ms); };
-    addEventListener("orientationchange", rzLate__);
-    try { matchMedia("(orientation: portrait)").addEventListener("change", rzLate__); } catch {}
-  }
+  // Safari reports the final size a moment after a rotation, so re-check shortly after
+  addEventListener("orientationchange", () => {
+    rzSoon__();
+    setTimeout(rzSoon__, 250);
+    setTimeout(rzSoon__, 700);
+  });
+  if (window.visualViewport) visualViewport.addEventListener("resize", rzSoon__); // toolbar collapse / expand
+  try { new ResizeObserver(rzSoon__).observe(document.body); } catch {}
+  // browser zoom / display changes alter devicePixelRatio: re-arm a resolution query each time it flips
+  const rzDpr__ = () => {
+    try {
+      const mq = matchMedia("(resolution: " + devicePixelRatio + "dppx)");
+      mq.addEventListener("change", () => { rzSoon__(); rzDpr__(); }, { once: true });
+    } catch {}
+  };
+  rzDpr__();
+  setTimeout(rzSoon__, 300); // first layout pass on Safari can still be settling
   let j = 1600,
     F = 1600;
   const la = 6,
@@ -21976,7 +21982,11 @@ t.save();
       return e.apply(this, arguments);
     };
   }
-  {
+  const Wc =
+    matchMedia("(pointer:coarse)").matches ||
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+    (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+  if (Wc) {
     bt = [];
     _t = [];
     Ee = [];
@@ -21986,6 +21996,9 @@ t.save();
     $ = { x: 0, y: 0, vx: 0, vy: 0, c: null, lt: 0, last: null, rot: 0 };
     J = 0;
     requestAnimationFrame(oi);
+  } else {
+    pe.style.display = "none";
+    document.getElementById("blk").style.display = "flex";
   }
 })();
 
