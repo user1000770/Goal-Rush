@@ -51,10 +51,9 @@ body {
 * {
   -webkit-tap-highlight-color: transparent;
 }
-html.grxOpen #topbar__ {
-  display: none !important;
-}
 #topbar__ {
+  background: #241a86 !important;
+  z-index: 80 !important;
   position: absolute !important;
   pointer-events: none !important;
 }
@@ -323,7 +322,7 @@ const pe=document.getElementById("c");
 let t=pe.getContext("2d",{alpha:!1}),qe=90;
 const se=e=>{
 qe=Math.max(qe,e||40)},MAX_RENDER_SCALE=3,MAX_LONG_SIDE=3200,yi=(e,a)=>Math.max(.5,Math.min(window.devicePixelRatio||1,MAX_RENDER_SCALE,MAX_LONG_SIDE/Math.max(e,a),4096/Math.max(e,a))),isIPhone__=/iPhone|iPod/.test(navigator.userAgent),por__=()=>{
-try{return matchMedia("(orientation: portrait)").matches}catch{return innerHeight>=innerWidth}},FS_MIN_TOP__=24,FS_FADE__=22,FS_TOP_COLOR__="#241a86",fsInset__={l:0,r:0,b:0},fsView__=()=>{let w=Math.round(innerWidth||document.documentElement.clientWidth||0),h=Math.round(innerHeight||document.documentElement.clientHeight||0);if(navigator.standalone===!0&&screen&&screen.width&&screen.height){const p=h>=w,sw=p?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height),sh=p?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);Math.abs(w-sw)<=1&&h<sh&&sh-h<=120&&(h=sh)}const pr=document.getElementById("sa"),cs=pr?getComputedStyle(pr):null,iT=cs?Math.round(parseFloat(cs.paddingTop)||0):0;fsInset__.r=cs?Math.round(parseFloat(cs.paddingRight)||0):0,fsInset__.b=cs?Math.round(parseFloat(cs.paddingBottom)||0):0,fsInset__.l=cs?Math.round(parseFloat(cs.paddingLeft)||0):0;const sa_=navigator.standalone===!0,tT=iT>0?iT+(sa_?FS_FADE__:0):(sa_?FS_MIN_TOP__:0),bh=Math.max(1,h-tT),b=document.body.style,r=document.documentElement.style;b.left="0px",b.top=tT+"px",b.width=w+"px",b.height=bh+"px",r.height=h+"px";{let tb_=document.getElementById("topbar__");tb_||(tb_=document.createElement("div"),tb_.id="topbar__",tb_.style.cssText="position:absolute;top:0;left:0;right:0;z-index:5;pointer-events:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;box-sizing:border-box;background-image:linear-gradient(#2e279e,#1b1469);border-bottom:3px solid #000;box-shadow:0 2px 0 rgba(0,0,0,.28)",document.documentElement.appendChild(tb_));tb_.style.height=tT+"px",tb_.style.backgroundColor=FS_TOP_COLOR__}return{w:w,h:bh}},vpW=()=>fsView__().w,vpH=()=>fsView__().h;
+try{return matchMedia("(orientation: portrait)").matches}catch{return innerHeight>=innerWidth}},FS_MIN_TOP__=24,FS_FADE__=22,FS_TOP_COLOR__="#241a86",fsInset__={l:0,r:0,b:0},fsView__=()=>{let w=Math.round(innerWidth||document.documentElement.clientWidth||0),h=Math.round(innerHeight||document.documentElement.clientHeight||0);if(navigator.standalone===!0&&screen&&screen.width&&screen.height){const p=h>=w,sw=p?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height),sh=p?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);Math.abs(w-sw)<=1&&h<sh&&sh-h<=120&&(h=sh)}const pr=document.getElementById("sa"),cs=pr?getComputedStyle(pr):null,iT=cs?Math.round(parseFloat(cs.paddingTop)||0):0;fsInset__.r=cs?Math.round(parseFloat(cs.paddingRight)||0):0,fsInset__.b=cs?Math.round(parseFloat(cs.paddingBottom)||0):0,fsInset__.l=cs?Math.round(parseFloat(cs.paddingLeft)||0):0;const sa_=navigator.standalone===!0,tT=iT>0?iT+(sa_?FS_FADE__:0):(sa_?FS_MIN_TOP__:0),bh=Math.max(1,h-tT),b=document.body.style,r=document.documentElement.style;b.left="0px",b.top=tT+"px",b.width=w+"px",b.height=bh+"px",r.height=h+"px";{let tb_=document.getElementById("topbar__");tb_||(tb_=document.createElement("div"),tb_.id="topbar__",tb_.style.cssText="position:absolute;top:0;left:0;right:0;z-index:5;pointer-events:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;box-sizing:border-box;background-image:none;border-bottom:0;box-shadow:none",document.documentElement.appendChild(tb_));tb_.style.height=tT+"px",tb_.style.backgroundColor=FS_TOP_COLOR__}return{w:w,h:bh}},vpW=()=>fsView__().w,vpH=()=>fsView__().h;
 let ot,lt,Qe=yi(vpW(),vpH()),hl=!1;
 function ul(){
 be.t=-1e9;
@@ -4435,7 +4434,7 @@ if(outsideErr__(ev.reason)){ev.preventDefault();return}
 grLogErr__(ev.reason)});
 let bgT__=0,bgC__="";
 function bgSync__(e){
-if(!(e-bgT__<250)){bgT__=e;try{const x=hl?2:pe.width>>1,y=hl?pe.height>>1:3,d2=t.getImageData(x,y,1,1).data;if(d2[3]>200){const c="rgb("+d2[0]+","+d2[1]+","+d2[2]+")";c!==bgC__&&(bgC__=c,document.documentElement.style.background=document.body.style.background=c)}}catch{}}}
+if(!(e-bgT__<250)){bgT__=e;try{const x=hl?2:pe.width>>1,y=hl?pe.height>>1:3,d2=t.getImageData(x,y,1,1).data;if(d2[3]>200){const c="rgb("+d2[0]+","+d2[1]+","+d2[2]+")";c!==bgC__&&(bgC__=c)}}catch{}}}
 function oi(e){
 try{oiCore__(e),oiErrN__=0}catch(err){if(oiErrN__++,grLogErr__(err),oiErrN__>=2)try{wt=[],vt=[],St=[],Me=Me.filter(b=>b&&b.o)}catch{}try{t.setTransform(1,0,0,1,0,0),t.globalAlpha=1,oiErrN__<=3&&(pe.width=pe.width),se(90)}catch{}if(oiErrN__===45&&J!==0)try{Fn()}catch{}}
 if(errShow__)try{if(performance.now()>errShow__.until)errShow__=null,se(90);else{const fs=Math.max(11,Math.round(pe.width/42)),per=Math.floor(pe.width/(fs*.55))-2,ln2=[];for(let i=0;i<errShow__.txt.length&&ln2.length<5;i+=per)ln2.push(errShow__.txt.slice(i,i+per));t.save(),t.setTransform(1,0,0,1,0,0),t.fillStyle="rgba(0,0,0,.82)",t.fillRect(0,pe.height-(ln2.length+1)*fs*1.3-4,pe.width,(ln2.length+1)*fs*1.3+4),t.fillStyle="#ff8080",t.font=fs+"px monospace",t.textAlign="left",t.fillText("ERROR (screenshot this)",6,pe.height-ln2.length*fs*1.3-6),ln2.forEach((l,i)=>t.fillText(l,6,pe.height-(ln2.length-1-i)*fs*1.3-6)),t.restore()}}catch{}
