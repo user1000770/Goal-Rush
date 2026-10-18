@@ -38,9 +38,13 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
+/* Full-screen root. The real pixel size is set by JS (fsView__) from the
+   true window / screen size; these rules are only the fallback before JS runs. */
 body {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: -webkit-fill-available;
 }
 @supports (height: 100dvh) {
@@ -313,7 +317,7 @@ const pe=document.getElementById("c");
 let t=pe.getContext("2d",{alpha:!1}),qe=90;
 const se=e=>{
 qe=Math.max(qe,e||40)},MAX_RENDER_SCALE=3,MAX_LONG_SIDE=3200,yi=(e,a)=>Math.max(.5,Math.min(window.devicePixelRatio||1,MAX_RENDER_SCALE,MAX_LONG_SIDE/Math.max(e,a),4096/Math.max(e,a))),isIPhone__=/iPhone|iPod/.test(navigator.userAgent),por__=()=>{
-try{return matchMedia("(orientation: portrait)").matches}catch{return innerHeight>=innerWidth}},vpW=()=>Math.round(document.body.clientWidth||document.documentElement.clientWidth||innerWidth),vpH=()=>Math.round(document.body.clientHeight||document.documentElement.clientHeight||innerHeight);
+try{return matchMedia("(orientation: portrait)").matches}catch{return innerHeight>=innerWidth}},fsView__=()=>{let w=Math.round(innerWidth||document.documentElement.clientWidth||0),h=Math.round(innerHeight||document.documentElement.clientHeight||0);if(navigator.standalone===!0&&screen&&screen.width&&screen.height){const p=h>=w,sw=p?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height),sh=p?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);Math.abs(w-sw)<=1&&h<sh&&sh-h<=120&&(h=sh)}const b=document.body.style,r=document.documentElement.style,ws=w+"px",hs=h+"px";b.width!==ws&&(b.width=ws),b.height!==hs&&(b.height=hs),r.height!==hs&&(r.height=hs);return{w:w,h:h}},vpW=()=>fsView__().w,vpH=()=>fsView__().h;
 let ot,lt,Qe=yi(vpW(),vpH()),hl=!1;
 function ul(){
 be.t=-1e9;
@@ -333,7 +337,7 @@ let rzQ__=0;
 const rzSoon__=()=>{
 rzQ__||(rzQ__=requestAnimationFrame(()=>{
 rzQ__=0,rzForce__()}))};
-addEventListener("resize",rzSoon__),addEventListener("pageshow",rzSoon__),document.addEventListener("visibilitychange",()=>{
+addEventListener("scroll",()=>{(scrollX||scrollY)&&scrollTo(0,0)},{passive:!0}),addEventListener("resize",rzSoon__),addEventListener("pageshow",rzSoon__),document.addEventListener("visibilitychange",()=>{
 document.hidden||rzSoon__()}),addEventListener("orientationchange",()=>{
 rzSoon__(),setTimeout(rzSoon__,250),setTimeout(rzSoon__,700)}),window.visualViewport&&visualViewport.addEventListener("resize",rzSoon__);
 try{new ResizeObserver(rzSoon__).observe(document.body)}catch{}
