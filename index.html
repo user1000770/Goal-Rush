@@ -960,46 +960,126 @@ bjxGive__(b.id),De(b.n+" BADGE UNLOCKED!",b.col),se(90),bjxPick__(b.id)}
 /* ---- store card + badge shop screen ---- */
 /* ---- sell ZP for PP: full-screen tab ---- */
 const ZPSELL_N__=100,ZPSELL_PP__=20,ZPTIERS__=[[100,20],[300,66],[500,115],[1000,240]];
+/* coins -> diamonds: [diamonds, coin cost], flat 600/diamond, daily cap */
+const DIAMX__=[[1,600],[5,3000],[10,6000]],DIAMCAP__=10,DIAMK__="goalrush_dxd";
 let ZpTab__=null;
+function diamBought__(){
+try{const v=JSON.parse(localStorage.getItem(DIAMK__)||"null");return v&&v.d===ppDay__()?(+v.n||0):0}catch{return 0}}
+function diamBuy__(n,cost){
+if(n<1||Oe<cost||diamBought__()+n>DIAMCAP__)return!1;
+Oe-=cost,Da+=n;
+try{localStorage.setItem(DIAMK__,JSON.stringify({d:ppDay__(),n:diamBought__()+n}))}catch{}
+Pn(),gl(),De("BOUGHT "+n+" DIAMOND"+(n>1?"S":""),"#7de8ff"),se(90);return!0}
 function zpSellDo__(zp,pp){
 if(zp<1||pp<1||Vt<zp)return!1;
 Vt-=zp,PP__+=pp,Pn(),ppSave__(),De("SOLD "+zp+" ZP  +"+pp+" PP","#e3b8ff"),se(90);return!0}
 function zpSellClose__(){
 if(!ZpTab__)return;
 const o=ZpTab__;ZpTab__=null;
-document.removeEventListener("keydown",o._k,!0),o.onclick=null,o.querySelectorAll("button").forEach(b=>b.onclick=null),o.remove(),se(90)}
+document.removeEventListener("keydown",o._k,!0),o.onclick=null,o.querySelectorAll("button").forEach(b=>b.onclick=null),o.remove(),/* free cached icons */Object.keys(XIC__).forEach(k=>delete XIC__[k]),se(90)}
+/* kill exchange when app goes to background */
+document.addEventListener("visibilitychange",()=>{document.hidden&&zpSellClose__()});
+/* render the game's own icons to small images (cached) */
+const XIC__={};
+function xIcon__(k){
+if(XIC__[k])return XIC__[k];
+const S=96,cv=document.createElement("canvas");cv.width=cv.height=S;
+const c2=cv.getContext("2d"),sv=t;
+try{t=c2,k==="c"?Ja(S/2,S/2,2.5):k==="g"?po(S/2,S/2,2.5):k==="z"?vn(S/2,S/2,2.2):ppIcon__(S/2,S/2,2.1)}catch{}finally{t=sv}
+return XIC__[k]=cv.toDataURL()}
 function zpSellOpen__(){
 if(ZpTab__)return;
-const F="font-family:'Lilita One','Luckiest Guy','Arial Black',sans-serif",K=n=>"-webkit-text-stroke:"+n+"px #000;paint-order:stroke fill",
-o=document.createElement("div");
+const o=document.createElement("div"),IC={z:xIcon__("z"),p:xIcon__("p"),c:xIcon__("c"),g:xIcon__("g")},
+im=(k,sz)=>`<img src="${IC[k]}" width="${sz}" height="${sz}" alt="">`,
+pl=k=>`<span class="xpl">${im(k,28)}</span>`,
+AR=w=>`<svg class="xar" width="${w}" height="${Math.round(w*.7)}" viewBox="0 0 40 28"><path d="M4 9h18V3l14 11-14 11v-6H4z" fill="#ffe14d" stroke="#000" stroke-width="3" stroke-linejoin="round"/><path d="M7 11.5h14" stroke="#fffbd0" stroke-width="2" stroke-linecap="round" opacity=".85"/></svg>`;
 ZpTab__=o,uiPopup__(o),o.id="zpSellOv";
-o.style.cssText="position:fixed;inset:0;z-index:21;display:flex;flex-direction:column;background:radial-gradient(circle at 50% 0,#4a2bb8 0,#1b1f7a 45%,#0a1048 100%);color:#fff;text-align:center;touch-action:auto;"+F;
-const zTop=Math.max((document.getElementById("topbar__")||{}).offsetHeight||0,parseFloat(getComputedStyle(document.getElementById("sa")).paddingTop)||0)+4/*push header below top bar*/,cs=innerHeight<760,FS=cs?24:32,TIER=[["STARTER","#6fd36f","#2a8a2a"],["SMALL","#4fc3ff","#1a6fb8"],["GREAT","#c58bff","#7a2bd0"],["BEST VALUE","#ffcf3a","#c27a0a"]],
-tiers=ZPTIERS__.map((t2,i)=>({zp:t2[0],pp:t2[1],n:TIER[i][0],c:TIER[i][1],d:TIER[i][2]}));
-o.innerHTML='<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:calc(14px + '+zTop+'px) calc(12px + env(safe-area-inset-right,0px)) 10px calc(12px + env(safe-area-inset-left,0px));background:linear-gradient(#2a3a9e,#151d66);border-bottom:4px solid #000;box-shadow:0 4px 0 rgba(0,0,0,.25);flex:none"><button class="zBack" aria-label="Back" style="display:flex;align-items:center;gap:6px;font:inherit;font-size:18px;color:#fff;background:#ff9a2e;border:3px solid #000;border-radius:22px;padding:6px 14px 6px 8px;box-shadow:0 4px 0 #b8560a;justify-self:start;'+K(2.5)+'"><span style="font-size:22px;line-height:1">&#10094;</span>BACK</button><div style="font-size:24px;line-height:1;'+K(4)+'">ZP STORE</div><div></div></div><div style="display:flex;justify-content:center;gap:10px;padding:12px 12px 4px;flex:none"><div style="display:flex;align-items:center;gap:8px;background:#3a0f55;border:3px solid #000;border-radius:20px;padding:6px 16px;font-size:20px;color:#ff9bf0;'+K(3.5)+'"><span style="font-size:13px;background:#e25cff;color:#fff;border:2px solid #000;border-radius:5px;padding:1px 5px">ZP</span><span class="zZp"></span></div><div style="display:flex;align-items:center;gap:8px;background:#2a0f66;border:3px solid #000;border-radius:20px;padding:6px 16px;font-size:20px;color:#e3b8ff;'+K(3.5)+'"><span style="font-size:13px;background:#a24bf5;color:#fff;border:2px solid #000;border-radius:5px;padding:1px 5px">PP</span><span class="zPp"></span></div></div><div style="flex:none;display:'+(cs?"none":"block")+';font-size:13px;color:#cfe0ff;padding:4px 12px 0;'+K(2)+'">Sell ZP for PP boosts &middot; bigger bundles pay more</div><div class="zGrid" style="flex:1;overflow-y:auto;padding:12px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:max-content;gap:'+(cs?10:12)+'px;align-content:start;min-height:0;touch-action:pan-y"></div><div style="flex:none;padding:10px calc(12px + env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) calc(12px + env(safe-area-inset-left,0px));background:linear-gradient(#151d66,#0a1048);border-top:4px solid #000"><button class="zAll" style="width:100%;font:inherit;font-size:21px;color:#fff;border:3px solid #000;border-radius:14px;padding:12px 6px;'+K(3.5)+'"></button></div>';
-const grid=o.querySelector(".zGrid"),zZp=o.querySelector(".zZp"),zPp=o.querySelector(".zPp"),zAll=o.querySelector(".zAll"),cards=[];
-tiers.forEach((t2,i)=>{
-const c=document.createElement("div");
-c.style.cssText="position:relative;flex:none;background:#232f94;border:4px solid #000;border-radius:14px;overflow:hidden;box-shadow:5px 5px 0 rgba(6,8,50,.55);display:flex;flex-direction:column";
-c.innerHTML='<div style="background:linear-gradient('+t2.c+','+t2.d+');border-bottom:3px solid #000;padding:6px 4px;font-size:15px;'+K(3)+'">'+t2.n+(i===3?" &#9733;":"")+'</div><div style="padding:'+(cs?"6px 6px 2px":"12px 8px 6px")+';display:flex;flex-direction:column;align-items:center;gap:2px"><div class="cZ" style="font-size:'+FS+'px;line-height:1;color:#ff9bf0;'+K(4)+'"></div><div style="font-size:'+(cs?14:20)+'px;color:#cfe0ff;line-height:1">&#9660;</div><div class="cP" style="font-size:'+FS+'px;line-height:1;color:#ffe14d;'+K(4)+'"></div><div class="cT" style="font-size:12px;min-height:15px;color:#7dff8a;margin-top:2px;'+K(2)+'"></div></div><div style="padding:0 10px '+(cs?8:12)+'px"><button class="cB" style="width:100%;font:inherit;font-size:19px;color:#fff;border:3px solid #000;border-radius:10px;padding:'+(cs?"5px 4px":"8px 4px")+';'+K(3)+'">SELL</button></div>';
-grid.appendChild(c),cards.push({t:t2,c,T:c.querySelector(".cT"),Z:c.querySelector(".cZ"),P:c.querySelector(".cP"),B:c.querySelector(".cB")})});
-const paint=(B,ok)=>{B.style.background=ok?"#34d34a":"#6b7280",B.style.boxShadow="0 4px 0 "+(ok?"#157a28":"#3a3f48")},
-upd=()=>{
-zZp.textContent=Vt,zPp.textContent=PP__;
-for(const k of cards){
+const zTop=Math.max((document.getElementById("topbar__")||{}).offsetHeight||0,parseFloat(getComputedStyle(document.getElementById("sa")).paddingTop)||0)+4;
+o.style.cssText="position:fixed;inset:0;z-index:21;display:flex;flex-direction:column;color:#fff;text-align:left;touch-action:auto;font-family:'Lilita One','Luckiest Guy','Arial Black',sans-serif";
+o.innerHTML=`<style>
+#zpSellOv *{box-sizing:border-box}
+#zpSellOv{background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 22px,rgba(255,255,255,0) 22px 44px),linear-gradient(#3f7bf0,#2b4fd2 60%,#2a2fb8)}
+#zpSellOv button{font:inherit;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-transform:uppercase}
+#zpSellOv img{display:block;flex:none}
+#zpSellOv .xtop{display:flex;align-items:center;gap:8px;padding:calc(8px + ${zTop}px) 10px 10px;background:linear-gradient(#1a2a8a,#0f1a66);border-bottom:4px solid #000;flex:none}
+#zpSellOv .xb{width:52px;height:46px;flex:none;border-radius:13px;background:#e9606a;border:4px solid #000;box-shadow:none;padding:0;display:flex;align-items:center;justify-content:center;-webkit-text-stroke:0}
+#zpSellOv .xb svg{display:block}
+#zpSellOv .xp{position:relative;flex:1;min-width:0;height:36px;display:flex;align-items:center;justify-content:center;background:#07103f;border:3px solid #000;border-radius:18px;padding-left:18px}
+#zpSellOv .xp img{position:absolute;left:-8px;top:50%;transform:translateY(-50%)}
+#zpSellOv .xp b{font-weight:400;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;-webkit-text-stroke:3.5px #000;paint-order:stroke fill}
+#zpSellOv .xt{flex:none;font-size:32px;text-align:center;padding:10px 0 8px;text-transform:uppercase;-webkit-text-stroke:7px #000;paint-order:stroke fill;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+#zpSellOv .xl{flex:1;min-height:0;overflow-y:auto;padding:2px 12px 16px;display:none;flex-direction:column;gap:12px;touch-action:pan-y}
+#zpSellOv .xl.on{display:flex}
+#zpSellOv .xr,#zpSellOv .xlim{background:linear-gradient(#2d3cb0,#232f94);border:4px solid #000;border-radius:16px;padding:12px;box-shadow:5px 5px 0 rgba(6,8,50,.55)}
+#zpSellOv .xr{display:flex;align-items:center;gap:10px}
+#zpSellOv .xm{flex:1;min-width:0}
+#zpSellOv .x1{display:flex;align-items:center;gap:6px;padding-left:8px}
+#zpSellOv .xchip{position:relative;display:flex;align-items:center;justify-content:center;height:40px;min-width:66px;padding:0 10px 0 32px;background:#07103f;border:3px solid #000;border-radius:21px;box-shadow:inset 0 3px 0 rgba(255,255,255,.08)}
+#zpSellOv .xchip img{position:absolute;left:-12px;width:42px;height:42px;top:50%;transform:translateY(-50%)}
+#zpSellOv .xchip span{font-size:22px;line-height:1;letter-spacing:.3px;-webkit-text-stroke:4.5px #000;paint-order:stroke fill}
+#zpSellOv .xar{flex:none;filter:drop-shadow(0 2px 0 rgba(0,0,0,.35))}
+#zpSellOv .xpl{width:36px;height:36px;flex:none;border-radius:50%;background:rgba(6,8,50,.55);border:2px solid #000;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 2px 0 rgba(255,255,255,.15)}
+#zpSellOv .xn{-webkit-text-stroke:4px #000;paint-order:stroke fill;font-size:22px}
+#zpSellOv .x2{font-size:12px;margin-top:6px;color:#cfe0ff;text-transform:uppercase;-webkit-text-stroke:2.5px #000;paint-order:stroke fill}
+#zpSellOv .x2.g{color:#7dff8a}
+#zpSellOv .xr button,#zpSellOv .xf button.zAll{border-radius:12px;border:3px solid #000;background:linear-gradient(#62e873,#2fc347);box-shadow:0 4px 0 #157a28;font-size:18px;padding:10px 6px;min-width:84px}
+#zpSellOv button:disabled{background:linear-gradient(#8a919d,#6b7280)!important;box-shadow:0 4px 0 #3a3f48!important;cursor:default;font-size:14px!important}
+#zpSellOv .xlim{display:block;font-size:15px;text-transform:uppercase}
+#zpSellOv .xlim .xlr{display:flex;align-items:center;gap:8px;-webkit-text-stroke:3px #000;paint-order:stroke fill}
+#zpSellOv .xlim div.xbar{height:14px;border-radius:8px;background:#0a1048;border:3px solid #000;margin-top:10px;overflow:hidden}
+#zpSellOv .xbar i{display:block;height:100%;background:linear-gradient(#7de8ff,#1fa8e0);border-radius:6px}
+#zpSellOv .xf{flex:none;padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px));background:#0b1655;border-top:4px solid #000;display:flex;flex-direction:column;gap:10px}
+#zpSellOv .xf button.zAll{width:100%;padding:9px 12px;font-size:20px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+#zpSellOv .xnav{display:flex;gap:8px}
+#zpSellOv .xtab{flex:1;height:58px;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:16px;border:3px solid #000;background:linear-gradient(#4f93ff,#2368e8);box-shadow:0 5px 0 #0b3a98;font-size:17px}
+#zpSellOv .xtab.on{background:linear-gradient(#ffd84a,#ffb81a);box-shadow:0 5px 0 #b8760a}
+</style>
+<div class="xtop"><button class="xb" aria-label="Back"><svg width="24" height="28" viewBox="0 0 24 28"><path d="M16 4 6 14l10 10" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="xp">${im("g",34)}<b class="vG"></b></div><div class="xp">${im("c",34)}<b class="vC"></b></div><div class="xp">${im("z",34)}<b class="vZ"></b></div><div class="xp">${im("p",34)}<b class="vP"></b></div></div>
+<div class="xt">Exchange</div>
+<div class="xl on" data-p="0"></div>
+<div class="xl" data-p="1"><div class="xlim"><div class="xlr">${pl("g")}<span class="xlt"></span></div><div class="xbar"><i></i></div></div></div>
+<div class="xf"><button class="zAll"></button><div class="xnav"><button class="xtab on" data-t="0">Sell ${pl("z")}${AR(24)}${pl("p")}</button><button class="xtab" data-t="1">Buy ${pl("c")}${AR(24)}${pl("g")}</button></div></div>`;
+const P0=o.querySelector('[data-p="0"]'),P1=o.querySelector('[data-p="1"]'),zAll=o.querySelector(".zAll"),
+q=c2=>o.querySelector(c2),tabs=[...o.querySelectorAll(".xtab")],lim=q(".xlt"),limBar=q(".xbar i"),
+mk=par=>{const r=document.createElement("div");r.className="xr",r.innerHTML='<div class="xm"><div class="x1"></div><div class="x2"></div></div><button></button>';par.appendChild(r);return{x1:r.querySelector(".x1"),x2:r.querySelector(".x2"),B:r.querySelector("button")}},
+amt=(k,n,col)=>`<div class="xchip">${im(k,42)}<span style="color:${col}">${n}</span></div>`,
+zr=ZPTIERS__.map(t2=>({t:{zp:t2[0],pp:t2[1]},...mk(P0)})),dr=DIAMX__.map(d3=>({d:d3,...mk(P1)}));
+let tab=0,lastSig="";
+const upd=force=>{
+const left=Math.max(0,DIAMCAP__-diamBought__()),sig=[Vt,PP__,Oe,Da,left,tab].join("|");
+if(!force&&sig===lastSig)return;
+lastSig=sig;
+q(".vZ").textContent=Vt,q(".vP").textContent=PP__,q(".vC").textContent=Oe.toLocaleString(),q(".vG").textContent=Da;
+tabs.forEach((b,i)=>b.classList.toggle("on",i===tab)),P0.classList.toggle("on",tab===0),P1.classList.toggle("on",tab===1),zAll.style.display=tab===0?"":"none";
+for(const k of zr){
 const t2=k.t,ok=Vt>=t2.zp,base=t2.zp/ZPSELL_N__*ZPSELL_PP__,bonus=t2.pp>base?Math.round((t2.pp/base-1)*100):0;
-k.Z.textContent=t2.zp+" ZP",k.P.textContent="+"+t2.pp+" PP",k.T.textContent=bonus?"+"+bonus+"% BONUS":"",k.B.textContent=ok?"SELL":"NEED "+(t2.zp-Vt)+" MORE",k.B.style.fontSize=ok?(cs?"17px":"19px"):"13px",paint(k.B,ok),k.c.style.opacity=ok?1:.65,k.B.onclick=()=>{zpSellDo__(t2.zp,t2.pp)?upd():se(90)}}
+k.x1.innerHTML=amt("z",t2.zp,"#ff9bf0")+AR(26)+amt("p",t2.pp,"#ffe14d"),k.x2.textContent=bonus?"+"+bonus+"% BONUS":"BASE RATE",k.x2.className="x2"+(bonus?" g":""),k.B.disabled=!ok,k.B.textContent=ok?"Sell":"Need "+(t2.zp-Vt),k.B.onclick=()=>{zpSellDo__(t2.zp,t2.pp)&&upd()}}
 const n=Math.floor(Vt/ZPSELL_N__),zp=n*ZPSELL_N__,pp=n*ZPSELL_PP__;
-zAll.textContent=n?"SELL ALL  "+zp+" ZP  →  +"+pp+" PP":"NEED "+ZPSELL_N__+" ZP TO SELL",paint(zAll,n>0),zAll.onclick=()=>{zpSellDo__(zp,pp)?upd():se(90)}};
-upd(),o.querySelector(".zBack").onclick=zpSellClose__,o.addEventListener("pointerdown",e=>e.stopPropagation()),o._k=e=>{e.key==="Escape"&&zpSellClose__()},document.addEventListener("keydown",o._k,!0),document.body.appendChild(o)}
+zAll.disabled=!n,zAll.innerHTML=n?"Sell all "+pl("z")+`<span class="xn">${zp}</span>`+AR(28)+pl("p")+`<span class="xn">${pp}</span>`:"Need "+ZPSELL_N__+" ZP to sell",zAll.onclick=()=>{zpSellDo__(zp,pp)&&upd()};
+lim.textContent="Daily limit: "+(DIAMCAP__-left)+" / "+DIAMCAP__,limBar.style.width=(DIAMCAP__-left)/DIAMCAP__*100+"%";
+for(const k of dr){
+const n3=k.d[0],cost=k.d[1],ok=Oe>=cost&&left>=n3;
+k.x1.innerHTML=amt("c",cost.toLocaleString(),"#ffd23f")+AR(26)+amt("g",n3,"#7de8ff"),k.x2.textContent=Math.round(cost/n3)+" coins each",k.B.disabled=!ok,k.B.textContent=left<n3?"Limit":ok?"Buy":"Need "+(cost-Oe).toLocaleString(),k.B.onclick=()=>{diamBuy__(n3,cost)&&upd()}}};
+tabs.forEach((b,i)=>b.onclick=()=>{tab=i,upd(),se(2)}),q(".xb").onclick=zpSellClose__,
+upd(!0),o.addEventListener("pointerdown",e=>e.stopPropagation()),o._k=e=>{e.key==="Escape"&&zpSellClose__()},document.addEventListener("keydown",o._k,!0),document.body.appendChild(o)}
 function homeTiles__(e,c,y,r,H){
 const g=10,w=(r-g*2)/3,T=[
 ["BADGES",BjxOwn__.length+" / "+BJX__.length,"#ff9a2e",(x,m,sz)=>{const sp=bjxSprite__("rookie");sp&&t.drawImage(sp,x-sz/2,m-sz/2,sz,sz)},()=>{BjxPg__=0,$e=4,se(2)}],
 ["CODE","REDEEM","#34d34a",(x,m,sz)=>{const sp=rdmBadge__();sp&&t.drawImage(sp,x-sz/2,m-sz/2,sz,sz)},()=>{rdmOpen__()}],
-["ZP STORE","SELL ZP","#a24bf5",(x,m,sz)=>{_(x-sz*.5,m-sz*.36,sz,sz*.72,8,"#e25cff","#000",3),R("ZP",x,m+sz*.12,sz*.38,"#fff","center",3.5)},()=>{zpSellOpen__(),se(2)}]];
+["EXCHANGE","COINS & ZP","#27c6ff",(x,m,sz)=>{
+/* swap ring around the game's own coin + gem icons (drawn once in the cached layer) */
+const s2=sz/46,r=sz*.42,arc=(a0,a1)=>{
+t.lineCap="round";
+for(const[lw,col]of[[7*s2,"#000"],[3.4*s2,"#ffe14d"]])t.strokeStyle=col,t.lineWidth=lw,t.beginPath(),t.arc(x,m,r,a0,a1),t.stroke();
+const px=x+Math.cos(a1)*r,py=m+Math.sin(a1)*r,tx=-Math.sin(a1),ty=Math.cos(a1),nx=Math.cos(a1),ny=Math.sin(a1),h=5.5*s2;
+t.beginPath(),t.moveTo(px+tx*h*1.5,py+ty*h*1.5),t.lineTo(px+nx*h,py+ny*h),t.lineTo(px-nx*h,py-ny*h),t.closePath(),t.fillStyle="#ffe14d",t.strokeStyle="#000",t.lineWidth=2.6*s2,t.lineJoin="round",t.fill(),t.stroke()};
+t.save(),arc(Math.PI*1.1,Math.PI*1.85),arc(Math.PI*.1,Math.PI*.85),t.restore();
+Ja(x-sz*.17,m+sz*.1,.74*s2),po(x+sz*.17,m-sz*.1,.74*s2)},()=>{zpSellOpen__(),se(2)}]];
 T.forEach((k,i)=>{
 const x=c+i*(w+g),cx=x+w/2,sz=Math.min(46,H*.46);
 Ca(x,y,w,H,Te.panel,8,6);
+k[0]==="EXCHANGE"&&_(x+4,y+4,w-8,H-8,5,"rgba(60,200,255,.16)");
 _(x+6,y+H-5-Math.max(5,H*.07),w-12,Math.max(5,H*.07),3,k[2]);
 k[3](cx,y+8+sz/2,sz),R(k[0],cx,y+H*.72,w<100?13:15,"#fff","center",4),R(k[1],cx,y+H*.72+14,10.5,"#cfe0ff","center",3),e(x,y,w,H+4,k[4])})}
 function bjxScreen__(e,a,n,o,l,f){
@@ -2002,6 +2082,7 @@ uiScreen__(3,"heroes",(...a)=>ff(...a));
 /* heroes sub-modes ($e) each own a layer family; freed when that sub-mode is left */
 uiMenu__("heroes:list",()=>Mt===3&&$e===0);
 uiMenu__("heroes:store",()=>Mt===3&&$e===1);
+uiMenu__("exchange",()=>!!ZpTab__&&Mt===3&&$e===1,()=>zpSellClose__(),["zpSellOv"]);
 uiMenu__("heroes:draw",()=>Mt===3&&$e===2);
 uiMenu__("heroes:wheel",()=>Mt===3&&$e===3);
 uiScreen__(5,"match5",(...a)=>rf(...a),()=>{PZ__=-1,PZPage__=0,PLToast__=null,PLTon__=0});
@@ -2677,10 +2758,14 @@ const l=$,f=Tn(e),i=l.c===e;
 if(f=="SHOCKWAVE")a&&n<Le.shock-30&&ba(e);else if(f=="BIG SHOT")a&&n<460&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="AIR SLASH")a&&n<460&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="ZIGZAG")a&&n<420&&n>110&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="SWAP")a&&n<440&&(l.c===a||e.hp<e.mh*.5&&n<200||i&&n>160)&&ba(e);else if(f=="BULLDOZE")a&&n<230&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="TURBO")(a&&n<420||i||!l.c&&Math.hypot(l.x-e.x,l.y-e.y)<420)&&ba(e);else if(f=="FORCE FIELD")a&&n<300&&(i||e.hp<e.mh*.85)&&ba(e);else if(f=="BLINK"){const s=e.tk==0?0:F;i&&a&&n<230?ba(e,BD?Math.atan2(BDY-e.y,BDX-e.x):Math.atan2(s-e.y,Et-e.x)):!i&&a&&n<130&&e.hp<e.mh*.5&&ba(e,Math.atan2(e.y-a.y,e.x-a.x))}else if(f=="HEAL PULSE"){let s=0;for(const r of Y)r.alive&&r.tk===e.tk&&Math.hypot(r.x-e.x,r.y-e.y)<Le.heal&&(s+=r.mh-r.hp);s>=60&&ba(e)}else if(f=="PUFF UP")a&&n<150&&(i||e.hp<e.mh*.85)&&ba(e);else if(f=="MAGNET"){const s=Math.hypot(l.x-e.x,l.y-e.y);(l.c&&l.c.tk!==e.tk&&Math.hypot(l.c.x-e.x,l.c.y-e.y)<Le.steal-20||!l.c&&l.lt<=0&&s<Le.pull-30&&s>140)&&ba(e)}}
 function bf(){
 if(He=[],BD||Bt)return;
-const want=3+(Math.random()<.5?1:0);
+/* chest rarity: ~1 in 4 matches has chests */
+if(Math.random()>=.25)return;
+/* when present: 1 chest, sometimes 2 */
+const want=1+(Math.random()<.3?1:0);
 for(let k=0;k<400&&He.length<want;k++){const a=z(280,j-280),n=z(F*.2,F*.8);if(Math.hypot(a-j/2,n-F/2)<150||Kn(a,n,52))continue;let ok=!0;for(const o of He)if(Math.hypot(o.x-a,o.y-n)<190){ok=!1;break}ok&&He.push({x:a,y:n,hp:pi,mhp:pi,ht:-1e9})}}
 function xf(e){
-const a=Math.random(),n=a<.7?1:a<.95?2:3;
+/* chest reward: 1-10 diamonds */
+const n=1+(Math.random()*10|0);
 Da+=n,gl(),He=He.filter(o=>o!==e),St.push({x:e.x,y:e.y-44,t:"+"+n+" DIAMOND"+(n>1?"S":""),l:1.5,c:"#7de8ff"});
 for(let o=0;o<5;o++)it(e.x,e.y,o%2?"#7de8ff":"#ffd23f",7);
 Ct={t:"CHEST OPENED!  +"+n+" DIAMOND"+(n>1?"S":""),l:2.5,c:"#7de8ff"}}
@@ -4729,6 +4814,8 @@ let bgT__=0,bgC__="";
 function bgSync__(e){
 if(!(e-bgT__<250)){bgT__=e;try{const x=hl?2:pe.width>>1,y=hl?pe.height>>1:3,d2=t.getImageData(x,y,1,1).data;if(d2[3]>200){const c="rgb("+d2[0]+","+d2[1]+","+d2[2]+")";c!==bgC__&&(bgC__=c)}}catch{}}}
 function oi(e){
+/* pause game loop while exchange is open */
+if(ZpTab__){setTimeout(()=>requestAnimationFrame(oi),250);return}
 if(document.hidden){requestAnimationFrame(oi);return}
 try{oiCore__(e),oiErrN__=0}catch(err){if(oiErrN__++,grLogErr__(err),oiErrN__>=2)try{wt=[],vt=[],St=[],Me=Me.filter(b=>b&&b.o)}catch{}try{t.setTransform(1,0,0,1,0,0),t.globalAlpha=1,oiErrN__<=3&&(pe.width=pe.width),se(90)}catch{}if(oiErrN__===45&&J!==0)try{Fn()}catch{}}
 if(errShow__)try{if(performance.now()>errShow__.until)errShow__=null,se(90);else{const fs=Math.max(11,Math.round(pe.width/42)),per=Math.floor(pe.width/(fs*.55))-2,ln2=[];for(let i=0;i<errShow__.txt.length&&ln2.length<5;i+=per)ln2.push(errShow__.txt.slice(i,i+per));t.save(),t.setTransform(1,0,0,1,0,0),t.fillStyle="rgba(0,0,0,.82)",t.fillRect(0,pe.height-(ln2.length+1)*fs*1.3-4,pe.width,(ln2.length+1)*fs*1.3+4),t.fillStyle="#ff8080",t.font=fs+"px monospace",t.textAlign="left",t.fillText("ERROR (screenshot this)",6,pe.height-ln2.length*fs*1.3-6),ln2.forEach((l,i)=>t.fillText(l,6,pe.height-(ln2.length-1-i)*fs*1.3-6)),t.restore()}}catch{}
