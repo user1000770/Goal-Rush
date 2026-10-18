@@ -939,6 +939,56 @@ if(b.cur==="c"){if(Oe<b.cost){De("NOT ENOUGH COINS","#ff6b6b");se(90);return}Oe-
 else{if(Da<b.cost){De("NOT ENOUGH GEMS","#ff6b6b");se(90);return}Da-=b.cost,gl()}
 bjxGive__(b.id),De(b.n+" BADGE UNLOCKED!",b.col),se(90),bjxPick__(b.id)}
 /* ---- store card + badge shop screen ---- */
+/* ---- sell ZP for PP: full-screen tab ---- */
+const ZPSELL_N__=100,ZPSELL_PP__=20,ZPTIERS__=[[100,20],[300,66],[500,115],[1000,240]];
+let ZpTab__=null;
+function zpSellDo__(zp,pp){
+if(zp<1||pp<1||Vt<zp)return!1;
+Vt-=zp,PP__+=pp,Pn(),ppSave__(),De("SOLD "+zp+" ZP  +"+pp+" PP","#e3b8ff"),se(90);return!0}
+function zpSellClose__(){
+if(!ZpTab__)return;
+const o=ZpTab__;ZpTab__=null;
+document.removeEventListener("keydown",o._k,!0),o.onclick=null,o.querySelectorAll("button").forEach(b=>b.onclick=null),o.remove(),se(90)}
+function zpSellOpen__(){
+if(ZpTab__)return;
+const F="font-family:'Lilita One','Luckiest Guy','Arial Black',sans-serif",K=n=>"-webkit-text-stroke:"+n+"px #000;paint-order:stroke fill",
+o=document.createElement("div");
+ZpTab__=o,uiPopup__(o),o.id="zpSellOv";
+o.style.cssText="position:fixed;inset:0;z-index:21;display:flex;flex-direction:column;background:radial-gradient(circle at 50% 0,#4a2bb8 0,#1b1f7a 45%,#0a1048 100%);color:#fff;text-align:center;touch-action:auto;"+F;
+const cs=innerHeight<760,FS=cs?24:32,TIER=[["STARTER","#6fd36f","#2a8a2a"],["SMALL","#4fc3ff","#1a6fb8"],["GREAT","#c58bff","#7a2bd0"],["BEST VALUE","#ffcf3a","#c27a0a"]],
+tiers=ZPTIERS__.map((t2,i)=>({zp:t2[0],pp:t2[1],n:TIER[i][0],c:TIER[i][1],d:TIER[i][2]}));
+o.innerHTML='<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:22px 12px 10px;background:linear-gradient(#2a3a9e,#151d66);border-bottom:4px solid #000;box-shadow:0 4px 0 rgba(0,0,0,.25);flex:none"><button class="zBack" aria-label="Back" style="display:flex;align-items:center;gap:6px;font:inherit;font-size:18px;color:#fff;background:#ff9a2e;border:3px solid #000;border-radius:22px;padding:6px 14px 6px 8px;box-shadow:0 4px 0 #b8560a;justify-self:start;'+K(2.5)+'"><span style="font-size:22px;line-height:1">&#10094;</span>BACK</button><div style="font-size:24px;line-height:1;'+K(4)+'">ZP STORE</div><div></div></div><div style="display:flex;justify-content:center;gap:10px;padding:12px 12px 4px;flex:none"><div style="display:flex;align-items:center;gap:8px;background:#3a0f55;border:3px solid #000;border-radius:20px;padding:6px 16px;font-size:20px;color:#ff9bf0;'+K(3.5)+'"><span style="font-size:13px;background:#e25cff;color:#fff;border:2px solid #000;border-radius:5px;padding:1px 5px">ZP</span><span class="zZp"></span></div><div style="display:flex;align-items:center;gap:8px;background:#2a0f66;border:3px solid #000;border-radius:20px;padding:6px 16px;font-size:20px;color:#e3b8ff;'+K(3.5)+'"><span style="font-size:13px;background:#a24bf5;color:#fff;border:2px solid #000;border-radius:5px;padding:1px 5px">PP</span><span class="zPp"></span></div></div><div style="flex:none;display:'+(cs?"none":"block")+';font-size:13px;color:#cfe0ff;padding:4px 12px 0;'+K(2)+'">Sell ZP for PP boosts &middot; bigger bundles pay more</div><div class="zGrid" style="flex:1;overflow-y:auto;padding:12px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:max-content;gap:'+(cs?10:12)+'px;align-content:start;min-height:0;touch-action:pan-y"></div><div style="flex:none;padding:10px 12px 14px;background:linear-gradient(#151d66,#0a1048);border-top:4px solid #000"><button class="zAll" style="width:100%;font:inherit;font-size:21px;color:#fff;border:3px solid #000;border-radius:14px;padding:12px 6px;'+K(3.5)+'"></button></div>';
+const grid=o.querySelector(".zGrid"),zZp=o.querySelector(".zZp"),zPp=o.querySelector(".zPp"),zAll=o.querySelector(".zAll"),cards=[];
+tiers.forEach((t2,i)=>{
+const c=document.createElement("div");
+c.style.cssText="position:relative;flex:none;background:#232f94;border:4px solid #000;border-radius:14px;overflow:hidden;box-shadow:5px 5px 0 rgba(6,8,50,.55);display:flex;flex-direction:column";
+c.innerHTML='<div style="background:linear-gradient('+t2.c+','+t2.d+');border-bottom:3px solid #000;padding:6px 4px;font-size:15px;'+K(3)+'">'+t2.n+(i===3?" &#9733;":"")+'</div><div style="padding:'+(cs?"6px 6px 2px":"12px 8px 6px")+';display:flex;flex-direction:column;align-items:center;gap:2px"><div class="cZ" style="font-size:'+FS+'px;line-height:1;color:#ff9bf0;'+K(4)+'"></div><div style="font-size:'+(cs?14:20)+'px;color:#cfe0ff;line-height:1">&#9660;</div><div class="cP" style="font-size:'+FS+'px;line-height:1;color:#ffe14d;'+K(4)+'"></div><div class="cT" style="font-size:12px;min-height:15px;color:#7dff8a;margin-top:2px;'+K(2)+'"></div></div><div style="padding:0 10px '+(cs?8:12)+'px"><button class="cB" style="width:100%;font:inherit;font-size:19px;color:#fff;border:3px solid #000;border-radius:10px;padding:'+(cs?"5px 4px":"8px 4px")+';'+K(3)+'">SELL</button></div>';
+grid.appendChild(c),cards.push({t:t2,c,T:c.querySelector(".cT"),Z:c.querySelector(".cZ"),P:c.querySelector(".cP"),B:c.querySelector(".cB")})});
+const paint=(B,ok)=>{B.style.background=ok?"#34d34a":"#6b7280",B.style.boxShadow="0 4px 0 "+(ok?"#157a28":"#3a3f48")},
+upd=()=>{
+zZp.textContent=Vt,zPp.textContent=PP__;
+for(const k of cards){
+const t2=k.t,ok=Vt>=t2.zp,base=t2.zp/ZPSELL_N__*ZPSELL_PP__,bonus=t2.pp>base?Math.round((t2.pp/base-1)*100):0;
+k.Z.textContent=t2.zp+" ZP",k.P.textContent="+"+t2.pp+" PP",k.T.textContent=bonus?"+"+bonus+"% BONUS":"",k.B.textContent=ok?"SELL":"NEED "+(t2.zp-Vt)+" MORE",k.B.style.fontSize=ok?(cs?"17px":"19px"):"13px",paint(k.B,ok),k.c.style.opacity=ok?1:.65,k.B.onclick=()=>{zpSellDo__(t2.zp,t2.pp)?upd():se(90)}}
+const n=Math.floor(Vt/ZPSELL_N__),zp=n*ZPSELL_N__,pp=n*ZPSELL_PP__;
+zAll.textContent=n?"SELL ALL  "+zp+" ZP  →  +"+pp+" PP":"NEED "+ZPSELL_N__+" ZP TO SELL",paint(zAll,n>0),zAll.onclick=()=>{zpSellDo__(zp,pp)?upd():se(90)}};
+upd(),o.querySelector(".zBack").onclick=zpSellClose__,o.addEventListener("pointerdown",e=>e.stopPropagation()),o._k=e=>{e.key==="Escape"&&zpSellClose__()},document.addEventListener("keydown",o._k,!0),document.body.appendChild(o)}
+function homeTiles__(e,c,y,r,H){
+const g=10,w=(r-g*2)/3,T=[
+["BADGES",BjxOwn__.length+" / "+BJX__.length,"#ff9a2e",(x,m,sz)=>{const sp=bjxSprite__("rookie");sp&&t.drawImage(sp,x-sz/2,m-sz/2,sz,sz)},()=>{BjxPg__=0,$e=4,se(2)}],
+["CODE","REDEEM","#34d34a",(x,m,sz)=>{const sp=rdmBadge__();sp&&t.drawImage(sp,x-sz/2,m-sz/2,sz,sz)},()=>{rdmOpen__()}],
+["ZP STORE","SELL ZP","#a24bf5",(x,m,sz)=>{_(x-sz*.5,m-sz*.36,sz,sz*.72,8,"#e25cff","#000",3),R("ZP",x,m+sz*.12,sz*.38,"#fff","center",3.5)},()=>{zpSellOpen__(),se(2)}]];
+T.forEach((k,i)=>{
+const x=c+i*(w+g),cx=x+w/2,sz=Math.min(46,H*.46);
+Ca(x,y,w,H,Te.panel,8,6);
+_(x+6,y+H-5-Math.max(5,H*.07),w-12,Math.max(5,H*.07),3,k[2]);
+k[3](cx,y+8+sz/2,sz),R(k[0],cx,y+H*.72,w<100?13:15,"#fff","center",4),R(k[1],cx,y+H*.72+14,10.5,"#cfe0ff","center",3),e(x,y,w,H+4,k[4])})}
+function zpCard__(e,c,y,r,H){
+Ca(c,y,r,H,Te.panel,8,6);
+const my=y+H/2,bw=84,bh=Math.min(38,H-12);
+_(c+12,my-17,52,34,8,"#3a0f55","#000",3),R("ZP",c+38,my+6,17,"#ff9bf0","center",3.5);
+R("ZP STORE",c+78,my+2,22,"#fff","left",6),R("Sell ZP for PP boosts",c+78,my+20,12,"#cfe0ff","left",3);
+Pe(c+r-14-bw,my-bh/2-2,bw,bh,"OPEN","#a24bf5","#5a2bb0",18),e(c,y,r,H+4,()=>{zpSellOpen__(),se(2)})}
 function bjxCard__(e,c,y,r,H){
 Ca(c,y,r,H,Te.panel,8,6);
 const my=y+H/2;
@@ -2147,8 +2197,8 @@ const left=whLeft__(),ok=left>0;
 Ca(c,y,r,H,Te.panel,8,6);
 const aw=Math.min(H-20,r*.4);
 t.save(),t.beginPath(),t.roundRect(c+10,y+10,aw,H-20,10),t.clip(),t.fillStyle="#1c2a85",t.fillRect(c+10,y+10,aw,H-20),t.restore(),_(c+10,y+10,aw,H-20,10,null,"#000",3),whDisc__(c+10+aw/2,y+H/2,aw/2-12,.2,!1,0);
-const sm=H<120,g=c+aw+24,tw=r-(g-c)-14,bh=sm?38:46,by=y+H-(sm?12:14)-bh;
-R("LUCKY WHEEL",g,y+(sm?30:40),23,"#fff","left",6),sm||R(WHN__+" free spins every day",g,y+62,12,"#cfe0ff","left",3),Pe(g,by,tw,bh,"",ok?"#34d34a":"#6b7280",ok?"#157a28":"#3a3f48",20),R(ok?"SPIN  "+left+"/"+WHN__:"COME BACK TOMORROW",g+tw/2-(ok?10:0),by+bh/2+8,ok?21:12,"#fff","center",4.5),ok&&xl(g+tw-22,by+bh/2,.72),e(c,y,r,H,()=>{
+const sm=H<120,g=c+aw+24,tw=r-(g-c)-14,bh=sm?34:46,by=y+H-(sm?12:14)-bh;
+R("LUCKY WHEEL",g,y+(sm?27:40),sm?21:23,"#fff","left",6),sm||R(WHN__+" free spins every day",g,y+62,12,"#cfe0ff","left",3),Pe(g,by,tw,bh,"",ok?"#34d34a":"#6b7280",ok?"#157a28":"#3a3f48",20),R(ok?"SPIN  "+left+"/"+WHN__:"COME BACK TOMORROW",g+tw/2-(ok?10:0),by+bh/2+8,ok?21:12,"#fff","center",4.5),ok&&xl(g+tw-22,by+bh/2,.72),e(c,y,r,H,()=>{
 $e=3,!WHS__&&!WHR__&&whBuild__(),se(2)})}
 function rdmCard__(e,c,y,r,H){
 Ca(c,y,r,H,Te.panel,8,6);
@@ -2186,7 +2236,7 @@ rg.addColorStop(0,"rgba(255,255,255,.55)"),rg.addColorStop(1,"rgba(255,255,255,0
 uiLayer__("heroes:wheel:b",()=>"b"+(bb__()|0),e,n,o,E=>{Pe(-gw/2,btnY,gw,btnH,"NICE!","#34d34a","#157a28",26),E(-gw/2,btnY,gw,btnH+4,()=>{
 WHR__=null,whBuild__(),se(2)})})}
 function lf(e,a,n,o,l,f,i){
-const am=AM__(),s=kl(),r=n-12,c=-r/2,h=i+54,lim=o/2-18-46-bb__()-17-14,RH__=o<720?56:80,BG_H__=o<720?48:58,avail=lim-h-RH__-BG_H__-70,u=Math.max(150,Math.min(340,Math.round(avail*.66))),H2=Math.max(100,Math.min(240,avail-u)),ok1=Vt>=me&&!am;
+const am=AM__(),s=kl(),r=n-12,c=-r/2,h=i+54,lim=o/2-18-46-bb__()-17-14,TH__=o<720?86:100,avail=lim-h-TH__-62,u0=Math.max(140,Math.min(420,Math.round(avail*.78))),H2=Math.min(200,Math.max(104,avail-u0)),u=u0+H2>avail?Math.max(130,avail-H2):u0,ok1=Vt>=me&&!am;
 Ca(c,h,r,u,Te.panel,8,6);
 const tg=u<230,ax=c+10,ay=h+10,aw=r-20,ah=u-(tg?112:138);
 t.save(),t.beginPath(),t.roundRect(ax,ay,aw,ah,10),t.clip(),t.fillStyle="#46c85a",t.fillRect(ax,ay,aw,ah),t.fillStyle="rgba(255,255,255,.12)";
@@ -2201,7 +2251,7 @@ R("HERO DRAW",c+14,ty+25,27,"#fff","left",6.5),tg||R("Random hero from today's p
 {const p=c+r-14-92;_(p,ty+4,92,30,15,"#3a0f55","#000",3),vn(p+18,ty+19,.8),FitNum__(Vt,p+56,ty+26,18,"#fff","center",4.5,50)}
 {const bhh=tg?40:46,by=h+u-12-bhh;Pe(c+14,by,r-28,bhh,"",ok1?"#34d34a":"#6b7280",ok1?"#157a28":"#3a3f48",20),R(am?"ALL HEROES MAXED":"TAP TO OPEN",c+r/2-(ok1?10:0),by+bhh/2+8,am?15:21,"#fff","center",4.5),ok1&&xl(c+r-14-28,by+bhh/2,.72)}
 am?(t.save(),t.fillStyle="rgba(70,74,84,.72)",t.beginPath(),t.roundRect(c,h,r,u,12),t.fill(),t.restore()):e(c,h,r,u,()=>{
-$e=2}),whCard(e,c,h+u+14,r,H2),bjxCard__(e,c,h+u+14+H2+14,r,BG_H__),rdmCard__(e,c,h+u+14+H2+14+BG_H__+14,r,RH__),R("Win every 2 matches to earn 3-9 ZP",0,h+u+14+H2+14+BG_H__+14+RH__+19,12,"#e6eeff","center",3)}
+$e=2}),whCard(e,c,h+u+14,r,H2),homeTiles__(e,c,h+u+14+H2+14,r,TH__),R("Win every 2 matches to earn 3-9 ZP",0,h+u+14+H2+14+TH__+26,12,"#e6eeff","center",3)}
 function HiTier__(i){
 const g=gs[et[i].n];
 return g==="LEGENDARY"?{c:"#ffc61a",c2:"#fff2a8"}:g==="EPIC"?{c:"#ff4bd0",c2:"#b57bff"}:null}
