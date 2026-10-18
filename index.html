@@ -38,20 +38,17 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
-/* Full-screen root. The real pixel size is set by JS (fsView__) from the
-   true window / screen size; these rules are only the fallback before JS runs. */
-/* NOT position:fixed: iOS 26 treats a full-screen fixed element at the screen edge as
-   "edge content" and puts a blur/tint over the top and bottom of the page. */
+/* The game area stops at the safe-area edges (status bar / notch / home bar), so nothing
+   of the game is ever drawn under them. The strips outside it are plain background colour.
+   JS (fsView__) sets the exact pixel box; this is the fallback. Not position:fixed, so iOS 26
+   does not treat it as edge content. */
 body {
-  position: relative;
+  position: absolute;
   overflow: hidden;
-  width: 100%;
-  height: -webkit-fill-available;
-}
-@supports (height: 100dvh) {
-  body {
-    height: 100dvh;
-  }
+  top: env(safe-area-inset-top, 0px);
+  left: env(safe-area-inset-left, 0px);
+  width: calc(100% - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
 }
 canvas {
   position: absolute;
@@ -318,7 +315,7 @@ const pe=document.getElementById("c");
 let t=pe.getContext("2d",{alpha:!1}),qe=90;
 const se=e=>{
 qe=Math.max(qe,e||40)},MAX_RENDER_SCALE=3,MAX_LONG_SIDE=3200,yi=(e,a)=>Math.max(.5,Math.min(window.devicePixelRatio||1,MAX_RENDER_SCALE,MAX_LONG_SIDE/Math.max(e,a),4096/Math.max(e,a))),isIPhone__=/iPhone|iPod/.test(navigator.userAgent),por__=()=>{
-try{return matchMedia("(orientation: portrait)").matches}catch{return innerHeight>=innerWidth}},fsView__=()=>{let w=Math.round(innerWidth||document.documentElement.clientWidth||0),h=Math.round(innerHeight||document.documentElement.clientHeight||0);if(navigator.standalone===!0&&screen&&screen.width&&screen.height){const p=h>=w,sw=p?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height),sh=p?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);Math.abs(w-sw)<=1&&h<sh&&sh-h<=120&&(h=sh)}const b=document.body.style,r=document.documentElement.style,ws=w+"px",hs=h+"px";b.width!==ws&&(b.width=ws),b.height!==hs&&(b.height=hs),r.height!==hs&&(r.height=hs);return{w:w,h:h}},vpW=()=>fsView__().w,vpH=()=>fsView__().h;
+try{return matchMedia("(orientation: portrait)").matches}catch{return innerHeight>=innerWidth}},FS_MIN_TOP__=24,fsView__=()=>{let w=Math.round(innerWidth||document.documentElement.clientWidth||0),h=Math.round(innerHeight||document.documentElement.clientHeight||0);if(navigator.standalone===!0&&screen&&screen.width&&screen.height){const p=h>=w,sw=p?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height),sh=p?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);Math.abs(w-sw)<=1&&h<sh&&sh-h<=120&&(h=sh)}const pr=document.getElementById("sa"),cs=pr?getComputedStyle(pr):null,iT=cs?Math.round(parseFloat(cs.paddingTop)||0):0,iR=cs?Math.round(parseFloat(cs.paddingRight)||0):0,iB=cs?Math.round(parseFloat(cs.paddingBottom)||0):0,iL=cs?Math.round(parseFloat(cs.paddingLeft)||0):0,tT=Math.max(iT,navigator.standalone===!0?FS_MIN_TOP__:0),bw=Math.max(1,w-iL-iR),bh=Math.max(1,h-tT-iB),b=document.body.style,r=document.documentElement.style;b.left=iL+"px",b.top=tT+"px",b.width=bw+"px",b.height=bh+"px",r.height=h+"px";return{w:bw,h:bh}},vpW=()=>fsView__().w,vpH=()=>fsView__().h;
 let ot,lt,Qe=yi(vpW(),vpH()),hl=!1;
 function ul(){
 be.t=-1e9;
@@ -1679,7 +1676,7 @@ t.save(),t.translate(e,a),t.fillStyle="#fff",t.strokeStyle="#fff",t.lineWidth=2,
 function be(){
 const e=performance.now();
 if(be.v!==void 0&&e-be.t<1500)return be.v;
-try{const n=getComputedStyle(document.getElementById("sa"));be.v=Math.min(64,parseFloat(hl?n.paddingLeft:n.paddingTop)||0),isIPhone__&&be.v>0&&(be.v+=4),be.b=parseFloat(hl?n.paddingRight:n.paddingBottom)||0}catch{be.v=0,be.b=0}
+be.v=0,be.b=0;/* canvas is already inside the safe area (see fsView__) */
 return be.x=0,be.t=e,be.v}
 function bb__(){
 return be(),Math.max(0,((be.b||0)+(be.x||0))/(Fi||1)-10+(isIPhone__&&be.b>0?6:0))}
