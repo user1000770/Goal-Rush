@@ -40,10 +40,11 @@ body {
 }
 /* Full-screen root. The real pixel size is set by JS (fsView__) from the
    true window / screen size; these rules are only the fallback before JS runs. */
+/* NOT position:fixed: iOS 26 treats a full-screen fixed element at the screen edge as
+   "edge content" and puts a blur/tint over the top and bottom of the page. */
 body {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: -webkit-fill-available;
 }
@@ -349,7 +350,12 @@ let j=1600,F=1600;
 const la=6,uo=.55,hs=80,bn=58,ga=700,z=(e,a)=>e+Math.random()*(a-e);
 let ia=null,dl="#14201a",gt={x:800,y:800},St=[],ct=0,Pa,Ct=null;
 try{document.fonts.load('20px "Lilita One"'),document.fonts.load('20px "Luckiest Guy"')}catch{}
-const sa=()=>Math.max(.35,Math.min(1.5,Math.max(Math.min(ot,lt)/780,lt/F,ot/j)));
+/* ---- Screen scaling: one place, same look on every phone ----
+   Menus are laid out in a 400x720 design box (UI_W__ x UI_H__) fitted to the screen.
+   Matches use a reference arena view (WORLD_REF_W__ x WORLD_REF_H__): every phone sees at least
+   that much of the arena; taller/wider screens only add margin, never zoom in past it.
+   The field-size terms keep the camera from ever showing outside the field. */
+const UI_W__=400,UI_H__=720,WORLD_REF_W__=740,WORLD_REF_H__=1400,uiFit__=()=>Math.min(ot/UI_W__,lt/UI_H__),sa=()=>{const p=lt>=ot,rw=p?WORLD_REF_W__:WORLD_REF_H__,rh=p?WORLD_REF_H__:WORLD_REF_W__;return Math.max(.35,Math.min(1.5,Math.max(Math.min(ot/rw,lt/rh),lt/F,ot/j)))};
 addEventListener("wheel",e=>{
 e.ctrlKey?e.preventDefault():J==0&&Mt==2&&(ln=Math.max(0,Math.min(Cn,ln+(Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY))),e.preventDefault())},{passive:!1});
 for(const e of["gesturestart","gesturechange","gestureend"])addEventListener(e,a=>a.preventDefault(),{passive:!1});
@@ -1843,7 +1849,7 @@ try{f()}finally{t=r}
 return i}
 function _i(){
 SBr__=null,SBh__=null;
-const e=performance.now()/1e3,a=Math.min(ot/400,lt/720),n=ot/a,o=lt/a,l=Math.max(be()/a,0);
+const e=performance.now()/1e3,a=uiFit__(),n=ot/a,o=lt/a,l=Math.max(be()/a,0);
 Fi=a;
 const f=-o/2,i=(T,C,m,L,W)=>ye.push({x:ot/2+T*a,y:lt/2+C*a,w:m*a,h:L*a,fn:W}),s=(T,C)=>{
 _(T,C+3,30,30,7,"#8e1d28","#000",3),_(T,C,30,30,7,"#ff4d5e","#000",3),t.strokeStyle="#fff",t.lineWidth=3.5,t.beginPath(),t.moveTo(T+9,C+9),t.lineTo(T+21,C+21),t.moveTo(T+21,C+9),t.lineTo(T+9,C+21),t.stroke(),i(T-6,C-6,42,42,()=>{Mt=0})},r=Aa(),c=r.i<Ka-1?Eo[(r.i+1)%6].n+" "+Jn[Math.floor((r.i+1)/6)]:null,h=r.i<Ka-1?Ea[r.i+1]-he:0;
@@ -3279,7 +3285,7 @@ t.restore()}
 function bdResults(){
 const B=bdRes;
 if(!B)return;
-const n=Math.min(ot/400,lt/720),o=ot/n,l=lt/n,f=Math.max(be()/n,0),i=Math.max(0,Lt),ez=v=>1-Math.pow(1-Math.max(0,Math.min(1,v)),3);
+const n=uiFit__(),o=ot/n,l=lt/n,f=Math.max(be()/n,0),i=Math.max(0,Lt),ez=v=>1-Math.pow(1-Math.max(0,Math.min(1,v)),3);
 t.save(),t.translate(ot/2,lt/2),t.scale(n,n),t.lineJoin="round",t.lineCap="round";
 {t.save(),t.beginPath(),t.rect(-o/2,-l/2,o,l),t.clip();const bg=t.createLinearGradient(0,-l/2,0,l/2);bg.addColorStop(0,"#eceae3"),bg.addColorStop(1,"#d4d1c7"),t.fillStyle=bg,t.fillRect(-o/2,-l/2,o,l),t.strokeStyle="rgba(120,115,105,.25)",t.lineWidth=2,t.beginPath();for(let x=-o/2-o/2%100;x<o/2;x+=100)t.moveTo(x,-l/2),t.lineTo(x,l/2);for(let y=-l/2;y<l/2;y+=100)t.moveTo(-o/2,y),t.lineTo(o/2,y);t.stroke();const vg=t.createRadialGradient(0,0,l*.2,0,0,l*.75);vg.addColorStop(0,"rgba(20,24,40,0)"),vg.addColorStop(1,"rgba(20,24,40,.55)"),t.fillStyle=vg,t.fillRect(-o/2,-l/2,o,l),t.restore()}
 const cardW=Math.min(o-24,340),g=-l/2+f+10;
@@ -4161,7 +4167,7 @@ try{localStorage.setItem("goalrush_af",ee?"1":"0")}catch{}})}else c(-100,f+190,2
 t.restore()}
 function $r(){
 if(BD){bdResults();return}
-const e=J==2,a=J==3&&xt[0]===xt[1],n=Math.min(ot/400,lt/720),o=ot/n,l=lt/n,f=Math.max(be()/n,0),i=Math.max(0,Lt),s=d?d.tk:ol,r=v=>1-Math.pow(1-Math.max(0,Math.min(1,v)),3),c=ao&&ao.length?ao:[{h:Ce,n:"YOU",tk:s,me:!0,g:0,k:0}],h=c.filter(v=>v.tk===s).sort((v,P)=>P.me-v.me),u=c.filter(v=>v.tk!==s);
+const e=J==2,a=J==3&&xt[0]===xt[1],n=uiFit__(),o=ot/n,l=lt/n,f=Math.max(be()/n,0),i=Math.max(0,Lt),s=d?d.tk:ol,r=v=>1-Math.pow(1-Math.max(0,Math.min(1,v)),3),c=ao&&ao.length?ao:[{h:Ce,n:"YOU",tk:s,me:!0,g:0,k:0}],h=c.filter(v=>v.tk===s).sort((v,P)=>P.me-v.me),u=c.filter(v=>v.tk!==s);
 if(h.length>=3){const v=h.shift();h.splice(1,0,v)}
 const y=c.reduce((v,P)=>P.g*3+P.k>v.g*3+v.k?P:v,c[0]);
 t.save(),t.translate(ot/2,lt/2),t.scale(n,n),t.lineJoin="round",t.lineCap="round";
@@ -4299,7 +4305,7 @@ function yc(e,a){
 const o=Math.max(be()/e,0),l=8+o*.9;
 ua("",a/2-76,l,152,32,18,"#fff","c",10),R("TRAINING",a/2-5,l+23,18,"#7dff8a","center",4.5)}
 function ni(){
-const e=Kt,a=Math.min(ot/400,lt/720),n=ot/a,o=lt/a,l=Math.max(be()/a,0),f=performance.now()/1e3,i=et[e.hero],s=e.b?1:e.pr||0,r=e.b?Math.max(0,Math.min(1,((e.m===3?.5:.7)-(e.t-e.b))/.3)):1;
+const e=Kt,a=uiFit__(),n=ot/a,o=lt/a,l=Math.max(be()/a,0),f=performance.now()/1e3,i=et[e.hero],s=e.b?1:e.pr||0,r=e.b?Math.max(0,Math.min(1,((e.m===3?.5:.7)-(e.t-e.b))/.3)):1;
 t.save(),t.globalAlpha=r,t.translate(ot/2,lt/2),t.scale(a,a),ji(()=>{},n,o);
 {const c=-o*.08,h=t.createRadialGradient(0,c,6,0,c,150);h.addColorStop(0,"rgba(230,250,255,.9)"),h.addColorStop(1,"rgba(120,200,255,0)"),t.fillStyle=h,t.beginPath(),t.arc(0,c,150,0,6.3),t.fill(),t.fillStyle="rgba(255,255,255,.12)",t.beginPath(),t.arc(0,c,70,0,6.3),t.fill(),t.strokeStyle="rgba(255,255,255,.9)",t.lineWidth=4,t.stroke(),Zi(e.hero,0,c,2.1,f)}
 R(i.n.toUpperCase(),0,-o*.08-120,40,"#fff","center",9),R(e.m===3?"BACK TO MENU":e.m?e.bd?"TRACK AND BALL":"GOAL RUSH":"TRAINING",0,-o*.08+130,28,e.m===3?"#8fd0ff":e.m?"#ffd23f":"#7dff8a","center",7),e.rd?(R("RANDOM DRAW: "+(e.bd?"TRACK AND BALL":"GOAL RUSH"),0,-o*.08+158,17,"#ffd23f","center",4),R(e.tip,0,-o*.08+182,13,"#dfe8ff","center",3.2)):R(e.tip,0,-o*.08+158,13,"#dfe8ff","center",3.2);
