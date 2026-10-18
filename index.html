@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>Goal Rush</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#271a8c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Goal Rush">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&display=swap" rel="stylesheet">
@@ -83,7 +91,8 @@ canvas {
   -webkit-text-stroke: 0.6px #000;
   paint-order: stroke fill;
 }
-</style></head>
+</style><script>if("serviceWorker"in navigator&&/^https?:/.test(location.protocol))addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})</script>
+</head>
 <body><div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
 <div id="blk" style="display:none"><div class="bx"><div class="bt">GOAL RUSH</div><div class="bm">This game is made for mobile.</div><div class="bs">Open this page on your phone or tablet to play.</div></div></div>
 <canvas id="c"></canvas>
@@ -1577,8 +1586,8 @@ if(!G||!G.lbFetch){LB__.st="err",LB__.err="ONLINE NOT AVAILABLE",se(60);return}
 if(LB__.st==="load")return;
 LB__.st="load",LB__.err="",se(60);
 const L=LB__,go=()=>G.lbFetch(300).then(r=>{r.forEach(x=>{x.me&&(x.tr=Math.max(x.tr,he))}),L.rows=r,L.rev=(L.rev||0)+1,L.st="ok",L.pg=0}).catch(e=>{const c=e&&e.code||"";L.st="err",L.err=c==="permission-denied"?"LEADERBOARD LOCKED - ALLOW IT IN FIRESTORE RULES":c==="grx/not-configured"?"ONLINE ACCOUNTS NOT SET UP":"NO CONNECTION - TRY AGAIN"}).then(()=>se(90));
-L.pubErr="";(G.active&&G.active()&&G.lbPublish?G.lbPublish():Promise.resolve()).catch(e=>{L.pubErr=e&&e.code==="permission-denied"?"CAN'T SAVE YOUR SCORE - CHECK FIRESTORE RULES":"CAN'T SAVE YOUR SCORE - TRY REFRESH"}).then(go)}
-setInterval(()=>{const G=window.GRX;if(Mt===11&&LB__.st==="ok"&&!document.hidden&&G&&G.lbFetch){(G.active&&G.active()&&G.lbPublish?G.lbPublish().then(()=>{LB__.pubErr=""},e=>{LB__.pubErr=e&&e.code==="permission-denied"?"CAN'T SAVE YOUR SCORE - CHECK FIRESTORE RULES":"CAN'T SAVE YOUR SCORE - TRY REFRESH"}):Promise.resolve()).then(()=>G.lbFetch(300)).then(r=>{r.forEach(x=>{x.me&&(x.tr=Math.max(x.tr,he))});LB__.rows=r;LB__.rev=(LB__.rev||0)+1;se(60)}).catch(()=>{})}},15e3);
+L.pubErr="";Promise.race([(G.active&&G.active()&&G.lbPublish?G.lbPublish():Promise.resolve()),new Promise(r=>setTimeout(r,4e3))]).catch(e=>{L.pubErr=e&&e.code==="permission-denied"?"CAN'T SAVE YOUR SCORE - CHECK FIRESTORE RULES":"CAN'T SAVE YOUR SCORE - TRY REFRESH"}).then(go)}
+setInterval(()=>{const G=window.GRX;if(Mt===11&&LB__.st==="ok"&&!document.hidden&&G&&G.lbFetch){(G.active&&G.active()&&G.lbPublish?Promise.race([G.lbPublish(),new Promise(r=>setTimeout(r,4e3))]).then(()=>{LB__.pubErr=""},e=>{LB__.pubErr=e&&e.code==="permission-denied"?"CAN'T SAVE YOUR SCORE - CHECK FIRESTORE RULES":"CAN'T SAVE YOUR SCORE - TRY REFRESH"}):Promise.resolve()).then(()=>G.lbFetch(300)).then(r=>{r.forEach(x=>{x.me&&(x.tr=Math.max(x.tr,he))});LB__.rows=r;LB__.rev=(LB__.rev||0)+1;se(60)}).catch(()=>{})}},15e3);
 function lbBtn__(i,x,y,w,h,txt,c1,fn,dis){
 _(x,y+3,w,h,12,"rgba(0,0,0,.4)"),_(x,y,w,h,12,dis?"#4a517e":c1,"#000",3),_(x+3,y+2,w-6,h*.3,8,"rgba(255,255,255,.2)"),FitNum__(txt,x+w/2,y+h/2+6,15,dis?"#9aa3c8":"#fff","center",3.4,w-12),dis||i(x-2,y-2,w+4,h+8,()=>{fn(),se(60)})}
 function lbHomeBtn__(i,x,y,w,h){
