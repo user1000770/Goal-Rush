@@ -41,7 +41,12 @@ body {
 body {
   position: fixed;
   inset: 0;
-  height: auto;
+  height: -webkit-fill-available;
+}
+@supports (height: 100dvh) {
+  body {
+    height: 100dvh;
+  }
 }
 canvas {
   position: absolute;
