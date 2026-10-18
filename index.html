@@ -273,10 +273,12 @@ var o={name:String(LS.getItem(NAME)||active()||"Player").slice(0,20),tr:n("tr"),
 r&&(o.ru=r.ups,o.rd=r.drops,o.hb=r.best);
 return o}
 function lbPublish(force){
-if(!CONFIGURED||!ready||!user||!active()||locked)return Promise.resolve();
+if(!CONFIGURED||!active()||locked)return Promise.resolve();
+return initFb().then(function(){
+if(!user||locked)return;
 var d=lbDoc(),k=d.name+"|"+d.tr+"|"+d.w+"|"+d.ko+"|"+d.ru+"|"+d.rd+"|"+d.hb;
-if(!force&&k===lbLast)return Promise.resolve();
-return FB.F.setDoc(FB.F.doc(FB.db,"leaderboard",user.uid),d).then(function(){lbLast=k})}
+if(!force&&k===lbLast)return;
+return FB.F.setDoc(FB.F.doc(FB.db,"leaderboard",user.uid),d).then(function(){lbLast=k})})}
 setInterval(function(){
 lbPublish(!1).catch(function(){})},6e3);
 function lbFetch(n){
@@ -1574,14 +1576,15 @@ const G=window.GRX;
 if(!G||!G.lbFetch){LB__.st="err",LB__.err="ONLINE NOT AVAILABLE",se(60);return}
 if(LB__.st==="load")return;
 LB__.st="load",LB__.err="",se(60);
-const L=LB__,go=()=>G.lbFetch(50).then(r=>{L.rows=r,L.rev=(L.rev||0)+1,L.st="ok",L.pg=0}).catch(e=>{const c=e&&e.code||"";L.st="err",L.err=c==="permission-denied"?"LEADERBOARD LOCKED - ALLOW IT IN FIRESTORE RULES":c==="grx/not-configured"?"ONLINE ACCOUNTS NOT SET UP":"NO CONNECTION - TRY AGAIN"}).then(()=>se(90));
-(G.active&&G.active()&&G.lbPublish?G.lbPublish():Promise.resolve()).catch(()=>{}).then(go)}
+const L=LB__,go=()=>G.lbFetch(300).then(r=>{r.forEach(x=>{x.me&&(x.tr=Math.max(x.tr,he))}),L.rows=r,L.rev=(L.rev||0)+1,L.st="ok",L.pg=0}).catch(e=>{const c=e&&e.code||"";L.st="err",L.err=c==="permission-denied"?"LEADERBOARD LOCKED - ALLOW IT IN FIRESTORE RULES":c==="grx/not-configured"?"ONLINE ACCOUNTS NOT SET UP":"NO CONNECTION - TRY AGAIN"}).then(()=>se(90));
+L.pubErr="";(G.active&&G.active()&&G.lbPublish?G.lbPublish():Promise.resolve()).catch(e=>{L.pubErr=e&&e.code==="permission-denied"?"CAN'T SAVE YOUR SCORE - CHECK FIRESTORE RULES":"CAN'T SAVE YOUR SCORE - TRY REFRESH"}).then(go)}
+setInterval(()=>{const G=window.GRX;if(Mt===11&&LB__.st==="ok"&&!document.hidden&&G&&G.lbFetch){(G.active&&G.active()&&G.lbPublish?G.lbPublish().then(()=>{LB__.pubErr=""},e=>{LB__.pubErr=e&&e.code==="permission-denied"?"CAN'T SAVE YOUR SCORE - CHECK FIRESTORE RULES":"CAN'T SAVE YOUR SCORE - TRY REFRESH"}):Promise.resolve()).then(()=>G.lbFetch(300)).then(r=>{r.forEach(x=>{x.me&&(x.tr=Math.max(x.tr,he))});LB__.rows=r;LB__.rev=(LB__.rev||0)+1;se(60)}).catch(()=>{})}},15e3);
 function lbBtn__(i,x,y,w,h,txt,c1,fn,dis){
 _(x,y+3,w,h,12,"rgba(0,0,0,.4)"),_(x,y,w,h,12,dis?"#4a517e":c1,"#000",3),_(x+3,y+2,w-6,h*.3,8,"rgba(255,255,255,.2)"),FitNum__(txt,x+w/2,y+h/2+6,15,dis?"#9aa3c8":"#fff","center",3.4,w-12),dis||i(x-2,y-2,w+4,h+8,()=>{fn(),se(60)})}
 function lbHomeBtn__(i,x,y,w,h){
 _(x,y+3,w,h,14,"rgba(4,4,40,.55)"),_(x,y,w,h,14,"#1fa5b8","#000",3.2),_(x+4,y+3,w-8,h*.28,8,"rgba(255,255,255,.2)"),Yn(x+w/2,y+h*.38,Math.min(.9,h/60)),FitNum__("LEADERS",x+w/2,y+h-9,11,"#fff","center",3,w-12),i(x-4,y-4,w+8,h+12,()=>{LB__.pg=0,qi(11),LbLoad__(),se(40)})}
 function LbUI__(i,s,n,o,l,e){
-uiLayer__("lb",()=>{const G=window.GRX;return[LB__.st,LB__.err,LB__.pg,LB__.rev||0,(LB__.rows||[]).length,G&&G.active&&G.active()?1:0,G&&G.lbName?G.lbName():"",he,l|0,bb__()|0].join("|")},i,n,o,E=>LbRaw__(E,s,n,o,l,e))}
+uiLayer__("lb",()=>{const G=window.GRX;return[LB__.st,LB__.err,LB__.pubErr||"",LB__.pg,LB__.rev||0,(LB__.rows||[]).length,G&&G.active&&G.active()?1:0,G&&G.lbName?G.lbName():"",he,l|0,bb__()|0].join("|")},i,n,o,E=>LbRaw__(E,s,n,o,l,e))}
 function LbRaw__(i,s,n,o,l,e){
 ji(i,n,o,HdrH__(l));
 const hy=zi(i,n,o,l,()=>{Mt=0,se(60)}),W=Math.min(n-24,460),x0=-W/2,bot=o/2-12-bb__(),G=window.GRX,on=!!(G&&G.active&&G.active()),rows=LB__.rows||[],bg=t.createLinearGradient(0,hy,0,o/2);
@@ -1589,7 +1592,7 @@ bg.addColorStop(0,"#1fa5b8"),bg.addColorStop(.5,"#3d4bd6"),bg.addColorStop(1,"#2
 const youH=48,pgH=38,top=hy+66,youY=bot-youH,pgY=youY-pgH-8,areaB=pgY-8,rh=40,rg=6,per=Math.max(3,Math.floor((areaB-top+rg)/(rh+rg))),pages=Math.max(1,Math.ceil(rows.length/per));
 LB__.pg=Math.max(0,Math.min(pages-1,LB__.pg|0));
 const pg=LB__.pg;
-R("LEADERBOARD",0,hy+32,28,"#fff","center",6.5),R(rows.length?"TAP A PLAYER TO VIEW PROFILE  -  PAGE "+(pg+1)+"/"+pages:"TOP PLAYERS BY TROPHIES",0,hy+52,11,"#ffe9a0","center",3),_(x0,top-4,W,areaB-top+8,14,"rgba(4,4,40,.45)");
+R("LEADERBOARD",0,hy+32,28,"#fff","center",6.5),R(LB__.pubErr?LB__.pubErr:rows.length?"TAP A PLAYER TO VIEW PROFILE  -  PAGE "+(pg+1)+"/"+pages:"TOP PLAYERS BY TROPHIES",0,hy+52,11,LB__.pubErr?"#ffb4b4":"#ffe9a0","center",3),_(x0,top-4,W,areaB-top+8,14,"rgba(4,4,40,.45)");
 const mid=(top+areaB)/2;
 if(LB__.st==="load")R("LOADING...",0,mid,20,"#fff","center",4.5);
 else if(LB__.st==="err")FitNum__(LB__.err,0,mid-14,14,"#ffb4b4","center",3.2,W-30),lbBtn__(i,-60,mid+2,120,38,"RETRY","#2b8cff",()=>LbLoad__());
@@ -4777,6 +4780,8 @@ let i=lsg(KID);
 if(!RE.test(i||"")){i=newId();lss(KID,i)}
 S.id=i;
 try{const l=JSON.parse(lsg(KLS)||"[]");S.list=Array.isArray(l)?l.filter(f=>f&&RE.test(String(f.u))).map(f=>({u:String(f.u),n:String(f.n||"Player").slice(0,16)})):[]}catch{S.list=[]}}
+{let gp="";try{gp=GRX.pid()}catch{}
+if(S.id&&RE.test(gp||"")&&gp!==S.id){S.id=gp;lss(KID,gp);try{S.peer&&S.peer.destroy()}catch{}S.peer=null;S.starting=0;S.stat="connecting";S.tries=0;S.sig=""}}
 if(!S.peer&&!S.starting&&!S.retry){if(S.stat!=="err")start();else if(Date.now()-S.at>10000){S.tries=0;start()}}}
 window.addEventListener("pagehide",()=>{try{S.peer&&S.peer.destroy()}catch{}});
 const COLS=["#ff5c7a","#ffb020","#2fcf8a","#2b8cff","#a56bff","#ff7a3d","#19c3d6"];
