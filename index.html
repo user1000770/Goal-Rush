@@ -1369,7 +1369,7 @@ if(!d)return!1;
 for(const a of _t)if(!(Math.abs(a.x-e.x)>a.r+130||Math.abs(a.y-e.y)>a.r+130)&&wo(a,e.x,e.y)<a.r&&wo(a,d.x,d.y)>=a.r)return!0;
 return!1}
 let Ye=0,Al=0,he=0,An=0,Ro=0;
-const PN__=()=>{try{const g=window.GRX,n=g&&g.lbName&&g.lbName();return String(n||"").trim().slice(0,16)||"Guest"}catch{return"Guest"}},NM__=e=>e===d?PN__():e.name,onl__=()=>M.role==="guest"||M.role==="host"&&(M.rs||[]).some(r=>r.R),pnOf__=p=>onl__()&&p&&(p===d||!p.bot&&!p.rob)?String(p===d?PN__():p.name||"").slice(0,16):"";
+const PN__=()=>{try{const g=window.GRX,n=g&&g.lbName&&g.lbName();return String(n||"").trim().slice(0,16)||"Guest"}catch{return"Guest"}},NM__=e=>e===d?PN__():e.name,onl__=()=>M.role==="guest"||M.role==="host"&&(M.rs||[]).some(r=>r.R),pnOf__=p=>{if(!p)return"";if(p===d){if(onl__())return PN__().slice(0,16);let n="";try{n=String(window.GRX&&window.GRX.lbName&&window.GRX.lbName()||"").trim().slice(0,16)}catch{}return n}return onl__()&&!p.bot&&!p.rob?String(p.name||"").slice(0,16):""};
 try{Al=0,he=+localStorage.getItem("goalrush_tr")||0,An=+localStorage.getItem("goalrush_w")||0,Ro=+localStorage.getItem("goalrush_ko")||0}catch{}
 function Ii(){
 try{localStorage.setItem("goalrush_tr",he),localStorage.setItem("goalrush_w",An),localStorage.setItem("goalrush_ko",Ro)}catch{}RkT__()}
@@ -5264,6 +5264,8 @@ css.textContent=`
 @keyframes fpulse{50%{opacity:.25}}
 #mpp .fadd{display:flex;gap:8px;margin-top:5px}
 #mpp input#fi{flex:1;min-width:0;width:auto;margin:0;height:46px;padding:0 8px;font-size:22px;letter-spacing:3px;text-transform:none;border-radius:12px}
+#mpp input#fi,#mpp input#mpi{-webkit-user-select:text;user-select:text;-webkit-appearance:none;appearance:none;background:#fff;color:#111;-webkit-text-fill-color:#111;caret-color:#111;-webkit-text-stroke:0;opacity:1}
+#mpp input#mpi::placeholder{color:#8a90a8;-webkit-text-fill-color:#8a90a8}
 #mpp input#fi::placeholder{font-size:15px;letter-spacing:1px;color:#8a90a8}
 #mpp .fb{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:5px;height:38px;padding:0 13px;border:3px solid #000;border-radius:11px;font:16px 'Lilita One','Arial Black',sans-serif;color:#fff;background:#2b8cff;box-shadow:0 3px 0 #0b2a78;white-space:nowrap}
 #mpp .fb:active{transform:translateY(2px)}
