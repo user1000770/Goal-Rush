@@ -175,7 +175,7 @@ var c=e&&e.code||"";
 return c==="grx/not-configured"?"ONLINE ACCOUNTS NOT SET UP YET":c==="auth/email-already-in-use"?"THAT NAME IS TAKEN. PICK ANOTHER":c==="auth/invalid-email"?"ENTER A VALID EMAIL":c==="auth/weak-password"?"PASSWORD NEEDS 6+ CHARACTERS":c==="auth/invalid-credential"||c==="auth/user-not-found"||c==="auth/wrong-password"?"WRONG NAME OR PASSWORD":c==="auth/popup-closed-by-user"||c==="auth/cancelled-popup-request"?"SIGN IN CANCELLED":c==="auth/network-request-failed"?"NO INTERNET CONNECTION":c==="auth/too-many-requests"?"TOO MANY TRIES, WAIT A MINUTE":c==="auth/unauthorized-domain"?"ADD THIS SITE IN FIREBASE AUTHORIZED DOMAINS":c==="auth/operation-not-allowed"?"TURN THIS SIGN-IN ON IN FIREBASE":c==="permission-denied"?"SAVE BLOCKED, CHECK FIRESTORE RULES":"COULD NOT CONNECT, TRY AGAIN"}
 var ready=!1,flight=null,lastJson="",lastPush=0,busy=!1;
 function save(force){
-if(locked||!ready||!user||!active())return Promise.resolve();
+if(locked||dead||!ready||!user||!active())return Promise.resolve();
 if(flight)return flight;
 var j=JSON.stringify(snap());
 if(j===lastJson||!force&&Date.now()-lastPush<1e4)return Promise.resolve();
@@ -239,7 +239,7 @@ var left=X+'<div style="display:flex;gap:10px;align-items:flex-start;justify-con
 var right='<div class="pl" style="text-align:center;padding:10px"><div class="hd st" style="font-size:19px;text-align:center">TROPHY ROAD</div><div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-top:4px">'+'<img src="'+medalImg(G,"#ffd23f",0,72)+'" alt="" width="38" height="38">'+'<span class="st" style="font-size:34px">'+m.tr+"</span></div></div>"
 +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="pl"><div class="hd st" style="text-align:center">WINS</div><div class="st" style="font-size:26px;color:#7dff8a;margin-top:4px">'+m.w+'</div><div class="st" style="font-size:12px;color:#cfe0ff">MATCH WINS</div><div class="st" style="font-size:22px;color:#ffd0cc;margin-top:6px">'+m.ko+'</div><div class="st" style="font-size:12px;color:#cfe0ff">KOs</div></div>'
 +'<div class="pl"><div class="hd st" style="text-align:center">RANKED</div><div class="st" style="font-size:12px;color:#cfe0ff;margin-top:4px">BEST RANK</div><div class="st" style="font-size:14px;color:'+G.Eo[best%6].c+'">'+esc(rkName(G,best))+'</div><div style="display:flex;gap:8px;justify-content:center;margin-top:6px"><div><div class="st" style="font-size:22px;color:#7dff8a">'+(+m.ups||0)+'</div><div class="st" style="font-size:10px;color:#cfe0ff">RANK UPS</div></div><div><div class="st" style="font-size:22px;color:#ff8d86">'+(+m.drops||0)+'</div><div class="st" style="font-size:10px;color:#cfe0ff">RANK DROPS</div></div></div></div></div>'
-+(m.me?msgBox()+btn("grxOut",m.active?"LOG OUT":"LOG IN / CREATE",m.active?"#ff7a72":"#5be06d",m.active?"#e0463f":"#34d34a",m.active?"#8a1d18":"#157a28",17,8):"");
++(m.me?msgBox()+btn("grxOut",m.active?"LOG OUT":"LOG IN / CREATE",m.active?"#ff7a72":"#5be06d",m.active?"#e0463f":"#34d34a",m.active?"#8a1d18":"#157a28",17,8)+(m.active?btn("grxDel","DELETE ACCOUNT","#b13a3a","#7d2222","#3d0f0f",14,7):""):"");
 return PGCSS+'<div class="pg"><div class="pgL">'+left+'</div><div class="pgR">'+right+Bk+"</div></div>"}
 function otherHtml(o){
 if(!o||o.loading)return pageHtml({loading:!0});
@@ -256,7 +256,7 @@ setTimeout(function(){window.scrollTo(0,0),ov.scrollTop=0},60)}),ov.addEventList
 performance.now()-openT<500&&(e.stopPropagation(),e.preventDefault())},!0),["pointerdown","pointerup","pointermove","mousedown","mouseup","touchstart","touchend","touchmove","keydown","keyup","wheel","click"].forEach(function(ev){
 ov.addEventListener(ev,function(e){e.stopPropagation()})})),ov.style.display="flex";
 var inner="",X="",me=active();
-if(view==="login"){var isL=tab==="login",tabs='<div style="display:flex;gap:6px;margin-bottom:10px"><button id="grxTL" style="flex:1;font:inherit;font-size:18px;color:#fff;border:3px solid #000;border-radius:8px;padding:7px 0;-webkit-text-stroke:2px #000;paint-order:stroke fill;background:'+(isL?"#ffc61a":"#151d66")+'">LOG IN</button><button id="grxTC" style="flex:1;font:inherit;font-size:18px;color:#fff;border:3px solid #000;border-radius:8px;padding:7px 0;-webkit-text-stroke:2px #000;paint-order:stroke fill;background:'+(isL?"#151d66":"#ffc61a")+'">CREATE</button></div>';inner=title("GOAL RUSH")+tabs+'<input id="grxN" type="text" maxlength="60" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="PLAYER NAME" style="'+INP+'"><input id="grxP" type="password" maxlength="40" autocomplete="'+(isL?"current-password":"new-password")+'" placeholder="PASSWORD" style="'+INP+'">'+(isL?"":'<input id="grxP2" type="password" maxlength="40" autocomplete="new-password" placeholder="REPEAT PASSWORD" style="'+INP+'">')+msgBox()+'<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0">'+btn("grxGo",isL?"LOG IN":"CREATE ACCOUNT","#5be06d","#34d34a","#157a28",21,10)+"</div>"+(canClose?'<div style="width:96px;flex:none">'+btn("grxX","BACK","#ff7a72","#e0463f","#8a1d18",17,12)+"</div>":"")+"</div>"+'<button id="grxGuest" style="background:none;border:0;font:inherit;font-size:15px;color:#ffd23f;-webkit-text-stroke:1.5px #000;paint-order:stroke fill;margin-top:12px;text-decoration:underline">PLAY AS GUEST</button>'+(isL?"":note("No email needed. There is no password reset, so remember it!"))}else if(view==="account"){inner=profileHtml(me)}else if(view==="other"){inner=otherHtml(otherRow)}
+if(view==="login"){var isL=tab==="login",tabs='<div style="display:flex;gap:6px;margin-bottom:10px"><button id="grxTL" style="flex:1;font:inherit;font-size:18px;color:#fff;border:3px solid #000;border-radius:8px;padding:7px 0;-webkit-text-stroke:2px #000;paint-order:stroke fill;background:'+(isL?"#ffc61a":"#151d66")+'">LOG IN</button><button id="grxTC" style="flex:1;font:inherit;font-size:18px;color:#fff;border:3px solid #000;border-radius:8px;padding:7px 0;-webkit-text-stroke:2px #000;paint-order:stroke fill;background:'+(isL?"#151d66":"#ffc61a")+'">CREATE</button></div>';inner=title("GOAL RUSH")+tabs+'<input id="grxN" type="text" maxlength="60" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="PLAYER NAME" style="'+INP+'"><input id="grxP" type="password" maxlength="40" autocomplete="'+(isL?"current-password":"new-password")+'" placeholder="PASSWORD" style="'+INP+'">'+(isL?"":'<input id="grxP2" type="password" maxlength="40" autocomplete="new-password" placeholder="REPEAT PASSWORD" style="'+INP+'">')+msgBox()+'<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0">'+btn("grxGo",isL?"LOG IN":"CREATE ACCOUNT","#5be06d","#34d34a","#157a28",21,10)+"</div>"+(canClose?'<div style="width:96px;flex:none">'+btn("grxX","BACK","#ff7a72","#e0463f","#8a1d18",17,12)+"</div>":"")+"</div>"+'<button id="grxGuest" style="background:none;border:0;font:inherit;font-size:15px;color:#ffd23f;-webkit-text-stroke:1.5px #000;paint-order:stroke fill;margin-top:12px;text-decoration:underline">PLAY AS GUEST</button>'+(isL?"":note("No email needed. There is no password reset, so remember it!"))}else if(view==="account"){inner=profileHtml(me)}else if(view==="other"){inner=otherHtml(otherRow)}else if(view==="delete"){inner=title("DELETE ACCOUNT")+note("This permanently deletes your account, progress and leaderboard spot. It cannot be undone.")+'<input id="grxDP" type="password" maxlength="40" autocomplete="current-password" placeholder="ENTER PASSWORD" style="'+INP+'margin-top:12px">'+msgBox()+btn("grxDoDel","DELETE FOREVER","#ff7a72","#e0463f","#8a1d18",19,10)+btn("grxBk","CANCEL","#5b8cff","#3a64d6","#1d3a8a",17,8)}
 var pm=view==="account"||view==="other";
 ov.style.padding=pm?"0":"max(env(safe-area-inset-top),10px) max(env(safe-area-inset-right),10px) max(env(safe-area-inset-bottom),10px) max(env(safe-area-inset-left),10px)",ov.style.alignItems=pm?"stretch":"center",ov.style.background=pm?"#271a8c":"rgba(10,14,60,.92)";
 if(pm){ov.innerHTML=inner,wire(canClose);return}
@@ -273,8 +273,11 @@ close()};var run=function(p){
 busy=!0,say("PLEASE WAIT...","#ffd23f"),p.catch(function(e){say(errMsg(e))}).then(function(){busy=!1})},go=function(){
 if(!busy){var raw=$("grxN").value.trim(),pw=$("grxP").value,isL=tab==="login";if(!CONFIGURED)return say("ONLINE ACCOUNTS NOT SET UP YET");if(isL&&raw.indexOf("@")>=0)return/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(raw)?pw.length<6?say("PASSWORD NEEDS 6+ CHARACTERS"):run(doEmail(raw,pw,!0)):say("ENTER A VALID EMAIL");if(!validName(raw))return say("NAME: 3-14 LETTERS, NUMBERS OR _");if(pw.length<(isL?4:6))return say("PASSWORD NEEDS "+(isL?4:6)+"+ CHARACTERS");if(!isL&&$("grxP2").value!==pw)return say("PASSWORDS DON'T MATCH");run(isL?doOldLogin(raw,raw.toLowerCase(),pw):doCreate(raw,pw))}};$("grxGo").onclick=go,["grxN","grxP","grxP2"].forEach(function(id){
 var el=$(id);
-el&&el.addEventListener("keydown",function(e){e.key==="Enter"&&go()})})}else view==="account"&&($("grxOut").onclick=function(){
-active()?(say("SAVING...","#ffd23f"),logout()):(view="login",tab="login",build(!0))})}
+el&&el.addEventListener("keydown",function(e){e.key==="Enter"&&go()})})}else if(view==="account"){$("grxOut").onclick=function(){
+active()?(say("SAVING...","#ffd23f"),logout()):(view="login",tab="login",build(!0))};var dl=$("grxDel");dl&&(dl.onclick=function(){
+view="delete",msgT="",build(canClose)})}else if(view==="delete"){$("grxBk").onclick=function(){
+if(busy)return;view="account",msgT="",build(canClose)};var dg=function(){
+if(busy)return;var pw=$("grxDP").value;if(pw.length<4)return say("ENTER YOUR PASSWORD");busy=!0,say("DELETING...","#ffd23f"),doDelete(pw).catch(function(e){dead=!1,say(errMsg(e))}).then(function(){busy=!1})};$("grxDoDel").onclick=dg,$("grxDP").addEventListener("keydown",function(e){e.key==="Enter"&&dg()})}}
 function nameFromEmail(em){
 return String(em||"").split("@")[0].replace(/[^A-Za-z0-9_]/g,"").slice(0,14)||"Player"}
 function afterAuth(cred,nm){
@@ -294,6 +297,41 @@ var mail=key+"@goalrush.game",fp="grx|"+pw;
 return initFb().then(function(){
 return FB.A.signInWithEmailAndPassword(FB.auth,mail,fp).catch(function(e){var c=e&&e.code,old=oldAccs()[key];if(old&&(c==="auth/invalid-credential"||c==="auth/user-not-found"))return hashPw(old.salt,pw).then(function(h){if(h!==old.hash)throw e;return FB.A.createUserWithEmailAndPassword(FB.auth,mail,fp).then(function(cred){return FB.F.setDoc(ref(cred.user.uid),{name:old.name||name,data:JSON.stringify(old.data||{}),t:Date.now()}).then(function(){var a=oldAccs();return delete a[key],putOld(a),cred})})});throw e})}).then(function(cred){
 return afterAuth(cred,name)})}
+var dead=!1,lastVerify=0;
+function isGone(e){
+var c=e&&e.code||"";
+return c==="auth/user-not-found"||c==="auth/user-token-expired"||c==="auth/invalid-user-token"||c==="auth/user-disabled"}
+function purgeSelf(){
+if(dead)return Promise.resolve();
+dead=!0,locked=!0;
+var uid=user&&user.uid,pid="";
+try{pid=LS.getItem(PID)||""}catch{}
+var ps=[];
+if(uid&&FB){var F=FB.F;ps.push(F.deleteDoc(F.doc(FB.db,"leaderboard",uid))),ps.push(F.deleteDoc(ref(uid))),pid&&ps.push(F.deleteDoc(F.doc(FB.db,"ids",String(pid))))}
+var cleanup=Promise.all(ps.map(function(p){return p.catch(function(){})}));
+return Promise.race([cleanup,new Promise(function(r){setTimeout(r,3e3)})]).then(function(){
+return FB?FB.A.signOut(FB.auth):0}).catch(function(){}).then(function(){
+wipeGame(),[ACT,NAME,MAIL,SYNC,PID].forEach(function(k){try{rawRem.call(LS,k)}catch{}}),reload()})}
+function doDelete(pw){
+return initFb().then(function(){
+if(!user)throw{code:"auth/user-not-found"};
+var A=FB.A,em=user.email||"",pass=/@goalrush\.game$/.test(em)?fpw(pw):pw;
+return A.reauthenticateWithCredential(user,A.EmailAuthProvider.credential(em,pass))}).then(function(){
+dead=!0;
+var F=FB.F,uid=user.uid;
+return F.getDoc(ref(uid)).then(function(s){
+var pid=s.exists()&&s.data().pid||LS.getItem(PID)||"";
+return pid?F.getDoc(F.doc(FB.db,"ids",String(pid))).then(function(i){return i.exists()&&i.data().uid===uid?F.deleteDoc(i.ref):0}):0}).then(function(){
+return F.deleteDoc(ref(uid))}).then(function(){
+return F.deleteDoc(F.doc(FB.db,"leaderboard",uid))}).then(function(){
+return FB.A.deleteUser(user)})}).then(function(){
+say("ACCOUNT DELETED","#7dff8a"),locked=!0,wipeGame(),[ACT,NAME,MAIL,SYNC,PID].forEach(function(k){try{rawRem.call(LS,k)}catch{}}),reload()})}
+function verifyUser(force){
+if(!user||dead)return Promise.resolve(!dead);
+if(!force&&Date.now()-lastVerify<6e4)return Promise.resolve(!0);
+lastVerify=Date.now();
+return user.reload().then(function(){return!0},function(e){
+return isGone(e)?purgeSelf().then(function(){return!1}):!0})}
 function logout(){
 if(!busy){busy=!0;var finish=function(){
 locked=!0,wipeGame(),[ACT,NAME,MAIL,SYNC,PID].forEach(function(k){try{rawRem.call(LS,k)}catch{}}),reload()};Promise.race([save(!0),new Promise(function(r){
@@ -308,10 +346,12 @@ return o}
 function lbPublish(force){
 if(!CONFIGURED||!active()||locked)return Promise.resolve();
 return initFb().then(function(){
-if(!user||locked)return;
+if(!user||locked||dead)return;
+return verifyUser(!!force).then(function(ok){
+if(!ok)return;
 var d=lbDoc(),k=d.name+"|"+d.tr+"|"+d.w+"|"+d.ko+"|"+d.ru+"|"+d.rd+"|"+d.hb;
 if(!force&&k===lbLast)return;
-return FB.F.setDoc(FB.F.doc(FB.db,"leaderboard",user.uid),d).then(function(){lbLast=k})})}
+return FB.F.setDoc(FB.F.doc(FB.db,"leaderboard",user.uid),d).then(function(){lbLast=k})})})}
 setInterval(function(){
 lbPublish(!1).catch(function(){})},6e3);
 function lbFetch(n){
@@ -329,8 +369,10 @@ openT=performance.now(),view="account",msgT="",build(!0)},active,lbFetch,lbPubli
 function pullCheck(){
 initFb().then(function(){
 if(!user){try{rawRem.call(LS,ACT)}catch{}return}
-return FB.F.getDoc(ref(user.uid)).then(function(s){var d=s.exists()?s.data():null,st=+LS.getItem(SYNC)||0;if(d&&(d.t||0)>st&&d.data!==JSON.stringify(snap())){locked=!0;try{applyData(JSON.parse(d.data))}catch{locked=!1,ready=!0;return}rawSet.call(LS,SYNC,String(d.t||0)),reload()}else{if(d&&d.t)try{rawSet.call(LS,SYNC,String(d.t))}catch{}ready=!0,d&&!LS.getItem(PID)&&ensurePid(d).then(function(p){if(p)try{rawSet.call(LS,PID,p)}catch{}})}})}).catch(function(){
+return verifyUser(!0).then(function(ok){if(!ok)return;return pullDoc()})}).catch(function(){
 setTimeout(pullCheck,15e3)})}
+function pullDoc(){
+return FB.F.getDoc(ref(user.uid)).then(function(s){var d=s.exists()?s.data():null,st=+LS.getItem(SYNC)||0;if(d&&(d.t||0)>st&&d.data!==JSON.stringify(snap())){locked=!0;try{applyData(JSON.parse(d.data))}catch{locked=!1,ready=!0;return}rawSet.call(LS,SYNC,String(d.t||0)),reload()}else{if(d&&d.t)try{rawSet.call(LS,SYNC,String(d.t))}catch{}ready=!0,d&&!LS.getItem(PID)&&ensurePid(d).then(function(p){if(p)try{rawSet.call(LS,PID,p)}catch{}})}})}
 function start(){
 try{["pfp","pfpt","lbst"].forEach(function(k){rawRem.call(LS,PFX+k)})}catch{}if(CONFIGURED&&initFb().catch(function(){}),active()){CONFIGURED&&pullCheck();return}}
 document.body?start():document.addEventListener("DOMContentLoaded",start)})();
