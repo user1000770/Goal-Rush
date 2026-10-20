@@ -2922,9 +2922,9 @@ const g=gs[et[i].n];
 return g==="LEGENDARY"?{c:"#ffc61a",c2:"#fff2a8"}:g==="EPIC"?{c:"#ff4bd0",c2:"#b57bff"}:null}
 const HiSpr__={};
 function HiSprite__(tr2){
-let cv=HiSpr__[tr2.c];
+const ky=tr2.c+tr2.c2;let cv=HiSpr__[ky];
 if(cv)return cv;
-cv=HiSpr__[tr2.c]=document.createElement("canvas"),cv.width=cv.height=96;
+cv=HiSpr__[ky]=document.createElement("canvas"),cv.width=cv.height=96;
 const g2=cv.getContext("2d"),g=g2.createRadialGradient(48,48,6,48,48,48);
 return g.addColorStop(0,tr2.c2+"cc"),g.addColorStop(.45,tr2.c+"66"),g.addColorStop(1,tr2.c+"00"),g2.fillStyle=g,g2.fillRect(0,0,96,96),cv}
 function HiAura__(cx,cy,rad,tr2){
@@ -3007,7 +3007,7 @@ if(act!==Se.la){Se.la=act;if(act>=0)try{at.whTick(.95+.25*Math.min(1,ms/T.cyc))}
 const back=sfSpr__("back",G.cw,G.ch,14,(w,hh)=>sfBackDraw__(w,hh)),order=[0,1,2];
 Se&&ms>=T.cyc&&(order.splice(order.indexOf(Se.pi),1),order.push(Se.pi));
 const poses=order.map(i=>({i,P:sfPose__(G,i,ms)}));
-if(Se&&act>=0){const tr={c:ys[SF_RK__[act]],c2:"#fff"};t.save();for(const{i,P}of poses){const k=P.win?1.35:1;t.globalAlpha=(P.win?1:.8*P.al),t.drawImage(HiSprite__(tr),P.x-G.cw*1.05*k,P.y-G.ch*.85*k,G.cw*2.1*k,G.ch*1.7*k)}t.restore()}
+if(Se&&act>=0){const tr={c:ys[SF_RK__[act]],c2:"#ffffff"};t.save();for(const{i,P}of poses){const k=P.win?1.35:1;t.globalAlpha=(P.win?1:.8*P.al),t.drawImage(HiSprite__(tr),P.x-G.cw*1.05*k,P.y-G.ch*.85*k,G.cw*2.1*k,G.ch*1.7*k)}t.restore()}
 for(const{i,P}of poses){
 const h=pool[i],st=Se?Se.sn[i]:{u:Be(h),l:qt[h]},sp=P.back?back:sfSpr__("f"+h+"|"+(st.u?1:0)+"|"+st.l,G.cw,G.ch,14,(w,hh)=>sfFaceDraw__(h,w,hh,st.u,st.l));
 sfBlit__(sp,P.x,P.y,P.r,P.sx*P.sc,P.sc,P.al)}
@@ -3030,7 +3030,7 @@ const by=L+C-12-44;
 if(p.rdm){const B=T-28;Pe(m+14,by,B,44,RdmQ__.length?"NEXT":"OK","#2b8cff","#0b4bb8",20),E(m+14,by,B,48,()=>{RdmQ__.length?(Ke=RdmQ__.shift(),Oa=performance.now()):(Ke=null,$e=0,Ce=p.h),se(90)})}
 else{const B=(T-36)/2;Pe(m+14,by,B,44,"OK","#2b8cff","#0b4bb8",20),E(m+14,by,B,48,()=>{Ke=null});const k=Vt>=me;Pe(m+22+B,by,B,44,"",k?"#ffc61a":"#6b7280",k?"#b8760a":"#3a3f48",16),R("AGAIN",m+22+B+B*.36,by+29,16,"#fff","center",4),vn(m+22+B+B*.7,by+22,.7),R(String(me),m+22+B+B*.7+14,by+28,14,k?"#fff":"#ff9b9b","left",3.5),E(m+22+B,by,B,48,()=>{Ke=null,vi()})}});
 const age=now-Oa;
-if(age<650){const u=age/650;t.save(),t.globalAlpha=1-u,HiAura__(0,v+W*.55,W*(.7+1.1*u),{c:rc,c2:"#fff"}),t.restore()}}
+if(age<650){const u=age/650;t.save(),t.globalAlpha=1-u,HiAura__(0,v+W*.55,W*(.7+1.1*u),{c:rc,c2:"#ffffff"}),t.restore()}}
 function sf(e,a,n,o,l,f){
 const now=performance.now();
 Se&&now-Se.t0>=SF_T__.end&&(Ke=Se.res,Se=null,Oa=now,(()=>{try{at.supReady()}catch{}})());
