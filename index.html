@@ -2386,9 +2386,9 @@ uiMenu__("heroes:bjx",()=>Mt===3&&$e===4,()=>{BjxPg__=0},["bjxOv","bjxInfo"]);
 uiScreen__(3,"heroes",(...a)=>ff(...a));
 /* heroes sub-modes ($e) each own a layer family; freed when that sub-mode is left */
 uiMenu__("heroes:list",()=>Mt===3&&$e===0);
-uiMenu__("heroes:store",()=>Mt===3&&$e===1);
+uiMenu__("heroes:store",()=>Mt===3&&$e===1,sfFree__);
 uiMenu__("exchange",()=>!!ZpTab__&&Mt===3&&$e===1,()=>zpSellClose__(),["zpSellOv"]);
-uiMenu__("heroes:draw",()=>Mt===3&&$e===2);
+uiMenu__("heroes:draw",()=>Mt===3&&$e===2,()=>sfFree__());
 uiMenu__("heroes:wheel",()=>Mt===3&&$e===3);
 uiScreen__(5,"match5",(...a)=>rf(...a),()=>{PZ__=-1,PZPage__=0,PLToast__=null,PLTon__=0});
 uiMenu__("pinart",()=>Mt===10||Mt===5||Mt===0||PZ__>=0,()=>{for(const k in PlS__){PlS__[k].width=PlS__[k].height=1,delete PlS__[k]}for(const k in PlSil__){PlSil__[k].width=PlSil__[k].height=1,delete PlSil__[k]}for(const k in PlBB__)delete PlBB__[k];for(const k in PlKb__){PlKb__[k].width=PlKb__[k].height=1,delete PlKb__[k]}});
@@ -2902,17 +2902,21 @@ if(!L||L.k!==k){uiLayerFree__(id);const hits=[],cv=Ji(w+16,h+16,x-8,y-8,sc,()=>{
 t.drawImage(L.cv,x-8,y-8,w+16,h+16);
 for(const q of L.hits)e(...q)}
 function sfPanelDraw__(E,c,h,r,u,am,ok1){
-const s=kl(),tg=u<230,ax=c+10,ay=h+10,aw=r-20,ah=u-(tg?112:138);
-Ca(c,h,r,u,Te.panel,8,6);
+const s=kl(),tg=u<230,hd=tg?42:58,bhh=tg?40:46,by=h+u-12-bhh,ax=c+10,ay=h+hd+6,aw=r-20,ah=by-10-ay;
+/* outer frame: soft shadow, deep gradient body, hairline bevel */
+t.fillStyle="rgba(0,0,0,.38)",t.beginPath(),t.roundRect(c+2,h+8,r,u,18),t.fill();
+let g=t.createLinearGradient(0,h,0,h+u);g.addColorStop(0,"#3a3fb8"),g.addColorStop(1,"#171c68"),_(c,h,r,u,18,g,"#000",4),_(c+4,h+4,r-8,u-8,14,null,"rgba(255,255,255,.12)",1.5);
+/* header row: title + subtitle left, ZP pill right */
+R("HERO DRAW",c+16,h+(tg?29:32),tg?22:26,"#fff","left",6),tg||R("Random hero from today's pool of 3",c+16,h+50,11,"#bcd3ff","left",3);
+{const p=c+r-14-92;_(p,h+10,92,30,15,"#3a0f55","#000",3),vn(p+18,h+25,.8),FitNum__(Vt,p+56,h+32,18,"#fff","center",4.5,50)}
+/* stage: felt with the three cards (same look as before) */
 t.save(),t.beginPath(),t.roundRect(ax,ay,aw,ah,10),t.clip();
-const g=t.createLinearGradient(0,ay,0,ay+ah);g.addColorStop(0,"#d6ffc2"),g.addColorStop(.6,"#8fe68f"),g.addColorStop(1,"#4fc98a"),t.fillStyle=g,t.fillRect(ax,ay,aw,ah),t.save(),t.translate(ax+aw/2,ay+ah/2),Bi(aw,ah,0),t.restore();
+g=t.createLinearGradient(0,ay,0,ay+ah),g.addColorStop(0,"#d6ffc2"),g.addColorStop(.6,"#8fe68f"),g.addColorStop(1,"#4fc98a"),t.fillStyle=g,t.fillRect(ax,ay,aw,ah),t.save(),t.translate(ax+aw/2,ay+ah/2),Bi(aw,ah,0),t.restore();
 const sw=aw/3,ch=Math.max(60,Math.min(ah-16,sw*1.3*.92)),cw=Math.round(ch/1.3),RT=[-.06,.02,.06];
 s.forEach((p,j)=>{const u2=Be(p),l2=qt[p],sp=sfSpr__("f"+p+"|"+(u2?1:0)+"|"+l2,cw,Math.round(ch),14,(w2,h2)=>sfFaceDraw__(p,w2,h2,u2,l2));sfBlit__(sp,ax+sw*(j+.5),ay+ah/2+(j===1?-3:2),RT[j],1,1,1)}),t.restore(),_(ax,ay,aw,ah,10,null,"#000",3);
-const ty=ay+ah+10;
-R("HERO DRAW",c+14,ty+25,27,"#fff","left",6.5),tg||R("Random hero from today's pool of 3",c+14,ty+46,12,"#cfe0ff","left",3);
-{const p=c+r-14-92;_(p,ty+4,92,30,15,"#3a0f55","#000",3),vn(p+18,ty+19,.8),FitNum__(Vt,p+56,ty+26,18,"#fff","center",4.5,50)}
-{const bhh=tg?40:46,by=h+u-12-bhh;Pe(c+14,by,r-28,bhh,"",ok1?"#34d34a":"#6b7280",ok1?"#157a28":"#3a3f48",20),R(am?"ALL HEROES MAXED":"TAP TO OPEN",c+r/2-(ok1?10:0),by+bhh/2+8,am?15:21,"#fff","center",4.5),ok1&&xl(c+r-14-28,by+bhh/2,.72)}
-am?(t.save(),t.fillStyle="rgba(70,74,84,.72)",t.beginPath(),t.roundRect(c,h,r,u,12),t.fill(),t.restore()):E(c,h,r,u,()=>{$e=2})}
+/* open button */
+Pe(c+14,by,r-28,bhh,"",ok1?"#34d34a":"#6b7280",ok1?"#157a28":"#3a3f48",20),R(am?"ALL HEROES MAXED":"TAP TO OPEN",c+r/2-(ok1?10:0),by+bhh/2+8,am?15:21,"#fff","center",4.5),ok1&&xl(c+r-14-28,by+bhh/2,.72);
+am?(t.save(),t.fillStyle="rgba(70,74,84,.72)",t.beginPath(),t.roundRect(c,h,r,u,18),t.fill(),t.restore()):E(c,h,r,u,()=>{$e=2})}
 function sfStorePanel__(e,n,o,l){
 const i=-o/2+HdrH__(l)+3,G=sfStoreGeo__(n,o,l,i),am=AM__(),pool=kl(),sig=[am?1:0,Vt>=me?1:0,Vt,pool.map(p=>(Be(p)?1:0)+":"+qt[p]).join(",")].join("|");
 sfPanelLayer__("heroes:store:draw",sig,G.c,G.h,G.r,G.u,e,E=>sfPanelDraw__(E,G.c,G.h,G.r,G.u,am,Vt>=me&&!am))}
@@ -2927,6 +2931,7 @@ if(cv)return cv;
 cv=HiSpr__[ky]=document.createElement("canvas"),cv.width=cv.height=96;
 const g2=cv.getContext("2d"),g=g2.createRadialGradient(48,48,6,48,48,48);
 return g.addColorStop(0,tr2.c2+"cc"),g.addColorStop(.45,tr2.c+"66"),g.addColorStop(1,tr2.c+"00"),g2.fillStyle=g,g2.fillRect(0,0,96,96),cv}
+function HiFree__(){for(const k in HiSpr__){const c=HiSpr__[k];c.width=c.height=1;delete HiSpr__[k]}}
 function HiAura__(cx,cy,rad,tr2){
 const d2=rad*2.15;
 t.drawImage(HiSprite__(tr2),cx-d2/2,cy-d2/2,d2,d2)}
@@ -2936,7 +2941,7 @@ t.save(),t.strokeStyle=tr2.c,t.globalAlpha=.18+.14*pu,t.lineWidth=12,t.beginPath
 /* ---- HERO DRAW screen: a top-down table. UI STANDARD: the table/header/stack are ONE cached layer (drawn once);
    cards, buttons and pills are cached sprites that are only blitted; everything is freed on leave / when the app is backgrounded. ---- */
 const SF_T__={flip:400,shuf:1100,cyc:2800,rev:3400,end:3900},SF__={m:new Map};
-function sfFree__(){HdrFree__();for(const v of SF__.m.values())v.cv.width=v.cv.height=1;SF__.m.clear();for(const k in UiL__)k.startsWith("heroes:")&&uiLayerFree__(k)}
+function sfFree__(){HdrFree__(),HiFree__();for(const k in HiSpr__){HiSpr__[k].width=HiSpr__[k].height=1,delete HiSpr__[k]}for(const v of SF__.m.values())v.cv.width=v.cv.height=1;SF__.m.clear();for(const k in UiL__)k.startsWith("heroes:")&&uiLayerFree__(k)}
 uiMenu__("heroes:drawfx",()=>Mt===3&&($e===1||$e===2),sfFree__);
 document.addEventListener("visibilitychange",()=>{document.hidden&&sfFree__()}),addEventListener("pagehide",sfFree__);
 function sfSpr__(key,w,h,pad,fn){
@@ -2987,6 +2992,19 @@ const nx=klDay__(1),S=G.stk,mw2=72,mh2=94;
 nx.forEach((p,j)=>{const u2=Be(p),l2=qt[p],s2=sfSpr__("tm"+p+"|"+(u2?1:0)+"|"+l2,mw2,mh2,10,(w,hh)=>sfFaceDraw__(p,w,hh,u2,l2));sfBlit__(s2,S.x+(j-1)*30,S.y+(j-1)*5,(j-1)*.09,1,1,1)}),R("TOMORROW",S.x,S.y+mh2/2+20,9,"rgba(255,255,255,.75)","center",2.4);
 /* tap targets */
 const cwB=n-12,bx2=-cwB/2;E(bx2,G.btnY,cwB,G.btnH+4,()=>vi())}
+/* idle layer: today's 3 cards, ZP pill and DRAW button, painted ONCE and only re-painted when their state changes. While a draw plays, only the animated sprites are blitted. */
+function sfIdle__(E,n,o,l){
+const G=sfLay__(n,o,l),pool=kl();
+{const s=sfSpr__("zp"+Vt,140,32,8,()=>{_(0,0,140,32,16,"#3a0f55","#000",3),vn(22,16,.85),FitNum__(Vt,82,23,20,"#fff","center",4.5,80)});sfBlit__(s,0,G.zpY+16,0,1,1,1)}
+for(let i=0;i<3;i++){const h=pool[i],P=G.pos[i],u=Be(h),lv=qt[h],sp=sfSpr__("f"+h+"|"+(u?1:0)+"|"+lv,G.cw,G.ch,14,(w,hh)=>sfFaceDraw__(h,w,hh,u,lv));sfBlit__(sp,P.x,P.y,P.r,1,1,1)}
+const bk=Vt>=me&&!Ke?0:1,bs=sfSpr__("btn"+bk,n-12,64,10,(w,hh)=>sfBtnDraw__(w,bk));sfBlit__(bs,0,G.btnY+32,0,1,1,1)}
+/* floating message: cached sprite, no per-frame vector text */
+function sfKeText__(G,n,now){
+if(!ke)return;
+const p=(now-ke.at)/1e3;
+if(p>=1.4){ke=null;return}
+const w=Math.round(n-20),s=sfSpr__("ke|"+ke.t+"|"+ke.c+"|"+w,w,34,8,(ww,hh)=>FitNum__(ke.t,ww/2,hh*.75,24,ke.c,"center",5,ww));
+sfBlit__(s,0,G.btnY-40-p*26-12,0,1,1,Math.min(1,(1.4-p)*2))}
 function sfPose__(G,i,ms){
 const b=G.pos[i],T=SF_T__;let x=b.x,y=b.y,r=b.r,sx=1,sc=1,al=1,back=!1,win=!1;
 if(!Se)return{x,y,r,sx,sc,al,back,win};
@@ -2999,7 +3017,8 @@ else if(ms>=T.cyc){al=1-.5*Math.min(1,(ms-T.cyc)/(T.rev-T.cyc))}
 return{x,y,r,sx,sc,al,back,win}}
 /* only cached sprites are blitted here: no vector UI is redrawn */
 function sfLive__(e,n,o,l,now){
-const G=sfLay__(n,o,l),pool=Se?Se.pool:kl(),ms=Se?now-Se.t0:0,T=SF_T__;
+if(!Se){uiLayer__("heroes:draw:idle",()=>[l|0,kl().map(h=>h+":"+(Be(h)?1:0)+":"+qt[h]).join(","),Vt,me,Ke?1:0].join("|"),e,n,o,E=>sfIdle__(E,n,o,l)),sfKeText__(sfLay__(n,o,l),n,now);return}
+const G=sfLay__(n,o,l),pool=Se.pool,ms=now-Se.t0,T=SF_T__;
 {const s=sfSpr__("zp"+Vt,140,32,8,()=>{_(0,0,140,32,16,"#3a0f55","#000",3),vn(22,16,.85),FitNum__(Vt,82,23,20,"#fff","center",4.5,80)});sfBlit__(s,0,G.zpY+16,0,1,1,1)}
 let act=-1;
 if(Se){if(ms>=T.cyc)act=Se.rk;else if(ms>=T.shuf){const u=(ms-T.shuf)/(T.cyc-T.shuf);act=Math.floor((1-Math.pow(1-u,3))*(15+Se.rk)+1e-6)%5}
@@ -3011,31 +3030,56 @@ if(Se&&act>=0){const tr={c:ys[SF_RK__[act]],c2:"#ffffff"};t.save();for(const{i,P
 for(const{i,P}of poses){
 const h=pool[i],st=Se?Se.sn[i]:{u:Be(h),l:qt[h]},sp=P.back?back:sfSpr__("f"+h+"|"+(st.u?1:0)+"|"+st.l,G.cw,G.ch,14,(w,hh)=>sfFaceDraw__(h,w,hh,st.u,st.l));
 sfBlit__(sp,P.x,P.y,P.r,P.sx*P.sc,P.sc,P.al)}
-if(ke){const p=(now-ke.at)/1e3;p<1.4?(t.save(),t.globalAlpha=Math.min(1,(1.4-p)*2),FitNum__(ke.t,0,G.btnY-40-p*26,24,ke.c,"center",5,n-20),t.restore()):ke=null}
+sfKeText__(G,n,now);
 const bs=sfSpr__("btn"+(Se?2:Vt>=me&&!Ke?0:1),n-12,64,10,(w,hh)=>sfBtnDraw__(w,Se?2:Vt>=me&&!Ke?0:1));sfBlit__(bs,0,G.btnY+32,0,1,1,1);
 Se&&e(-n/2,-o/2,n,o,jn)}
 /* result popup: one cached layer, a short glow pop on top (blitted) */
+/* result popup OUTER frame: painted once inside the cached result layer (zero redraws) */
+function sfResFrame__(n,o,m,L,T,C,rc,isNew,title,cx,cy){
+let g=t.createRadialGradient(cx,cy,10,cx,cy,Math.max(n,o)*.7);g.addColorStop(0,"rgba(20,28,90,.82)"),g.addColorStop(1,"rgba(2,4,16,.93)"),t.fillStyle=g,t.fillRect(-n/2,-o/2,n,o);
+g=t.createRadialGradient(cx,cy,10,cx,cy,T*.75),g.addColorStop(0,rc+"44"),g.addColorStop(1,rc+"00"),t.fillStyle=g,t.fillRect(-n/2,-o/2,n,o);
+t.fillStyle="rgba(0,0,0,.4)",t.beginPath(),t.roundRect(m+2,L+9,T,C,18),t.fill();
+g=t.createLinearGradient(0,L,0,L+C),g.addColorStop(0,"#27358f"),g.addColorStop(1,"#131a5c"),_(m,L,T,C,18,g,"#000",4),_(m+4,L+4,T-8,C-8,14,null,"rgba(255,255,255,.1)",1.5);
+const tc=isNew?"#8dff9a":"#ffd23f";R(title,m+22,L+38,25,tc,"left",5.5),_(m+22,L+46,46,4,2,tc)}
 function sfResult__(e,n,o,l,now){
-const p=Ke,x=et[p.h],rk=gi(p.h),rc=ys[rk]||"#9aa4b8",T=n-24,C=Math.min(o-2*Math.max(l+14,24),396),m=-T/2,L=-C/2,W=Math.max(90,Math.min(140,C-244)),v=L+62;
+const p=Ke,x=et[p.h],rk=gi(p.h),rc=ys[rk]||"#9aa4b8",roc=ds[x.r]||x.c,lv=p.lv1||qt[p.h]||1,
+T=n-24,m=-T/2,sw=T-28,avail=Math.min(o-2*Math.max(l+14,24),430),
+cw=Math.round(Math.max(84,Math.min(128,sw*.36,(avail-62-70-40)/1.2941))),ch=Math.round(cw*220/170),
+Hs=ch+40,C=62+Hs+12+44+14,L=-C/2,v=L+62,sx0=m+14,
+cx=sx0+12+cw/2,cy=v+Hs/2,px=sx0+12+cw+16,pw=sx0+sw-12-px,py=v+14,ph=Hs-28,pcx=px+pw/2;
 uiLayer__("heroes:draw:res",()=>["r",p.h,p.isNew?1:0,p.rdm?1:0,p.lp|0,p.coins|0,p.lv0,p.lv1,pa[p.h],RdmQ__.length,Vt>=me?1:0,l|0].join("|"),e,n,o,E=>{
-t.fillStyle="rgba(4,8,24,.82)",t.fillRect(-n/2,-o/2,n,o),E(-n/2,-o/2,n,o,jn),Ca(m,L,T,C,Te.panel,8,7),E(m,L,T,C,()=>{}),ua(p.isNew?"NEW HERO!":"DUPLICATE!",m,L+12,T*.8,40,24,p.isNew?"#7dff8a":"#ffd23f","l");
-t.save(),t.beginPath(),t.roundRect(m+14,v,T-28,W,10),t.clip(),t.fillStyle=Ae(p.h),t.fillRect(m+14,v,T-28,W),yl(m+14,v,T-28,W,0,v+W*.5,W*.36,24),t.save(),t.globalAlpha=.35,t.fillStyle=rc;
-for(let A=0;A<12;A++){const a2=A*.5236+.3;t.beginPath(),t.moveTo(0,v+W*.5),t.arc(0,v+W*.5,T,a2,a2+.13),t.closePath(),t.fill()}
-t.restore(),Ol(p.h,0,v+W*.55,Math.min(W/92,1.7)),t.restore(),_(m+14,v,T-28,W,10,null,"#000",3.5),R(x.n.toUpperCase(),0,v+W+26,24,"#fff","center",6),R(rk+"  -  "+x.r,0,v+W+40,10,"#a9ccff","center",2.6);
-let P=v+W+62;
-if(p.isNew)R("UNLOCKED!",0,P+4,20,"#7dff8a","center",5),R(p.rdm?"From a redeem code":"Find it in your HEROES tab",0,P+22,11,"#e6eeff","center",3);
-else if(p.coins)R("MAX LEVEL: +"+p.coins+" COINS",0,P+4,16,"#ffd23f","center",4.5),Ja(-t.measureText("MAX LEVEL: +"+p.coins+" COINS").width/2-14,P-2,.6);
-else if(R("+"+p.lp+" LEVEL POINTS",0,P+4,19,"#7de8ff","center",5),p.lv1>p.lv0&&R("LEVEL UP!  "+p.lv0+" to "+p.lv1,0,P+26,16,"#ffd23f","center",4.5),p.lv1<10){const A=xo[p.lv1-1],B=T-70;lvBar__(-B/2+12,P+(p.lv1>p.lv0?34:18),B-12,20,pa[p.h]/A,p.lv1,pa[p.h]+" / "+A)}
-const by=L+C-12-44;
+const fit=(s,sz,mx,mn)=>{let f=sz;t.font=f+"px "+qa;while(f>mn&&t.measureText(s).width>mx)f--,t.font=f+"px "+qa;return f};
+sfResFrame__(n,o,m,L,T,C,rc,p.isNew,p.isNew?"NEW HERO!":"DUPLICATE!",cx,cy),E(-n/2,-o/2,n,o,jn),E(m,L,T,C,()=>{});
+/* stage: role-coloured table with a rank burst behind the card */
+t.save(),t.beginPath(),t.roundRect(sx0,v,sw,Hs,12),t.clip();
+let g=t.createLinearGradient(0,v,0,v+Hs);g.addColorStop(0,"rgba(255,255,255,.18)"),g.addColorStop(1,"rgba(0,0,0,.22)"),t.fillStyle=Ae(p.h),t.fillRect(sx0,v,sw,Hs),t.fillStyle=g,t.fillRect(sx0,v,sw,Hs);
+t.save(),t.globalAlpha=.16,t.fillStyle=rc;
+for(let A=0;A<14;A++){const a2=A*.4488+.2;t.beginPath(),t.moveTo(cx,cy),t.arc(cx,cy,sw,a2,a2+.14),t.closePath(),t.fill()}
+t.restore(),t.save(),t.globalAlpha=.85,HiAura__(cx,cy,cw*1.15,{c:rc,c2:"#ffffff"}),t.restore(),t.fillStyle="rgba(0,0,0,.24)",t.beginPath(),t.ellipse(cx,cy+ch/2+9,cw*.52,7,0,0,6.3),t.fill();
+t.save(),t.translate(cx,cy),t.rotate(-.045),t.translate(-cw/2,-ch/2),sfFaceDraw__(p.h,cw,ch,!0,lv),t.restore(),t.restore(),_(sx0,v,sw,Hs,12,null,"#000",3.5);
+/* info plate */
+t.fillStyle="rgba(0,0,0,.3)",t.beginPath(),t.roundRect(px+3,py+4,pw,ph,12),t.fill(),_(px,py,pw,ph,12,"#0e1450"),t.save(),t.beginPath(),t.roundRect(px,py,pw,ph,12),t.clip(),t.fillStyle=rc,t.fillRect(px,py,pw,6),t.fillStyle="rgba(255,255,255,.35)",t.fillRect(px,py,pw,2),t.restore(),_(px,py,pw,ph,12,null,"#000",3);
+const nm=x.n.toUpperCase(),nf=fit(nm,26,pw-18,14);R(nm,pcx,py+36,nf,"#fff","center",nf/4);
+let cf=9.5;t.font=cf+"px "+qa;let rw=t.measureText(rk).width+14,ow=t.measureText(x.r).width+14;
+if(rw+ow+6>pw-12){cf=8,t.font=cf+"px "+qa,rw=t.measureText(rk).width+12,ow=t.measureText(x.r).width+12}
+const cs=pcx-(rw+ow+6)/2,cyy=py+46;_(cs,cyy,rw,18,9,rc,"#000",2),R(rk,cs+rw/2,cyy+13,cf,"#fff","center",2.4),_(cs+rw+6,cyy,ow,18,9,roc,"#000",2),R(x.r,cs+rw+6+ow/2,cyy+13,cf,"#fff","center",2.4);
+t.fillStyle="rgba(255,255,255,.14)",t.fillRect(px+14,py+74,pw-28,2);
+const rb=py+ph;
+if(p.isNew){const uf=fit("UNLOCKED!",21,pw-20,13);R("UNLOCKED!",pcx,py+104,uf,"#7dff8a","center",uf/4);const sub=p.rdm?"From a redeem code":"Find it in your HEROES tab",sf2=fit(sub,11,pw-18,8);R(sub,pcx,py+124,sf2,"#e6eeff","center",3)}
+else if(p.coins){const a="MAX LEVEL",af=fit(a,16,pw-20,11);R(a,pcx,py+100,af,"#ffd23f","center",af/4);const b="+"+p.coins+" COINS",bf=fit(b,19,pw-50,12);R(b,pcx+10,py+127,bf,"#ffd23f","center",bf/4);Ja(pcx-t.measureText(b).width/2-8,py+121,.7)}
+else{const a="+"+p.lp+" LEVEL POINTS",af=fit(a,18,pw-18,10);R(a,pcx,py+98,af,"#7de8ff","center",af/4);
+if(p.lv1>p.lv0){const b="LEVEL UP!  "+p.lv0+" to "+p.lv1,bf=fit(b,13,pw-18,9);R(b,pcx,py+116,bf,"#ffd23f","center",bf/4)}
+if(p.lv1<10){const A=xo[p.lv1-1];lvBar__(px+12,rb-14-20,pw-24,20,pa[p.h]/A,p.lv1,pa[p.h]+" / "+A)}}
+/* buttons */
+const by=L+C-14-44;
 if(p.rdm){const B=T-28;Pe(m+14,by,B,44,RdmQ__.length?"NEXT":"OK","#2b8cff","#0b4bb8",20),E(m+14,by,B,48,()=>{RdmQ__.length?(Ke=RdmQ__.shift(),Oa=performance.now()):(Ke=null,$e=0,Ce=p.h),se(90)})}
 else{const B=(T-36)/2;Pe(m+14,by,B,44,"OK","#2b8cff","#0b4bb8",20),E(m+14,by,B,48,()=>{Ke=null});const k=Vt>=me;Pe(m+22+B,by,B,44,"",k?"#ffc61a":"#6b7280",k?"#b8760a":"#3a3f48",16),R("AGAIN",m+22+B+B*.36,by+29,16,"#fff","center",4),vn(m+22+B+B*.7,by+22,.7),R(String(me),m+22+B+B*.7+14,by+28,14,k?"#fff":"#ff9b9b","left",3.5),E(m+22+B,by,B,48,()=>{Ke=null,vi()})}});
-const age=now-Oa;
-if(age<650){const u=age/650;t.save(),t.globalAlpha=1-u,HiAura__(0,v+W*.55,W*(.7+1.1*u),{c:rc,c2:"#ffffff"}),t.restore()}}
+}
 function sf(e,a,n,o,l,f){
 const now=performance.now();
 Se&&now-Se.t0>=SF_T__.end&&(Ke=Se.res,Se=null,Oa=now,(()=>{try{at.supReady()}catch{}})());
 uiLayer__("heroes:draw",()=>[l|0,bb__()|0,klDay__(0).join(","),klDay__(1).join(","),klDay__(1).map(p=>(Be(p)?1:0)+":"+qt[p]).join(",")].join("|"),e,n,o,E=>sfStatic__(E,n,o,l));
-sfLive__(e,n,o,l,now),Ke?sfResult__(e,n,o,l,now):UiL__["heroes:draw:res"]&&uiLayerFree__("heroes:draw:res")}
+sfLive__(e,n,o,l,now),Ke?sfResult__(e,n,o,l,now):UiL__["heroes:draw:res"]&&(uiLayerFree__("heroes:draw:res"),HiFree__())}
 
 let HW__=1,HP__=0,HF__=null;
 function HFade__(n,o,vt2,vb){
