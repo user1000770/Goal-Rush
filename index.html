@@ -454,7 +454,7 @@ return he<TBL__}
 let HomeToast__=null;
 function tbToast__(m,c){
 HomeToast__={t:m,c,at:performance.now()}}
-let TbAnim__=0,RoadTb__=0,RoadPl__=0,PLShake__=0;
+let TbAnim__=0,RoadTb__=0,RoadPl__=0;
 function tbPara__(c,xc2,by,W){
 const bt2=by-13,bh=26;
 c.beginPath(),c.moveTo(xc2-W/2+9,bt2),c.lineTo(xc2+W/2+9,bt2),c.lineTo(xc2+W/2-9,bt2+bh),c.lineTo(xc2-W/2-9,bt2+bh),c.closePath()}
@@ -977,7 +977,7 @@ function zpSellClose__(){
 if(!ZpTab__)return;
 const o=ZpTab__;ZpTab__=null;
 document.removeEventListener("keydown",o._k,!0),o.onclick=null,o.querySelectorAll("button").forEach(b=>b.onclick=null),o.remove(),Object.keys(XIC__).forEach(k=>delete XIC__[k]),se(90)}
-/* kill exchange when app goes to background */
+ 
 document.addEventListener("visibilitychange",()=>{document.hidden&&zpSellClose__()});
 const XIC__={};
 function xIcon__(k){
@@ -1863,7 +1863,7 @@ const y1=y,y2=y+bh+gap,y3=y+2*(bh+gap);
 one(y1,"#5a2bb0","QUESTS",(cx,cy)=>{ppIcon__(cx,cy,Math.min(1.25,ia/30))},()=>qi(9));
 cnt>0&&(t.fillStyle="#000",t.beginPath(),t.arc(x+w-5,y1+5,11,0,6.3),t.fill(),t.fillStyle="#ff3b4e",t.beginPath(),t.arc(x+w-5,y1+5,9,0,6.3),t.fill(),R(String(cnt),x+w-5,y1+9.5,12,"#fff","center",2.4));
 one(y2,"#c2327f","SUPER PINS",(cx,cy)=>{if(unl)plushDraw__(0,cx,cy,Math.min(.8,ia/62));else{t.save(),t.globalAlpha=.2,plushDraw__(0,cx,cy+1,Math.min(.8,ia/62)),t.restore(),drawLock__(t,cx,cy,Math.min(1.35,ia/26),0,-1,1)}},()=>{
-if(!plUnlocked__()){PLShake__=performance.now(),RoadPl__=0,tbToast__("SILVER FIGHTER UNLOCKS SUPER PINS","#ff9b9b"),se(60);return}
+if(!plUnlocked__()){RoadPl__=0,tbToast__("SILVER FIGHTER UNLOCKS SUPER PINS","#ff9b9b"),se(60);return}
 PLFrom__=0,qi(10),se(40)},!unl);
 one(y3,"#1fa5b8","LEADERS",(cx,cy)=>{Yn(cx,cy,Math.min(1.15,ia/32))},()=>{LB__.pg=0,qi(11),LbLoad__(),se(40)});
 const y4=y+3*(bh+gap),hc=HRCnt__();one(y4,"#e8742a","HERO ROAD",(cx,cy)=>{HRIconPP__(cx,cy,Math.min(1.25,ia/30))},()=>{HRInit__=!0,qi(12),se(40)});
@@ -1959,7 +1959,7 @@ t.save(),t.translate(e,a),t.fillStyle="#fff",t.strokeStyle="#fff",t.lineWidth=2,
 function be(){
 const e=performance.now();
 if(be.v!==void 0&&e-be.t<1500)return be.v;
-{const f=fsInset__;be.v=hl?Math.min(64,f.l)+(isIPhone__&&f.l>0?4:0):0,be.b=hl?f.r:f.b}/* top is cut off by fsView__; bottom/sides stay full-bleed and are padded here */
+{const f=fsInset__;be.v=hl?Math.min(64,f.l)+(isIPhone__&&f.l>0?4:0):0,be.b=hl?f.r:f.b} 
 return be.x=0,be.t=e,be.v}
 function bb__(){
 return be(),Math.max(0,((be.b||0)+(be.x||0))/(Fi||1)-10+(isIPhone__&&be.b>0?6:0))}
@@ -2089,39 +2089,47 @@ t.beginPath(),t.roundRect(-11,-11,22,22,7),t.roundRect(-4.5,-15.5,9,8.5,2.5),t.r
 body(),t.strokeStyle="#000",t.lineWidth=5,t.stroke();
 const g=t.createLinearGradient(0,-15,0,15);
 g.addColorStop(0,"#fff0a0"),g.addColorStop(1,"#ffb02e"),t.fillStyle=g,t.fill(),t.save(),body(),t.clip(),t.fillStyle="#e07b00",t.beginPath(),t.moveTo(-17,5.5),t.lineTo(17,.5),t.lineTo(17,17),t.lineTo(-17,17),t.closePath(),t.fill(),t.restore(),t.fillStyle="#fff3b8",t.beginPath(),t.arc(0,1.3,8.4,0,6.3),t.fill(),t.fillStyle="#4a2600",t.beginPath(),t.arc(0,-.6,7.6,0,6.3),t.fill(),t.fillStyle="#9a5200",t.beginPath(),t.arc(0,.5,7,0,6.3),t.fill(),R("H",0,5,12.5,"#ffe27a","center",.9),t.fillStyle="#fff",t.beginPath(),t.ellipse(1.2,-12.3,2.5,1.2,-.35,0,6.3),t.fill(),t.beginPath(),t.ellipse(-12.3,-1.2,1.2,2.5,.35,0,6.3),t.fill(),t.restore()}
-function HRCrown__(x,y,sc){t.save(),t.translate(x,y),t.scale(sc,sc),t.lineJoin="round";t.beginPath();[[-13,9],[-15,-9],[-7,-1],[0,-13],[7,-1],[15,-9],[13,9]].forEach((p,q)=>q?t.lineTo(p[0],p[1]):t.moveTo(p[0],p[1]));t.closePath();const g=t.createLinearGradient(0,-13,0,9);g.addColorStop(0,"#fff27a"),g.addColorStop(1,"#ff9b1f"),t.fillStyle=g,t.fill(),t.strokeStyle="#000",t.lineWidth=3,t.stroke();t.beginPath(),t.arc(0,2,3,0,6.3),t.fillStyle="#ff3b4e",t.fill(),t.strokeStyle="#000",t.lineWidth=1.6,t.stroke(),t.restore()}
 /* ===== HERO ROAD (Brawl-style reward road, built on the Medal Road look) ===== */
-const HRK_P__="goalrush_hrp",HRK_C__="goalrush_hrc2",HRN__=100,HRSTEP__=400,HRHEROES__=(()=>{const o={},l=[1,2,5,4,3,10,6,7,11,13,8,12];l.forEach((h,q)=>{o[7+8*q]=h});return o})();
-let HRP__=0,HRC__=new Array(HRN__).fill(0),HRInit__=!1,HRGo__=-1;
-try{HRP__=Math.max(0,Math.trunc(+localStorage.getItem(HRK_P__))||0);const c=JSON.parse(localStorage.getItem(HRK_C__)||"[]");Array.isArray(c)&&c.forEach((v,k)=>{k<HRN__&&(HRC__[k]=v?1:0)})}catch{}
-function HRSave__(){try{localStorage.setItem(HRK_P__,HRP__),localStorage.setItem(HRK_C__,JSON.stringify(HRC__))}catch{}}
+const HRK_P__="goalrush_hrp",HRK_C__="goalrush_hrc2",HRN__=100,HRSTEP__=400,HRK_Y__="goalrush_hry",HRLP__=40,HRPPV__=100,HRHEROES__=(()=>{const o={},l=[1,2,5,4,3,10,6,7,11,13,8,12];l.forEach((h,q)=>{o[7+8*q]=h});return o})();
+let HRP__=0,HRC__=new Array(HRN__).fill(0),HRInit__=!1,HRGo__=-1,HRCyc__=0;
+try{HRCyc__=Math.max(0,Math.trunc(+localStorage.getItem(HRK_Y__))||0);HRP__=Math.max(0,Math.trunc(+localStorage.getItem(HRK_P__))||0);const c=JSON.parse(localStorage.getItem(HRK_C__)||"[]");Array.isArray(c)&&c.forEach((v,k)=>{k<HRN__&&(HRC__[k]=v?1:0)})}catch{}
+function HRSave__(){try{localStorage.setItem(HRK_Y__,HRCyc__),localStorage.setItem(HRK_P__,HRP__),localStorage.setItem(HRK_C__,JSON.stringify(HRC__))}catch{}}
 const HRDay__=()=>{const d=new Date;return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()};
 function HRRand__(k,day){let x=Math.imul(day^Math.imul(k+1,2654435761),2246822507)>>>0;x=Math.imul(x^x>>>15,3266489909)>>>0;x=(x^x>>>13)>>>0;return x/4294967296}
-function HRBuild__(day){const a=[];for(let k=0;k<HRN__;k++){let r;if(HRHEROES__[k]!==void 0)r={t:"h",h:HRHEROES__[k]};else{const p=HRRand__(k,day),q=HRRand__(k+500,day),f=.7+q*.8;if(p<.42)r={t:"d",v:Math.max(5,Math.round(5*(1+k/9)*f/5)*5)};else if(p<.74)r={t:"c",v:Math.max(100,Math.round((90+k*20)*f/50)*50)};else r={t:"z",v:Math.max(3,Math.round((3+k/5)*f))}}r.need=HRSTEP__*(k+1);a.push(r)}return a}
+function HRBuild__(day0){const day=day0+HRCyc__*7919,sc=1+.25*Math.min(HRCyc__,8),cy=Math.min(HRCyc__,8),a=[];let pv="";for(let k=0;k<HRN__;k++){let r;if(HRHEROES__[k]!==void 0)r={t:"h",h:HRHEROES__[k]};else{const p=HRRand__(k,day),q=HRRand__(k+500,day),f=(.7+q*.8)*sc;let t0=p<.24?"d":p<.52?"c":p<.74?"z":"p";t0==="d"&&pv==="d"&&(t0=q<.5?"c":"p");
+if(t0==="d")r={t:"d",v:Math.max(1,Math.round((2+k/14)*f/sc*(1+.1*cy)))};else if(t0==="c")r={t:"c",v:Math.max(25,Math.round((30+k*6)*f/25)*25)};else if(t0==="z")r={t:"z",v:Math.max(1,Math.round((1+k/12)*f))};else r={t:"p",v:Math.max(2,Math.round((2+k/8)*f))}}pv=r.t;r.need=HRSTEP__*(k+1);a.push(r)}return a}
 let HRRW__=HRBuild__(HRDay__()),HRRWD__=HRDay__();
-function HRChk__(){const d=HRDay__();d!==HRRWD__&&(HRRWD__=d,HRRW__=HRBuild__(d))}
+function HRChk__(){const d=HRDay__();d!==HRRWD__&&(HRRWD__=d,HRRW__=HRBuild__(d));HRLoop__()}
 const HRTOT__=HRSTEP__*HRN__;
+const HRAllMax__=()=>{for(let h=0;h<et.length;h++)if(!Be(h)||qt[h]<10)return!1;return!0};
+const HRRew__=k=>{const r=HRRW__[k];return r&&r.t==="h"&&HRAllMax__()?{t:"p",v:HRPPV__*(1+Math.min(HRCyc__,8)),need:r.need}:r};
+function HRLvlPts__(h){const lv0=qt[h];if(lv0>=10){Oe+=HRLP__*5;Pn();return{coins:HRLP__*5,lv0,lv1:lv0}}for(pa[h]+=HRLP__;qt[h]<10&&pa[h]>=xo[qt[h]-1];)pa[h]-=xo[qt[h]-1],qt[h]++;qt[h]>=10&&(pa[h]=0);Pn();return{coins:0,lv0,lv1:qt[h]}}
+function HRLoop__(){for(let k=0;k<HRN__;k++)if(!HRC__[k])return;HRCyc__++,HRP__=0,HRC__.fill(0),HRRW__=HRBuild__(HRDay__()),HRRWD__=HRDay__(),HRGo__=0,HRSave__();try{De("HERO ROAD RESET - NEW REWARDS!","#ffb02e")}catch{}}
 const HRDone__=k=>HRP__>=HRRW__[k].need,HRCnt__=()=>{let c=0;for(let k=0;k<HRN__;k++)HRDone__(k)&&!HRC__[k]&&c++;return c};
 const HRCur__=()=>{let k=0;while(k<HRN__&&HRDone__(k))k++;return k};
+const HRFrac__=()=>{const c=HRCur__();return Math.min(HRN__,c+(c<HRN__?(HRP__-(c>0?HRRW__[c-1].need:0))/HRSTEP__:0))};
+const HRProgX__=()=>{const f=HRFrac__(),x0=HRPX__-HRSP__/2+10;return f<=0?x0:f<1?x0+(HRPX__-x0)*f:HRPX__+(f-1)*HRSP__};
 function HRMatch__(win,goals,kos){
-const g=12+(win?14:0)+2*(kos|0)+2*(goals|0),o=HRCur__();HRP__=Math.min(HRTOT__,HRP__+g);HRSave__();try{De("+"+g+" HERO ROAD POINTS","#ffb02e")}catch{}}
+const g=12+(win?14:0)+2*(kos|0)+2*(goals|0);HRP__=Math.min(HRTOT__,HRP__+g);HRSave__();try{De("+"+g+" HERO ROAD POINTS","#ffb02e")}catch{}}
 function HRClaim__(k){
-HRChk__();const r=HRRW__[k];if(!r||!HRDone__(k)||HRC__[k])return;
+HRChk__();const r=HRRew__(k);if(!r||!HRDone__(k)||HRC__[k])return;
 HRC__[k]=1;let msg="";
 if(r.t==="c")Oe+=r.v,Pn(),msg="+"+r.v+" COINS";
 else if(r.t==="d")Da+=r.v,gl(),msg="+"+r.v+" GEMS";
 else if(r.t==="z")Vt+=r.v,Pn(),msg="+"+r.v+" ZP";
-else{const h=r.h;if(Be(h)){const v=ms[et[h].n]||40;Da+=v,gl(),msg=et[h].n.toUpperCase()+" OWNED  +"+v+" GEMS"}else Hn.push(h),gl(),msg=et[h].n.toUpperCase()+" UNLOCKED!"}
-HRSave__();try{De(msg,"#7dff8a")}catch{}se(40)}
+else if(r.t==="p")PP__+=r.v,ppSave__(),msg="+"+r.v+" PP";
+else{const h=r.h;if(Be(h)){const L=HRLvlPts__(h);msg=L.coins?et[h].n.toUpperCase()+" MAXED  +"+L.coins+" COINS":et[h].n.toUpperCase()+" +"+HRLP__+" LEVEL PTS"+(L.lv1>L.lv0?"  LV "+L.lv1+"!":"")}else Hn.push(h),gl(),msg=et[h].n.toUpperCase()+" UNLOCKED!"}
+HRSave__();try{De(msg,"#7dff8a")}catch{}se(40);HRLoop__()}
 function HRClaimAll__(){for(let k=0;k<HRN__;k++)HRDone__(k)&&!HRC__[k]&&HRClaim__(k)}
 function HRIcon__(r,x,y,s){
 if(r.t==="c")Ja(x,y,1.5*s);
 else if(r.t==="d")po(x,y,1.55*s);
+else if(r.t==="p")ppIcon__(x,y,1.15*s);
 else if(r.t==="z"){t.save(),t.translate(x,y),t.scale(s,s),t.lineJoin="round";t.beginPath();[[-3,-17],[11,-17],[3,-4],[13,-4],[-8,19],[-2,3],[-12,3]].forEach((p,q)=>q?t.lineTo(p[0],p[1]):t.moveTo(p[0],p[1]));t.closePath();t.fillStyle="#fff04d",t.fill(),t.strokeStyle="#000",t.lineWidth=3.2,t.stroke(),t.restore()}}
-const HRCOL__={c:["#ffe45c","#ffa21f"],d:["#6ff5b8","#19b87a"],z:["#d6b0ff","#9a5cf5"]};
-/* one reward card. STATIC (no animation). st: 0 = locked (grayed out), 1 = ready to claim, 2 = claimed */
+const HRCOL__={c:["#ffe45c","#ffa21f"],d:["#6ff5b8","#19b87a"],z:["#d6b0ff","#9a5cf5"],p:["#e3b8ff","#8a3fe0"]};
+ 
 function HRCard__(k,x,y,w,h,st){
-const r=HRRW__[k],hero=r.t==="h",lock=st===0,ac=hero?(Ae(r.h)||"#ffd23f"):HRCOL__[r.t][0],bc=hero?en(ac,.45):HRCOL__[r.t][1],cx=x+w/2;
+const r=HRRew__(k),hero=r.t==="h",lock=st===0,ac=hero?(Ae(r.h)||"#ffd23f"):HRCOL__[r.t][0],bc=hero?en(ac,.45):HRCOL__[r.t][1],cx=x+w/2;
 t.save();
 if(st===1){t.globalCompositeOperation="lighter";const g=t.createRadialGradient(cx,y+h/2,6,cx,y+h/2,w*.72);g.addColorStop(0,"rgba(255,225,90,.5)"),g.addColorStop(1,"rgba(255,200,40,0)");t.fillStyle=g,t.fillRect(x-w*.5,y-w*.5,w*2,h+w);t.globalCompositeOperation="source-over"}
 _(x+3,y+6,w,h,14,"rgba(0,0,30,.5)");
@@ -2136,7 +2144,7 @@ if(hero){
 }else{t.save(),lock&&(t.globalAlpha=.6);HRIcon__(r,cx,y+h*.38,1.25),t.restore()}
 lock&&(t.fillStyle="rgba(108,114,132,.5)",t.fillRect(x,y,w,h));
 t.restore();
-{const lab=hero?et[r.h].n.toUpperCase():r.t==="z"?"x"+r.v+" ZP":"x"+r.v,ph=25,py=y+h-ph-6;
+{const lab=hero?et[r.h].n.toUpperCase():r.t==="z"?"x"+r.v+" ZP":r.t==="p"?"x"+r.v+" PP":"x"+r.v,ph=25,py=y+h-ph-6;
  _(x+6,py,w-12,ph,9,"rgba(6,6,36,.72)");FitNum__(lab,cx,py+ph-6.5,17,"#fff","center",3.6,w-24)}
 if(st===1){const pw2=Math.min(w-4,76);_(cx-pw2/2,y-13,pw2,23,10,"#2fe06a","#000",3);R("CLAIM",cx,y+4,14,"#fff","center",3.4)}
 if(st===2){t.save(),t.beginPath(),t.roundRect(x,y,w,h,14),t.clip(),t.fillStyle="rgba(14,12,48,.42)",t.fillRect(x,y,w,h),t.restore();const pw2=Math.min(w-10,78);_(cx-pw2/2,y-13,pw2,23,11,"rgba(14,12,48,.92)","#000",3);R("CLAIMED",cx,y+3.5,12.5,"#fff","center",2.8)}
@@ -2155,30 +2163,33 @@ R("POINTS",X+54,py+26,13,"#fff","left",3);
 FitNum__(String(HRP__),X+54,py+54,26,"#fff","left",5,W*.5-70);
 {const bx=X+W*.46,bw=W*.54-14,bh=28,by=py+30,base=cur>0?HRRW__[cur-1].need:0,nxt=all?HRTOT__:HRRW__[cur].need,f=all?1:(HRP__-base)/(nxt-base);
  R(all?"ALL REWARDS CLAIMED":"NEXT REWARD",bx+bw/2,py+23,13,"#fff","center",3);
- _(bx,by,bw,bh,14,"#241a7a","#000",3);const fw=Math.max(0,(bw-4)*Math.min(1,f));if(fw>2){_(bx+2,by+2,fw,bh-4,12,"#ff5fb4"),_(bx+5,by+5,Math.max(0,fw-6),5,3,"rgba(255,255,255,.5)")}
+ _(bx,by,bw,bh,14,"#241a7a","#000",3);const mn=bh-4,fw=f>0?mn+(bw-4-mn)*Math.min(1,f):0;if(fw>2){_(bx+2,by+2,fw,bh-4,12,"#ff5fb4"),fw>14&&_(bx+7,by+5,Math.max(0,fw-14),5,3,"rgba(255,255,255,.5)")}
  all||FitNum__(HRP__+" / "+nxt,bx+bw/2,by+bh-8,16,"#fff","center",3.6,bw-8)}
 {const bw3=[62,92],jb=(bx3,bw,lab,c,fn)=>{_(bx3,hy+10,bw,34,17,"rgba(0,0,30,.35)");_(bx3,hy+7,bw,34,17,c,"#000",3);R(lab,bx3+bw/2,hy+30,14,"#fff","center",3.4);i(bx3-2,hy+5,bw+4,40,()=>{fn(),se(60)})};
  jb(X,bw3[0],"NOW","#2fcf5a",()=>{HRInit__=!0});jb(X+W-bw3[1],bw3[1],"NEXT HERO","#ff9b2e",()=>{for(let q=0;q<HRN__;q++)if(HRHEROES__[q]!==void 0&&!HRC__[q]){HRGo__=q;return}HRGo__=HRN__-1})}
-const cnt=HRCnt__(),btnH=54,bw2=Math.min(W,330),bx2=-bw2/2,bot=o/2-12-bb__();
-let areaBot=bot;
-if(cnt>0){
- _(bx2,bot-btnH+4,bw2,btnH,14,"rgba(0,0,0,.4)");
- _(bx2,bot-btnH,bw2,btnH,14,"#2fcf5a","#000",3.4),_(bx2+4,bot-btnH+3,bw2-8,btnH*.3,9,"rgba(255,255,255,.22)");
- R("CLAIM ALL  ("+cnt+")",0,bot-btnH/2+8,21,"#fff","center",4.6);
- i(bx2-2,bot-btnH-2,bw2+4,btnH+8,()=>{HRClaimAll__()});
- areaBot=bot-btnH-8}
+const cnt=HRCnt__(),bw2=Math.min(W,330),bx2=-bw2/2,bot=o/2-12-bb__();
+const on=cnt>=2,bh4=50;
+{const by4=bot-bh4,g4=t.createLinearGradient(0,by4,0,bot);on?(g4.addColorStop(0,"#5cf585"),g4.addColorStop(1,"#1fae45")):(g4.addColorStop(0,"#8b91a6"),g4.addColorStop(1,"#5a5f78"));
+ _(bx2,bot-bh4+5,bw2,bh4,bh4/2,"rgba(0,0,0,.4)");
+ _(bx2,by4,bw2,bh4,bh4/2,g4,"#000",3.4);
+ _(bx2+8,by4+4,bw2-16,bh4*.3,9,"rgba(255,255,255,"+(on?.34:.14)+")");
+ const lab="CLAIM ALL",tx=on?-16:0;
+ R(lab,tx,by4+bh4/2+7.5,20,on?"#fff":"#d3d7e6","center",4.4);
+ if(on){const bc=bx2+bw2-bh4/2-4,cy4=by4+bh4/2;t.beginPath(),t.arc(bc,cy4,14,0,6.3),t.fillStyle="#ff3b4e",t.fill(),t.strokeStyle="#000",t.lineWidth=3,t.stroke(),R(String(cnt),bc,cy4+6,cnt>99?12:16,"#fff","center",3.2);
+  i(bx2-2,by4-2,bw2+4,bh4+8,()=>{HRClaimAll__()})}}
+let areaBot=bot-bh4-8;
 return{hy,top:py+ph+14,bot:areaBot}}
 let HRLay__=null;
-/* road geometry (logical units) */
-const HRHH__=150,HRNH__=112,HRSP__=108,HRCW__=88,HRPX__=60,HRBY__=158,HRBH__=28,HRCHW__=324,HRPAD__=80,HRTOP__=-44,HRHT__=300;
+ 
+const HRHH__=150,HRNH__=112,HRSP__=108,HRCW__=88,HRPX__=60,HRBY__=158,HRBH__=28,HRCHW__=324,HRPAD__=80,HRTOP__=-92,HRHT__=348,HRUP__=34;
 const HRCh__=new Map;let HRMk__={};let HRChKey__="";
 function HRChFree__(){for(const v of HRCh__.values())v.width=v.height=1;HRCh__.clear(),HRChKey__="",HRMk__.p&&(HRMk__.p.width=HRMk__.p.height=1),HRMk__={}}
 function HRBgKill__(){try{ae.uk=""}catch{}try{fnR__&&(fnR__.width=fnR__.height=1)}catch{}fnR__=null,LlR__=""}
-/* draws one strip [lo,hi] of the road: bar, reward cards, player marker. Called only when a strip is (re)built. */
+ 
 function HRStrip__(lo,hi){
 const SP=HRSP__,CW=HRCW__,PX=HRPX__,by=HRBY__,bh=HRBH__,bt=by-bh/2,bx0=PX-SP/2+10,bx1=PX+(HRN__-1)*SP+SP/2-10;
 t.lineJoin="round",t.lineCap="round";
-const cur=HRCur__(),frac=Math.min(HRN__,Math.max(0,cur+(cur<HRN__?(HRP__-(cur>0?HRRW__[cur-1].need:0))/HRSTEP__:0))),progX=frac<=0?bx0:PX+(frac-1)*SP;
+const progX=HRProgX__();
 const bar=()=>{t.beginPath(),t.moveTo(bx0-10,bt),t.lineTo(bx1+10,bt),t.lineTo(bx1,bt+bh),t.lineTo(bx0,bt+bh),t.closePath()};
 t.save(),t.translate(0,10),bar(),t.fillStyle="rgba(40,30,90,.3)",t.fill(),t.restore();
 for(let d=6;d>=0;d-=2){t.save(),t.translate(0,d),bar(),t.fillStyle="#4a4f66",t.fill(),d===6&&(t.strokeStyle="#000",t.lineWidth=3.5,t.stroke()),t.restore()}
@@ -2187,48 +2198,55 @@ bar(),t.fillStyle="#9aa0b8",t.fill(),t.save(),t.clip(),t.strokeStyle="rgba(255,2
 t.restore();bar(),t.lineJoin="miter",t.strokeStyle="#000",t.lineWidth=3.5,t.stroke(),t.lineJoin="round";
 for(let q=0;q<HRN__;q++){
  const cx=PX+q*SP;if(cx<lo||cx>hi)continue;
- const r=HRRW__[q],hero=r.t==="h",st=HRC__[q]?2:HRDone__(q)?1:0,w=hero?CW+10:CW,h=hero?HRHH__:HRNH__,cyTop=by-bh/2-18-h,done=st>0;
- t.beginPath(),t.moveTo(cx-8,by-bh/2-18),t.lineTo(cx,by-bh/2-5),t.lineTo(cx+8,by-bh/2-18),t.closePath(),t.fillStyle=done?"#ff5fb4":"#9097a8",t.fill(),t.strokeStyle="#000",t.lineWidth=3,t.stroke();
+ const r=HRRew__(q),hero=r.t==="h",st=HRC__[q]?2:HRDone__(q)?1:0,w=hero?CW+10:CW,h=hero?HRHH__:HRNH__,cyTop=by-bh/2-18-h-HRUP__,done=st>0;
+ t.beginPath(),t.moveTo(cx-8,by-bh/2-18-HRUP__),t.lineTo(cx,by-bh/2-5-HRUP__),t.lineTo(cx+8,by-bh/2-18-HRUP__),t.closePath(),t.fillStyle=done?"#ff5fb4":"#9097a8",t.fill(),t.strokeStyle="#000",t.lineWidth=3,t.stroke();
  HRCard__(q,cx-w/2,cyTop,w,h,st);
- t.beginPath();for(let a=0;a<6;a++){const an=a*1.0472-1.5708;a?t.lineTo(cx+Math.cos(an)*15,by+Math.sin(an)*15):t.moveTo(cx+Math.cos(an)*15,by+Math.sin(an)*15)}t.closePath(),t.fillStyle=done?"#ffe45c":"#b9bfcc",t.fill(),t.strokeStyle="#000",t.lineWidth=3.2,t.stroke();
- R(String(q+1),cx,by+5.5,q>98?11:13,done?"#7a3a00":"#565c70","center",0);
- FitNum__(r.need,cx,by+38,15,"#fff","center",4,SP-14)}
+ {const hr=16.5,hy2=by-bh/2-hr-3;t.beginPath();for(let a=0;a<6;a++){const an=a*1.0472-1.5708;a?t.lineTo(cx+Math.cos(an)*hr,hy2+Math.sin(an)*hr):t.moveTo(cx+Math.cos(an)*hr,hy2+Math.sin(an)*hr)}t.closePath();
+  const hg=t.createLinearGradient(0,hy2-hr,0,hy2+hr);done?(hg.addColorStop(0,"#fff27a"),hg.addColorStop(1,"#ff9b1f")):(hg.addColorStop(0,"#8d94ad"),hg.addColorStop(1,"#4a4f6e"));
+  t.fillStyle=hg,t.fill(),t.strokeStyle="#000",t.lineWidth=3.4,t.stroke();
+  t.save(),t.clip(),t.fillStyle="rgba(255,255,255,"+(done?.4:.18)+")",t.fillRect(cx-hr,hy2-hr,hr*2,hr*.8),t.restore()}
+ R(String(q+1),cx,by-bh/2-16.5-3+(q>98?4.5:5.8),q>98?13:q>8?15:17,"#fff","center",3.8);
+ {const pw=SP-18,py=by+27,ph=23,px0=cx-pw/2;
+  _(px0,py,pw,ph,11.5,done?"#2a1d6e":"rgba(8,8,40,.82)","#000",2.6);
+  _(px0+3,py+2,pw-6,ph*.32,6,"rgba(255,255,255,.12)");
+  HRIconPP__(px0+13,py+ph/2+.5,.56);
+  FitNum__(r.need,cx+9,py+ph-5.5,16,"#fff","center",3.6,pw-38)}}
 }
 function HRChunk__(j,sc){
 let cv=HRCh__.get(j);if(cv)return cv;
 const lo=j*HRCHW__-HRPAD__,hi=(j+1)*HRCHW__+HRPAD__;
 cv=Ji(hi-lo,HRHT__,lo,HRTOP__,sc,()=>HRStrip__(lo,hi));HRCh__.set(j,cv);return cv}
 function HRUI__(i,s,n,o,l,e){
-HRChk__();const sig=()=>[HRDay__(),HRP__,HRC__.join(""),Oe,Da,he,l|0,bb__()|0].join("|");
+HRChk__();const sig=()=>[HRDay__(),HRCyc__,HRAllMax__()?1:0,HRP__,HRC__.join(""),Oe,Da,he,l|0,bb__()|0].join("|");
 uiLayer__("hroad",sig,i,n,o,E=>{HRLay__=HRStatic__(E,n,o,l)});
 const L=HRLay__;if(!L)return;
 (ae.vc.size||fnR__)&&HRBgKill__();
-const aTop=L.top,aH=L.bot-L.top,CHv=262,k=Math.max(.55,Math.min(1.55,aH/CHv,n/330)),y02=aTop+Math.max(0,(aH-CHv*k)/2),VW=n/k,SP=HRSP__,CW=HRCW__,PX=HRPX__,TOT=PX*2+(HRN__-1)*SP,by=HRBY__,bh=HRBH__;
+const aTop=L.top,aH=L.bot-L.top,CHv=300,k=Math.max(.55,Math.min(1.55,aH/CHv,n/330)),y02=aTop+Math.max(0,(aH-CHv*k)/2)+HRUP__*k,VW=n/k,SP=HRSP__,CW=HRCW__,PX=HRPX__,TOT=PX*2+(HRN__-1)*SP,by=HRBY__,bh=HRBH__;
 RoadK__=k;Ya={x:ot/2-n/2*Fi,y:lt/2+aTop*Fi,w:n*Fi,h:aH*Fi};Cn=Math.max(0,TOT-VW);
 const cur=HRCur__();
 if(HRGo__>=0){ln=PX+HRGo__*SP-VW/2,HRGo__=-1}else if(HRInit__){HRInit__=!1;let f0=-1;for(let q=0;q<HRN__;q++)if(HRDone__(q)&&!HRC__[q]){f0=q;break}ln=PX+Math.min(HRN__-1,f0>=0?f0:cur)*SP-VW/2}
 ln=Math.max(0,Math.min(Cn,ln));
 t.save(),t.beginPath(),t.rect(-n/2,aTop-4,n,aH+8),t.clip(),t.translate(-n/2,y02),t.scale(k,k),t.translate(-ln,0);
-{const sc=t.getTransform().a,key=[Math.round(sc*100),HRP__,HRC__.join(""),HRRWD__].join("|");
+{const sc=t.getTransform().a,key=[Math.round(sc*100),HRP__,HRC__.join(""),HRRWD__,HRCyc__,HRAllMax__()?1:0].join("|");
  key!==HRChKey__&&(HRChFree__(),HRChKey__=key);
  const CHW=HRCHW__,c0=Math.max(0,Math.floor(ln/CHW)),c1=Math.min(Math.floor(TOT/CHW),Math.floor((ln+VW)/CHW));
  for(let j=c0;j<=c1;j++){const cv=HRChunk__(j,sc),ra=cv.width/(CHW+2*HRPAD__);t.drawImage(cv,(HRPAD__-.15)*ra,0,(CHW+.3)*ra,cv.height,j*CHW-.15,HRTOP__,CHW+.3,HRHT__)}
- for(const j of[...HRCh__.keys()])(j<c0-1||j>c1+1)&&(HRCh__.get(j).width=HRCh__.get(j).height=1,HRCh__.delete(j));
- /* "YOU" marker: cached bitmaps, clamped so it never leaves the screen */
- if(!HRMk__.p){const my=by+58;
-  HRMk__.p=Ji(24,16,-12,by+44,sc,()=>{t.lineJoin="round";const my=by+58;t.beginPath(),t.moveTo(0,by+47),t.lineTo(8,my+1),t.lineTo(-8,my+1),t.closePath(),t.fillStyle="#ffe14d",t.fill(),t.strokeStyle="#000",t.lineWidth=2.6,t.stroke()})}
- {const cur2=HRCur__(),fr=Math.min(HRN__,Math.max(0,cur2+(cur2<HRN__?(HRP__-(cur2>0?HRRW__[cur2-1].need:0))/HRSTEP__:0))),progX=fr<=0?PX-SP/2+10:PX+(fr-1)*SP,px=progX;
-  t.drawImage(HRMk__.p,px-12,by+44,24,16)}}
+ for(const j of[...HRCh__.keys()])(j<c0-3||j>c1+3)&&(HRCh__.get(j).width=HRCh__.get(j).height=1,HRCh__.delete(j));
+  
+ if(!HRMk__.p){
+  HRMk__.p=Ji(24,16,-12,by+58,sc,()=>{t.lineJoin="round";const my=by+72;t.beginPath(),t.moveTo(0,by+61),t.lineTo(8,my+1),t.lineTo(-8,my+1),t.closePath(),t.fillStyle="#ffe14d",t.fill(),t.strokeStyle="#000",t.lineWidth=2.6,t.stroke()})}
+ {const px=HRProgX__();
+  t.drawImage(HRMk__.p,px-12,by+58,24,16)}}
 t.restore();
-/* tap areas (no drawing) */
+ 
 {const q0=Math.max(0,Math.floor((ln-PX)/SP)-1),q1=Math.min(HRN__-1,Math.ceil((ln+VW-PX)/SP)+1);
- for(let q=q0;q<=q1;q++){const cx=PX+q*SP,hero=HRRW__[q].t==="h",w=hero?CW+10:CW,h=hero?HRHH__:HRNH__,cyTop=by-bh/2-18-h,hw=w/2+4;
-  i(-n/2+(cx-ln)*k-hw*k,y02+(cyTop-8)*k,hw*2*k,(h+30)*k,()=>{
+ for(let q=q0;q<=q1;q++){const cx=PX+q*SP,hero=HRRew__(q).t==="h",w=hero?CW+10:CW,h=hero?HRHH__:HRNH__,cyTop=by-bh/2-18-h-HRUP__,hw=w/2+4;
+  i(-n/2+(cx-ln)*k-hw*k,y02+(cyTop-8)*k,hw*2*k,(h+30+HRUP__)*k,()=>{
    if(HRC__[q]){try{De("ALREADY CLAIMED","#cfd8e3")}catch{}se(60)}
    else if(HRDone__(q))HRClaim__(q);
    else{try{De("REACH "+HRRW__[q].need+" POINTS","#ffd23f")}catch{}se(60)}})}}
 }
-document.addEventListener("visibilitychange",()=>{document.hidden&&HRChFree__()});
+document.addEventListener("visibilitychange",()=>{if(document.hidden){HRChFree__(),HRBgKill__();try{uiLayerFree__("hroad")}catch{}HRLay__=null}});
 uiScreen__(12,"hroad",(...a)=>HRUI__(...a),()=>{HRLay__=null,HRInit__=!1,HRChFree__()});
 
 /* LEGACY screens: none left. The legacy:true exemption list is empty - never add to it. */
@@ -2890,13 +2908,13 @@ const l=$,f=Tn(e),i=l.c===e;
 if(f=="SHOCKWAVE")a&&n<Le.shock-30&&ba(e);else if(f=="BIG SHOT")a&&n<460&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="AIR SLASH")a&&n<460&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="ZIGZAG")a&&n<420&&n>110&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="SWAP")a&&n<440&&(l.c===a||e.hp<e.mh*.5&&n<200||i&&n>160)&&ba(e);else if(f=="BULLDOZE")a&&n<230&&ba(e,Math.atan2(a.y-e.y,a.x-e.x));else if(f=="TURBO")(a&&n<420||i||!l.c&&Math.hypot(l.x-e.x,l.y-e.y)<420)&&ba(e);else if(f=="FORCE FIELD")a&&n<300&&(i||e.hp<e.mh*.85)&&ba(e);else if(f=="BLINK"){const s=e.tk==0?0:F;i&&a&&n<230?ba(e,BD?Math.atan2(BDY-e.y,BDX-e.x):Math.atan2(s-e.y,Et-e.x)):!i&&a&&n<130&&e.hp<e.mh*.5&&ba(e,Math.atan2(e.y-a.y,e.x-a.x))}else if(f=="HEAL PULSE"){let s=0;for(const r of Y)r.alive&&r.tk===e.tk&&Math.hypot(r.x-e.x,r.y-e.y)<Le.heal&&(s+=r.mh-r.hp);s>=60&&ba(e)}else if(f=="PUFF UP")a&&n<150&&(i||e.hp<e.mh*.85)&&ba(e);else if(f=="MAGNET"){const s=Math.hypot(l.x-e.x,l.y-e.y);(l.c&&l.c.tk!==e.tk&&Math.hypot(l.c.x-e.x,l.c.y-e.y)<Le.steal-20||!l.c&&l.lt<=0&&s<Le.pull-30&&s>140)&&ba(e)}}
 function bf(){
 if(He=[],BD||Bt)return;
-/* chest rarity: ~1 in 4 matches has chests */
+ 
 if(Math.random()>=.25)return;
-/* when present: 1 chest, sometimes 2 */
+ 
 const want=1+(Math.random()<.3?1:0);
 for(let k=0;k<400&&He.length<want;k++){const a=z(280,j-280),n=z(F*.2,F*.8);if(Math.hypot(a-j/2,n-F/2)<150||Kn(a,n,52))continue;let ok=!0;for(const o of He)if(Math.hypot(o.x-a,o.y-n)<190){ok=!1;break}ok&&He.push({x:a,y:n,hp:pi,mhp:pi,ht:-1e9})}}
 function xf(e){
-/* chest reward: 1-10 diamonds */
+ 
 const n=1+(Math.random()*10|0);
 Da+=n,gl(),He=He.filter(o=>o!==e),St.push({x:e.x,y:e.y-44,t:"+"+n+" DIAMOND"+(n>1?"S":""),l:1.5,c:"#7de8ff"});
 for(let o=0;o<5;o++)it(e.x,e.y,o%2?"#7de8ff":"#ffd23f",7);
@@ -3295,7 +3313,7 @@ function Tf(e,a,n,o,l){
 const f=Math.min(3,Math.max(.5,t.getTransform().a)),i=a+"|"+f.toFixed(2);
 if(e.k!==i){e.k=i;const s=e.cv||(e.cv=document.createElement("canvas")),r=Math.ceil(n*f),c=Math.ceil(o*f);(s.width!==r||s.height!==c)&&(s.width=r,s.height=c);const h=s.getContext("2d");h.setTransform(1,0,0,1,0,0),h.clearRect(0,0,r,c),h.setTransform(r/n,0,0,c/o,0,0);const u=t;t=h;try{l()}finally{t=u}}
 t.drawImage(e.cv,0,0,n,o)}
-let ue="#14112b";/* outline colour; turns white while a hero is hit-flashing so the flash is a solid white silhouette */
+let ue="#14112b"; 
 const Hl=["#f6c28b","#e8a66b","#c98a5b","#f6c28b","#8d5a3b","#f2c9a0","#e9c3a1","#a86f48"],Bl=[13,12,15,11,16,12,11,14],Za=[22,21,23,20,24,21,20,23],Pf=["#23304f","#8a5a14","#4a2414","#2a1f4a","#3b2a22","#7a2a5a","#2b0f1d","#5a3d00"],wf=[null,null,null,null,null,null,null,null],ka=["#2f56b8","#ffd23f","#d9481e","#8a5bff","#5a3a22","#ff7ac8","#1b1b2f","#231a15"],Kl=["#ffb703","#ffe14d","#ff9f43","#d9c2ff","#ffb703","#ffd0ec","#ff2e63","#ffffff","#ff9ccf"],Bo=()=>typeof Lt=="number"?Lt:0;
 function Rf(e,a){
 if(t.strokeStyle=ue,t.lineWidth=3,e==6)for(const n of[-1,1])t.save(),t.translate(-14,0),t.rotate(n*.7),t.fillStyle=a?"#fff":"#c9d1e8",t.beginPath(),t.roundRect(-2,-13,4,26,2),t.fill(),t.stroke(),t.fillStyle=a?"#fff":Kl[6],t.fillRect(-3.5,-1,7,3),t.restore();else e==7&&(t.fillStyle=a?"#fff":"#e0a800",t.beginPath(),t.moveTo(-6,-Za[7]+3),t.quadraticCurveTo(-26,-12,-23,0),t.quadraticCurveTo(-26,12,-6,Za[7]-3),t.closePath(),t.fill(),t.stroke())}
@@ -5014,11 +5032,11 @@ const OI_FRAME_MS__=1000/60;
 function oiKick__(){oiRaf__||(oiRaf__=requestAnimationFrame(oi))}
 function oi(e){
 oiRaf__=0;
-/* pause game loop while exchange is open */
+ 
 if(ZpTab__){setTimeout(oiKick__,250);return}
-/* tab hidden: stop the loop completely (no polling); visibilitychange restarts it */
+ 
 if(document.hidden)return;
-/* cap at 60 FPS: skip vsync ticks that arrive early on 90/120/144Hz displays */
+ 
 if(e-oiLast__<OI_FRAME_MS__-1.5){oiKick__();return}
 oiLast__=e;
 {const dt=e-oiPrev__;oiPrev__=e;if(!lowFx__&&J===1&&!ze&&te<=0&&dt<200){oiN__++,dt>26&&oiSlow__++;if(oiN__>=120){oiSlow__>=48&&fxLow__(!0);oiN__=oiSlow__=0}}}
