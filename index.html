@@ -120,10 +120,304 @@ canvas {
   paint-order: stroke fill;
 }
 </style><script>if("serviceWorker"in navigator&&/^https?:/.test(location.protocol))addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})</script>
+<style id="bootcss">#boot{position:fixed;left:0;top:0;right:0;bottom:0;z-index:99999;overflow:hidden;background:linear-gradient(#3d8bff,#4a45e6 60%,#241a86);touch-action:none;-webkit-user-select:none;user-select:none;transition:opacity .3s ease,transform .3s ease}
+#boot.out{opacity:0;transform:scale(1.06);pointer-events:none}
+#boot .bk{position:absolute;left:0;top:0;right:0;bottom:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 32.5px,rgba(255,255,255,0) 32.5px 92px)}
+#boot .bw{position:absolute;left:0;top:0;right:0;bottom:0;box-sizing:border-box;padding:max(14px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(30px,7vh,70px)}
+#boot .bl svg{display:block;width:min(90vw,470px,56vh);height:auto;overflow:visible;animation:blpop .55s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes blpop{0%{transform:scale(.55) rotate(-7deg);opacity:0}100%{transform:none;opacity:1}}
+#boot .bb{width:min(86vw,420px)}
+#boot .bar{position:relative;height:clamp(28px,4.4vh,36px);border:4px solid #000;border-radius:9px;background:linear-gradient(#17316f 50%,#0f2159 50%);box-shadow:4px 5px 0 #000;overflow:hidden}
+#boot .bar i{position:absolute;left:0;top:0;bottom:0;width:0;overflow:hidden;background:linear-gradient(#fff 0 55%,#a8dcf6 55%);border-right:3px solid #000}
+#boot .bar i::before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,0) 0 9px,rgba(70,150,255,.25) 9px 18px);background-size:36px 100%;animation:bst .7s linear infinite}
+@keyframes bst{to{background-position:36px 0}}
+#boot .bi{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:14px;padding:0 4px;font:clamp(15px,2.4vh,19px)/1.1 "Lilita One","Arial Rounded MT Bold","Arial Black",sans-serif;color:#fff;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:2px 3px 0 #000;letter-spacing:.4px}
+@media (orientation:landscape) and (max-height:520px){#boot .bl svg{width:min(44vw,60vh*1.39)}#boot .bw{gap:3vh}}
+</style>
 </head>
 <body><div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
 <div id="blk" style="display:none"><div class="bx"><div class="bt">GOAL RUSH</div><div class="bm">This game is made for mobile.</div><div class="bs">Open this page on your phone or tablet to play.</div></div></div>
 <canvas id="c"></canvas>
+<div id="boot" aria-hidden="true"><div class="bk"></div><div class="bw"><div class="bl"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -26 487 350" aria-label="Goal Rush" role="img">
+<defs>
+<linearGradient id="blHot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff36b"/><stop offset=".55" stop-color="#ffc21a"/><stop offset="1" stop-color="#ff9a12"/></linearGradient>
+<path id="blgG00" d="M0 0H100V28H28V102H72V86H56V62H100V130H0Z" fill-rule="evenodd"/>
+<mask id="blmG00" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgG00" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+<path id="blgO01" d="M0 0H100V130H0ZM28 28V102H72V28Z" fill-rule="evenodd"/>
+<mask id="blmO01" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgO01" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+<path id="blgA02" d="M0 130V24L24 0H76L100 24V130H72V92H28V130ZM28 28V64H72V28Z" fill-rule="evenodd"/>
+<mask id="blmA02" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgA02" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+<path id="blgL03" d="M0 0H28V102H100V130H0Z" fill-rule="evenodd"/>
+<mask id="blmL03" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgL03" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+<path id="blgR1380" d="M0 0H76L100 24V64L80 84L100 104V130H68V112L48 92H28V130H0ZM28 28V64H72V28Z" fill-rule="evenodd"/>
+<mask id="blmR1380" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgR1380" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+<path id="blgU1381" d="M0 0H28V102H72V0H100V110L80 130H20L0 110Z" fill-rule="evenodd"/>
+<mask id="blmU1381" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgU1381" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+<path id="blgS1382" d="M0 0H100V26H26V52H100V130H0V104H74V78H0Z" fill-rule="evenodd"/>
+<mask id="blmS1382" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgS1382" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+<path id="blgH1383" d="M0 0H28V51H72V0H100V130H72V79H28V130H0Z" fill-rule="evenodd"/>
+<mask id="blmH1383" maskUnits="userSpaceOnUse" x="-30" y="-30" width="170" height="210"><use href="#blgH1383" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></mask>
+</defs>
+<g transform="rotate(-5 230 150) skewX(-7)">
+<g transform="translate(0 0) rotate(-2 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgG00" x="20.00" y="23.00"/>
+<use href="#blgG00" x="19.00" y="21.85"/>
+<use href="#blgG00" x="18.00" y="20.70"/>
+<use href="#blgG00" x="17.00" y="19.55"/>
+<use href="#blgG00" x="16.00" y="18.40"/>
+<use href="#blgG00" x="15.00" y="17.25"/>
+<use href="#blgG00" x="14.00" y="16.10"/>
+<use href="#blgG00" x="13.00" y="14.95"/>
+<use href="#blgG00" x="12.00" y="13.80"/>
+<use href="#blgG00" x="11.00" y="12.65"/>
+<use href="#blgG00" x="10.00" y="11.50"/>
+<use href="#blgG00" x="9.00" y="10.35"/>
+<use href="#blgG00" x="8.00" y="9.20"/>
+<use href="#blgG00" x="7.00" y="8.05"/>
+<use href="#blgG00" x="6.00" y="6.90"/>
+<use href="#blgG00" x="5.00" y="5.75"/>
+<use href="#blgG00" x="4.00" y="4.60"/>
+<use href="#blgG00" x="3.00" y="3.45"/>
+<use href="#blgG00" x="2.00" y="2.30"/>
+<use href="#blgG00" x="1.00" y="1.15"/>
+</g>
+<use href="#blgG00" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgG00" fill="#a8dcf6" stroke="#a8dcf6" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmG00)"><use href="#blgG00" x="-5.5" y="-5.5" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+<g transform="translate(106 0) rotate(1 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgO01" x="20.00" y="23.00"/>
+<use href="#blgO01" x="19.00" y="21.85"/>
+<use href="#blgO01" x="18.00" y="20.70"/>
+<use href="#blgO01" x="17.00" y="19.55"/>
+<use href="#blgO01" x="16.00" y="18.40"/>
+<use href="#blgO01" x="15.00" y="17.25"/>
+<use href="#blgO01" x="14.00" y="16.10"/>
+<use href="#blgO01" x="13.00" y="14.95"/>
+<use href="#blgO01" x="12.00" y="13.80"/>
+<use href="#blgO01" x="11.00" y="12.65"/>
+<use href="#blgO01" x="10.00" y="11.50"/>
+<use href="#blgO01" x="9.00" y="10.35"/>
+<use href="#blgO01" x="8.00" y="9.20"/>
+<use href="#blgO01" x="7.00" y="8.05"/>
+<use href="#blgO01" x="6.00" y="6.90"/>
+<use href="#blgO01" x="5.00" y="5.75"/>
+<use href="#blgO01" x="4.00" y="4.60"/>
+<use href="#blgO01" x="3.00" y="3.45"/>
+<use href="#blgO01" x="2.00" y="2.30"/>
+<use href="#blgO01" x="1.00" y="1.15"/>
+</g>
+<use href="#blgO01" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgO01" fill="#a8dcf6" stroke="#a8dcf6" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmO01)"><use href="#blgO01" x="-5.5" y="-5.5" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+<g transform="translate(212 0) rotate(-1 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgA02" x="20.00" y="23.00"/>
+<use href="#blgA02" x="19.00" y="21.85"/>
+<use href="#blgA02" x="18.00" y="20.70"/>
+<use href="#blgA02" x="17.00" y="19.55"/>
+<use href="#blgA02" x="16.00" y="18.40"/>
+<use href="#blgA02" x="15.00" y="17.25"/>
+<use href="#blgA02" x="14.00" y="16.10"/>
+<use href="#blgA02" x="13.00" y="14.95"/>
+<use href="#blgA02" x="12.00" y="13.80"/>
+<use href="#blgA02" x="11.00" y="12.65"/>
+<use href="#blgA02" x="10.00" y="11.50"/>
+<use href="#blgA02" x="9.00" y="10.35"/>
+<use href="#blgA02" x="8.00" y="9.20"/>
+<use href="#blgA02" x="7.00" y="8.05"/>
+<use href="#blgA02" x="6.00" y="6.90"/>
+<use href="#blgA02" x="5.00" y="5.75"/>
+<use href="#blgA02" x="4.00" y="4.60"/>
+<use href="#blgA02" x="3.00" y="3.45"/>
+<use href="#blgA02" x="2.00" y="2.30"/>
+<use href="#blgA02" x="1.00" y="1.15"/>
+</g>
+<use href="#blgA02" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgA02" fill="#a8dcf6" stroke="#a8dcf6" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmA02)"><use href="#blgA02" x="-5.5" y="-5.5" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+<g transform="translate(318 0) rotate(2 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgL03" x="20.00" y="23.00"/>
+<use href="#blgL03" x="19.00" y="21.85"/>
+<use href="#blgL03" x="18.00" y="20.70"/>
+<use href="#blgL03" x="17.00" y="19.55"/>
+<use href="#blgL03" x="16.00" y="18.40"/>
+<use href="#blgL03" x="15.00" y="17.25"/>
+<use href="#blgL03" x="14.00" y="16.10"/>
+<use href="#blgL03" x="13.00" y="14.95"/>
+<use href="#blgL03" x="12.00" y="13.80"/>
+<use href="#blgL03" x="11.00" y="12.65"/>
+<use href="#blgL03" x="10.00" y="11.50"/>
+<use href="#blgL03" x="9.00" y="10.35"/>
+<use href="#blgL03" x="8.00" y="9.20"/>
+<use href="#blgL03" x="7.00" y="8.05"/>
+<use href="#blgL03" x="6.00" y="6.90"/>
+<use href="#blgL03" x="5.00" y="5.75"/>
+<use href="#blgL03" x="4.00" y="4.60"/>
+<use href="#blgL03" x="3.00" y="3.45"/>
+<use href="#blgL03" x="2.00" y="2.30"/>
+<use href="#blgL03" x="1.00" y="1.15"/>
+</g>
+<use href="#blgL03" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgL03" fill="#a8dcf6" stroke="#a8dcf6" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmL03)"><use href="#blgL03" x="-5.5" y="-5.5" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+<g transform="translate(24 138) rotate(1 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgR1380" x="20.00" y="23.00"/>
+<use href="#blgR1380" x="19.00" y="21.85"/>
+<use href="#blgR1380" x="18.00" y="20.70"/>
+<use href="#blgR1380" x="17.00" y="19.55"/>
+<use href="#blgR1380" x="16.00" y="18.40"/>
+<use href="#blgR1380" x="15.00" y="17.25"/>
+<use href="#blgR1380" x="14.00" y="16.10"/>
+<use href="#blgR1380" x="13.00" y="14.95"/>
+<use href="#blgR1380" x="12.00" y="13.80"/>
+<use href="#blgR1380" x="11.00" y="12.65"/>
+<use href="#blgR1380" x="10.00" y="11.50"/>
+<use href="#blgR1380" x="9.00" y="10.35"/>
+<use href="#blgR1380" x="8.00" y="9.20"/>
+<use href="#blgR1380" x="7.00" y="8.05"/>
+<use href="#blgR1380" x="6.00" y="6.90"/>
+<use href="#blgR1380" x="5.00" y="5.75"/>
+<use href="#blgR1380" x="4.00" y="4.60"/>
+<use href="#blgR1380" x="3.00" y="3.45"/>
+<use href="#blgR1380" x="2.00" y="2.30"/>
+<use href="#blgR1380" x="1.00" y="1.15"/>
+</g>
+<use href="#blgR1380" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgR1380" fill="#a8dcf6" stroke="#a8dcf6" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmR1380)"><use href="#blgR1380" x="-5.5" y="-5.5" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+<g transform="translate(130 138) rotate(-2 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgU1381" x="20.00" y="23.00"/>
+<use href="#blgU1381" x="19.00" y="21.85"/>
+<use href="#blgU1381" x="18.00" y="20.70"/>
+<use href="#blgU1381" x="17.00" y="19.55"/>
+<use href="#blgU1381" x="16.00" y="18.40"/>
+<use href="#blgU1381" x="15.00" y="17.25"/>
+<use href="#blgU1381" x="14.00" y="16.10"/>
+<use href="#blgU1381" x="13.00" y="14.95"/>
+<use href="#blgU1381" x="12.00" y="13.80"/>
+<use href="#blgU1381" x="11.00" y="12.65"/>
+<use href="#blgU1381" x="10.00" y="11.50"/>
+<use href="#blgU1381" x="9.00" y="10.35"/>
+<use href="#blgU1381" x="8.00" y="9.20"/>
+<use href="#blgU1381" x="7.00" y="8.05"/>
+<use href="#blgU1381" x="6.00" y="6.90"/>
+<use href="#blgU1381" x="5.00" y="5.75"/>
+<use href="#blgU1381" x="4.00" y="4.60"/>
+<use href="#blgU1381" x="3.00" y="3.45"/>
+<use href="#blgU1381" x="2.00" y="2.30"/>
+<use href="#blgU1381" x="1.00" y="1.15"/>
+</g>
+<use href="#blgU1381" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgU1381" fill="#a8dcf6" stroke="#a8dcf6" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmU1381)"><use href="#blgU1381" x="-5.5" y="-5.5" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+<g transform="translate(236 138) rotate(2 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgS1382" x="20.00" y="23.00"/>
+<use href="#blgS1382" x="19.00" y="21.85"/>
+<use href="#blgS1382" x="18.00" y="20.70"/>
+<use href="#blgS1382" x="17.00" y="19.55"/>
+<use href="#blgS1382" x="16.00" y="18.40"/>
+<use href="#blgS1382" x="15.00" y="17.25"/>
+<use href="#blgS1382" x="14.00" y="16.10"/>
+<use href="#blgS1382" x="13.00" y="14.95"/>
+<use href="#blgS1382" x="12.00" y="13.80"/>
+<use href="#blgS1382" x="11.00" y="12.65"/>
+<use href="#blgS1382" x="10.00" y="11.50"/>
+<use href="#blgS1382" x="9.00" y="10.35"/>
+<use href="#blgS1382" x="8.00" y="9.20"/>
+<use href="#blgS1382" x="7.00" y="8.05"/>
+<use href="#blgS1382" x="6.00" y="6.90"/>
+<use href="#blgS1382" x="5.00" y="5.75"/>
+<use href="#blgS1382" x="4.00" y="4.60"/>
+<use href="#blgS1382" x="3.00" y="3.45"/>
+<use href="#blgS1382" x="2.00" y="2.30"/>
+<use href="#blgS1382" x="1.00" y="1.15"/>
+</g>
+<use href="#blgS1382" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgS1382" fill="#e0480f" stroke="#e0480f" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmS1382)"><use href="#blgS1382" x="-5.5" y="-5.5" fill="url(#blHot)" stroke="url(#blHot)" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+<g transform="translate(342 138) rotate(-1 50 60)">
+<g fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round">
+<use href="#blgH1383" x="20.00" y="23.00"/>
+<use href="#blgH1383" x="19.00" y="21.85"/>
+<use href="#blgH1383" x="18.00" y="20.70"/>
+<use href="#blgH1383" x="17.00" y="19.55"/>
+<use href="#blgH1383" x="16.00" y="18.40"/>
+<use href="#blgH1383" x="15.00" y="17.25"/>
+<use href="#blgH1383" x="14.00" y="16.10"/>
+<use href="#blgH1383" x="13.00" y="14.95"/>
+<use href="#blgH1383" x="12.00" y="13.80"/>
+<use href="#blgH1383" x="11.00" y="12.65"/>
+<use href="#blgH1383" x="10.00" y="11.50"/>
+<use href="#blgH1383" x="9.00" y="10.35"/>
+<use href="#blgH1383" x="8.00" y="9.20"/>
+<use href="#blgH1383" x="7.00" y="8.05"/>
+<use href="#blgH1383" x="6.00" y="6.90"/>
+<use href="#blgH1383" x="5.00" y="5.75"/>
+<use href="#blgH1383" x="4.00" y="4.60"/>
+<use href="#blgH1383" x="3.00" y="3.45"/>
+<use href="#blgH1383" x="2.00" y="2.30"/>
+<use href="#blgH1383" x="1.00" y="1.15"/>
+</g>
+<use href="#blgH1383" fill="#000" stroke="#000" stroke-width="21.0" stroke-linejoin="round"/>
+<use href="#blgH1383" fill="#a8dcf6" stroke="#a8dcf6" stroke-width="8" stroke-linejoin="round"/>
+<g mask="url(#blmH1383)"><use href="#blgH1383" x="-5.5" y="-5.5" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/></g>
+</g>
+</g>
+</svg></div><div class="bb"><div class="bar"><i></i></div><div class="bi"><span class="bs">Starting the game</span><span class="bp">0%</span></div></div></div></div>
+<script>
+(function(){
+var el=document.getElementById("boot");
+if(!el)return;
+var mobile=false;
+try{mobile=matchMedia("(pointer:coarse)").matches||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Macintosh/.test(navigator.userAgent))}catch(e){}
+if(!mobile){el.remove();return}
+/* REAL loader. The bar only moves when something actually finishes:
+   font   - the Lilita One font file has really downloaded (or failed / timed out)
+   code   - the game script has finished running (__bootReady, called at the very end of it)
+   save   - the cloud save has been checked (or there is no account / we are offline)
+   menu   - the game has really drawn its first menu frames behind this screen
+   The displayed bar only eases toward the real value, it never runs ahead of it. */
+var fill=el.querySelector(".bar i"),lab=el.querySelector(".bs"),pct=el.querySelector(".bp");
+var T0=0,MIN=5600,W={code:30,font:15,save:20,menu:35},S={code:0,font:0,save:0,menu:0},FR=4,frames=0,shown=0,gone=0,tCode=0;
+var T={code:"Starting the game",font:"Loading fonts",save:"Checking your save",menu:"Drawing the menu"},ORDER=["code","font","save","menu"];
+function set(k,v){if(v>S[k])S[k]=v}
+function target(){var p=0;for(var k in W)p+=W[k]*S[k];return p}
+function label(){var c=0;for(var i=0;i<4;i++){c+=W[ORDER[i]];if(shown<c-.01||S[ORDER[i]]<1)return T[ORDER[i]]}return"Ready!"}
+function finish(){if(gone)return;gone=1;try{el.classList.add("out")}catch(e){}setTimeout(function(){try{el.remove()}catch(e){}el=fill=lab=pct=null},340);try{delete window.__bootReady;delete window.__bootSave;delete window.__bootFrame}catch(e){}}
+function tick(now){
+if(gone)return;
+var tg=target(),dt=T0?Math.min(80,now-T0):16;T0=now;
+if(shown<tg)shown=Math.min(tg,shown+Math.min(dt*100/MIN,(tg-shown)*.25+.05));
+fill.style.width=shown.toFixed(1)+"%";
+pct.textContent=Math.floor(shown)+"%";
+lab.textContent=label();
+if(tg>=100&&shown>=99.9){setTimeout(finish,160);return}
+requestAnimationFrame(tick)}
+window.__bootReady=function(){tCode=Date.now();set("code",1);
+setTimeout(function(){set("menu",1)},3500)};
+window.__bootSave=function(){set("save",1)};
+window.__bootFrame=function(){if(S.code&&S.menu<1){frames++;set("menu",Math.min(1,frames/FR))}};
+try{(document.fonts&&document.fonts.load?document.fonts.load('20px "Lilita One"'):Promise.resolve()).then(function(){set("font",1)},function(){set("font",1)})}catch(e){set("font",1)}
+setTimeout(function(){set("font",1)},3500);
+setTimeout(function(){set("save",1)},5000);
+setTimeout(finish,15000);
+requestAnimationFrame(tick);
+})();
+</script>
+
 <script>
 (function(){var FIREBASE_CONFIG={apiKey:"AIzaSyBj5yLqNc-axSiIC517mjZMAnxzShIVygc",authDomain:"goal-rush-dc4b2.firebaseapp.com",projectId:"goal-rush-dc4b2",storageBucket:"goal-rush-dc4b2.firebasestorage.app",messagingSenderId:"1022443198061",appId:"1:1022443198061:web:bd29093b05068b9b41d164"},CONFIGURED=String(FIREBASE_CONFIG.apiKey).indexOf("PASTE")!==0&&String(FIREBASE_CONFIG.projectId).indexOf("PASTE")!==0,ACT="grx_active",NAME="grx_name",MAIL="grx_email",SYNC="grx_sync",SEEN="grx_seen",PID="grx_pid",OLD="grx_accounts",PFX="goalrush_",LS;
 try{LS=window.localStorage,LS.getItem("x")}catch{return}
@@ -185,7 +479,7 @@ lastJson=j,lastPush=t;
 try{rawSet.call(LS,SYNC,String(t))}catch{}}).catch(function(){}).then(function(){
 flight=null}),flight}
 setInterval(function(){
-save(!1)},5e3),addEventListener("pagehide",function(){
+if(document.hidden)return;save(!1)},5e3),addEventListener("pagehide",function(){
 save(!0)}),document.addEventListener("visibilitychange",function(){
 document.hidden&&save(!0)});
 function genId(){
@@ -353,7 +647,7 @@ var d=lbDoc(),k=d.name+"|"+d.tr+"|"+d.w+"|"+d.ko+"|"+d.ru+"|"+d.rd+"|"+d.hb;
 if(!force&&k===lbLast)return;
 return FB.F.setDoc(FB.F.doc(FB.db,"leaderboard",user.uid),d).then(function(){lbLast=k})})})}
 setInterval(function(){
-lbPublish(!1).catch(function(){})},6e3);
+if(document.hidden)return;lbPublish(!1).catch(function(){})},6e3);
 function lbFetch(n){
 if(!CONFIGURED)return Promise.reject({code:"grx/not-configured"});
 return initFb().then(function(){
@@ -370,11 +664,12 @@ function pullCheck(){
 initFb().then(function(){
 if(!user){try{rawRem.call(LS,ACT)}catch{}return}
 return verifyUser(!0).then(function(ok){if(!ok)return;return pullDoc()})}).catch(function(){
-setTimeout(pullCheck,15e3)})}
+setTimeout(pullCheck,15e3)}).then(bootSave__)}
 function pullDoc(){
 return FB.F.getDoc(ref(user.uid)).then(function(s){var d=s.exists()?s.data():null,st=+LS.getItem(SYNC)||0;if(d&&(d.t||0)>st&&d.data!==JSON.stringify(snap())){locked=!0;try{applyData(JSON.parse(d.data))}catch{locked=!1,ready=!0;return}rawSet.call(LS,SYNC,String(d.t||0)),reload()}else{if(d&&d.t)try{rawSet.call(LS,SYNC,String(d.t))}catch{}ready=!0,d&&!LS.getItem(PID)&&ensurePid(d).then(function(p){if(p)try{rawSet.call(LS,PID,p)}catch{}})}})}
 function start(){
-try{["pfp","pfpt","lbst"].forEach(function(k){rawRem.call(LS,PFX+k)})}catch{}if(CONFIGURED&&initFb().catch(function(){}),active()){CONFIGURED&&pullCheck();return}}
+try{["pfp","pfpt","lbst"].forEach(function(k){rawRem.call(LS,PFX+k)})}catch{}if(CONFIGURED&&initFb().catch(function(){}),active()){CONFIGURED?pullCheck():bootSave__();return}bootSave__()}
+function bootSave__(){try{window.__bootSave&&window.__bootSave()}catch(e){}}
 document.body?start():document.addEventListener("DOMContentLoaded",start)})();
 </script>
 <script>
@@ -4689,7 +4984,7 @@ if(Rt.drag==="op"){_0(e);return}
 const n=Rt.drag.id,o=hn()[n],l=cn[n]*o.k+8;
 zt[n].x=Math.max(l,Math.min(ot-l,e+Rt.drag.dx))/ot,zt[n].y=Math.max(l,Math.min(lt-l,a+Rt.drag.dy))/lt}
 function nl(){
-if(J==0){_i();return}
+if(J==0){_i();window.__bootFrame&&window.__bootFrame();return}
 if(J==2||J==3){$r();return}
 t.fillStyle="rgba(8,14,20,.8)",t.fillRect(0,0,ot,lt);
 const e=Math.min(1,ot/330,lt/(J==0?400:350)),a=J==0?1:Math.min(1,Lt*4),n=e*(.85+.15*(1-(1-a)*(1-a))),o=300,l=J==0?360:316,f=-l/2,i=-o/2,s=J==0?"GOAL RUSH":J==2?"VICTORY!":"DEFEATED",r=J==3?"#ff6b6b":"#ffd23f";
@@ -4862,20 +5157,21 @@ const e=et[d.hero],a=Tl(Qt.lv-1,n=>Qt.pk[n],d.hero);
 d.hpM=e.hp*a.hp,d.spM=e.sp*a.sp,d.sk=Ra[d.hero][Qt.sk],d.gcM=(Ga[d.sk]||{cd:9}).cd*a.cd,d.dmM=a.dm,d.supM=a.sup,d.rlM=a.rl,d.hlM=a.hl,d.rg=a.rg,d.mh=d.hp=Math.round(150*d.hpM),d.gc=0,d.cast=null}
 function cc(){
 const e=[];
-e.push({t:"Painting the outside",fn:()=>Ei()}),e.push({t:"Painting the pitch",fn:()=>Ai()});
+e.push({t:"Painting the outside",w:13,fn:()=>Ei()}),e.push({t:"Painting the pitch",w:17,fn:()=>Ai()});
 const a=(bt||[]).slice(),n=(_t||[]).slice();
-return a.forEach((o,l)=>e.push({t:"Building walls "+(l+1)+"/"+a.length,fn:()=>{o.img||El(o)}})),n.forEach((o,l)=>e.push({t:"Planting bushes "+(l+1)+"/"+n.length,fn:()=>{o.img||Nl(o)}})),e.push({t:"Calling the heroes"}),e.push({t:"Kick off!"}),e}
+return a.forEach((o,l)=>e.push({t:"Building walls "+(l+1)+"/"+a.length,fn:()=>{o.img||El(o)}})),n.forEach((o,l)=>e.push({t:"Planting bushes "+(l+1)+"/"+n.length,fn:()=>{o.img||Nl(o)}})),e}
 function hc(){
 const e=[{t:"Closing the match"}],a=(bt||[]).slice(),n=(_t||[]).slice();
 return a.forEach((o,l)=>e.push({t:"Removing walls "+(l+1)+"/"+a.length,fn:()=>{try{o.img&&o.img.width&&(o.img.width=o.img.height=1),o.sh&&o.sh.width&&(o.sh.width=o.sh.height=1)}catch{}o.img=null,o.sh=null}})),n.forEach((o,l)=>e.push({t:"Removing bushes "+(l+1)+"/"+n.length,fn:()=>{o.img=null,o.fimg=null}})),e.push({t:"Clearing the pitch",fn:()=>{
 al(),J=0}}),e.push({t:"Freeing memory",fn:()=>{
 try{nn.clear()}catch{}}}),e.push({t:"Building the menu",fn:()=>Xr()}),e.push({t:"Polishing the buttons"}),e}
+function ldDone__(a){let d=0,t=0;for(let i=0;i<a.q.length;i++){const w=a.q[i].w||1;t+=w;i<a.qi&&(d+=w)}return t?d/t:1}
 function uc(e){
 const a=Kt;
 a.t+=Math.min(.05,e),a.fr++;
 if(a.g){gLoadStep__(a);return}
 const n=a.m!==3;
-if(!a.b){if(a.ph===void 0&&(a.ph=0,a.q=[],a.qi=0,a.nx=0,a.pr=0,a.lab=n?"Clearing the menu":"Closing the match"),a.ph===0)a.fr>3&&a.t>.4&&(n?(Mt=0,Vl(),a.lab="Building the arena",a.ph=1,a.t0=a.t):(a.q=hc(),a.gap=Math.max(.03,Math.min(.2,1.8/a.q.length)),a.ph=2,a.hold=!0));else if(a.ph===1){if(a.t>a.t0+.4){BD=!!a.bd,ti=!0;try{a.m?(Bt=!1,On()):(Bt=!0,On(),rc())}finally{ti=!1}a.q=cc(),a.gap=Math.max(.03,Math.min(.2,4.5/a.q.length)),a.ph=2,a.hold=!0}}else if(a.ph===2)if(a.qi<a.q.length){if(a.t>=a.nx){const o=a.q[a.qi++];if(a.lab=o.t,o.fn)try{o.fn()}catch(l){console.error(l)}a.nx=a.t+a.gap}}else a.b=a.t,a.m===1&&!Bt&&(vsArm__=!0,vsT0__=0,vsGo__=0,vsRamp__=!0,vsRampT__=0,te=3.6,So=99),a.hold=!1,a.pr=1,se(90);a.b||(a.pr=a.ph===2?.1+.9*a.qi/Math.max(1,a.q.length):.04+.06*Math.min(1,a.t))}
+if(!a.b){if(a.ph===void 0&&(a.ph=0,a.q=[],a.qi=0,a.nx=0,a.pr=0,a.lab=n?"Clearing the menu":"Closing the match"),a.ph===0)a.fr>3&&a.t>.5&&(n?(Mt=0,Vl(),a.lab="Building the arena",a.ph=1,a.t0=a.t):(a.q=hc(),a.gap=Math.max(.04,2.5/a.q.length),a.ph=2,a.hold=!0));else if(a.ph===1){if(a.t>a.t0+.6){BD=!!a.bd,ti=!0;try{a.m?(Bt=!1,On()):(Bt=!0,On(),rc())}finally{ti=!1}a.q=cc(),a.gap=Math.max(.05,4.8/a.q.length),a.ph=2,a.hold=!0}}else if(a.ph===2)if(a.qi<a.q.length){if(a.t>=a.nx){const o=a.q[a.qi++];if(a.lab=o.t,o.fn)try{o.fn()}catch(l){console.error(l)}a.nx=a.t+a.gap}}else a.b=a.t,a.lab="Kick off!",a.m===1&&!Bt&&(vsArm__=!0,vsT0__=0,vsGo__=0,vsRamp__=!0,vsRampT__=0,te=3.6,So=99),a.hold=!1,a.pr=1,se(90);a.b||(a.pr=a.ph===2?.12+.88*ldDone__(a):a.ph===1?.1:.04)}
 a.b&&a.t-a.b>(a.m===3?.5:.7)&&(Kt=null,a.m===3&&se(90))}
 function dc(e){
 const a=e.fl>0,n=Math.hypot(e.vx,e.vy),o=Math.min(1,n/190),l=Math.sin(e.wk),f=typeof Lt=="number"?Lt:0,i=a?"#fff":"#aeb8c4",s=a?"#fff":"#586273";
@@ -4891,12 +5187,20 @@ t.restore()}
 function yc(e,a){
 const o=Math.max(be()/e,0),l=8+o*.9;
 ua("",a/2-76,l,152,32,18,"#fff","c",10),R("TRAINING",a/2-5,l+23,18,"#7dff8a","center",4.5)}
+const LOADLOGO__=(()=>{const i=new Image;i.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent("<svg width=\"487\" height=\"350\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-30 -26 487 350\" aria-label=\"Goal Rush\" role=\"img\">\n<defs>\n<linearGradient id=\"blHot\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fff36b\"/><stop offset=\".55\" stop-color=\"#ffc21a\"/><stop offset=\"1\" stop-color=\"#ff9a12\"/></linearGradient>\n<path id=\"blgG00\" d=\"M0 0H100V28H28V102H72V86H56V62H100V130H0Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmG00\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgG00\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n<path id=\"blgO01\" d=\"M0 0H100V130H0ZM28 28V102H72V28Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmO01\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgO01\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n<path id=\"blgA02\" d=\"M0 130V24L24 0H76L100 24V130H72V92H28V130ZM28 28V64H72V28Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmA02\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgA02\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n<path id=\"blgL03\" d=\"M0 0H28V102H100V130H0Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmL03\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgL03\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n<path id=\"blgR1380\" d=\"M0 0H76L100 24V64L80 84L100 104V130H68V112L48 92H28V130H0ZM28 28V64H72V28Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmR1380\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgR1380\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n<path id=\"blgU1381\" d=\"M0 0H28V102H72V0H100V110L80 130H20L0 110Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmU1381\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgU1381\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n<path id=\"blgS1382\" d=\"M0 0H100V26H26V52H100V130H0V104H74V78H0Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmS1382\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgS1382\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n<path id=\"blgH1383\" d=\"M0 0H28V51H72V0H100V130H72V79H28V130H0Z\" fill-rule=\"evenodd\"/>\n<mask id=\"blmH1383\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"170\" height=\"210\"><use href=\"#blgH1383\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></mask>\n</defs>\n<g transform=\"rotate(-5 230 150) skewX(-7)\">\n<g transform=\"translate(0 0) rotate(-2 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgG00\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgG00\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgG00\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgG00\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgG00\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgG00\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgG00\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgG00\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgG00\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgG00\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgG00\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgG00\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgG00\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgG00\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgG00\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgG00\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgG00\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgG00\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgG00\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgG00\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgG00\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgG00\" fill=\"#a8dcf6\" stroke=\"#a8dcf6\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmG00)\"><use href=\"#blgG00\" x=\"-5.5\" y=\"-5.5\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n<g transform=\"translate(106 0) rotate(1 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgO01\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgO01\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgO01\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgO01\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgO01\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgO01\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgO01\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgO01\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgO01\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgO01\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgO01\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgO01\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgO01\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgO01\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgO01\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgO01\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgO01\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgO01\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgO01\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgO01\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgO01\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgO01\" fill=\"#a8dcf6\" stroke=\"#a8dcf6\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmO01)\"><use href=\"#blgO01\" x=\"-5.5\" y=\"-5.5\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n<g transform=\"translate(212 0) rotate(-1 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgA02\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgA02\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgA02\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgA02\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgA02\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgA02\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgA02\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgA02\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgA02\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgA02\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgA02\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgA02\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgA02\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgA02\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgA02\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgA02\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgA02\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgA02\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgA02\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgA02\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgA02\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgA02\" fill=\"#a8dcf6\" stroke=\"#a8dcf6\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmA02)\"><use href=\"#blgA02\" x=\"-5.5\" y=\"-5.5\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n<g transform=\"translate(318 0) rotate(2 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgL03\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgL03\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgL03\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgL03\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgL03\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgL03\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgL03\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgL03\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgL03\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgL03\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgL03\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgL03\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgL03\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgL03\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgL03\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgL03\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgL03\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgL03\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgL03\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgL03\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgL03\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgL03\" fill=\"#a8dcf6\" stroke=\"#a8dcf6\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmL03)\"><use href=\"#blgL03\" x=\"-5.5\" y=\"-5.5\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n<g transform=\"translate(24 138) rotate(1 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgR1380\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgR1380\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgR1380\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgR1380\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgR1380\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgR1380\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgR1380\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgR1380\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgR1380\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgR1380\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgR1380\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgR1380\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgR1380\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgR1380\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgR1380\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgR1380\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgR1380\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgR1380\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgR1380\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgR1380\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgR1380\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgR1380\" fill=\"#a8dcf6\" stroke=\"#a8dcf6\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmR1380)\"><use href=\"#blgR1380\" x=\"-5.5\" y=\"-5.5\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n<g transform=\"translate(130 138) rotate(-2 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgU1381\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgU1381\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgU1381\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgU1381\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgU1381\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgU1381\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgU1381\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgU1381\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgU1381\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgU1381\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgU1381\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgU1381\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgU1381\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgU1381\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgU1381\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgU1381\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgU1381\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgU1381\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgU1381\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgU1381\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgU1381\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgU1381\" fill=\"#a8dcf6\" stroke=\"#a8dcf6\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmU1381)\"><use href=\"#blgU1381\" x=\"-5.5\" y=\"-5.5\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n<g transform=\"translate(236 138) rotate(2 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgS1382\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgS1382\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgS1382\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgS1382\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgS1382\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgS1382\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgS1382\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgS1382\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgS1382\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgS1382\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgS1382\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgS1382\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgS1382\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgS1382\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgS1382\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgS1382\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgS1382\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgS1382\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgS1382\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgS1382\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgS1382\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgS1382\" fill=\"#e0480f\" stroke=\"#e0480f\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmS1382)\"><use href=\"#blgS1382\" x=\"-5.5\" y=\"-5.5\" fill=\"url(#blHot)\" stroke=\"url(#blHot)\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n<g transform=\"translate(342 138) rotate(-1 50 60)\">\n<g fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\">\n<use href=\"#blgH1383\" x=\"20.00\" y=\"23.00\"/>\n<use href=\"#blgH1383\" x=\"19.00\" y=\"21.85\"/>\n<use href=\"#blgH1383\" x=\"18.00\" y=\"20.70\"/>\n<use href=\"#blgH1383\" x=\"17.00\" y=\"19.55\"/>\n<use href=\"#blgH1383\" x=\"16.00\" y=\"18.40\"/>\n<use href=\"#blgH1383\" x=\"15.00\" y=\"17.25\"/>\n<use href=\"#blgH1383\" x=\"14.00\" y=\"16.10\"/>\n<use href=\"#blgH1383\" x=\"13.00\" y=\"14.95\"/>\n<use href=\"#blgH1383\" x=\"12.00\" y=\"13.80\"/>\n<use href=\"#blgH1383\" x=\"11.00\" y=\"12.65\"/>\n<use href=\"#blgH1383\" x=\"10.00\" y=\"11.50\"/>\n<use href=\"#blgH1383\" x=\"9.00\" y=\"10.35\"/>\n<use href=\"#blgH1383\" x=\"8.00\" y=\"9.20\"/>\n<use href=\"#blgH1383\" x=\"7.00\" y=\"8.05\"/>\n<use href=\"#blgH1383\" x=\"6.00\" y=\"6.90\"/>\n<use href=\"#blgH1383\" x=\"5.00\" y=\"5.75\"/>\n<use href=\"#blgH1383\" x=\"4.00\" y=\"4.60\"/>\n<use href=\"#blgH1383\" x=\"3.00\" y=\"3.45\"/>\n<use href=\"#blgH1383\" x=\"2.00\" y=\"2.30\"/>\n<use href=\"#blgH1383\" x=\"1.00\" y=\"1.15\"/>\n</g>\n<use href=\"#blgH1383\" fill=\"#000\" stroke=\"#000\" stroke-width=\"21.0\" stroke-linejoin=\"round\"/>\n<use href=\"#blgH1383\" fill=\"#a8dcf6\" stroke=\"#a8dcf6\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<g mask=\"url(#blmH1383)\"><use href=\"#blgH1383\" x=\"-5.5\" y=\"-5.5\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g>\n</g>\n</g>\n</svg>");return i})();
 function ni(){
-const e=Kt,a=uiFit__(),n=ot/a,o=lt/a,l=Math.max(be()/a,0),f=performance.now()/1e3,i=et[e.hero],s=e.b?1:e.pr||0,r=e.b?Math.max(0,Math.min(1,((e.m===3?.5:.7)-(e.t-e.b))/.3)):1;
-t.save(),t.globalAlpha=r,t.translate(ot/2,lt/2),t.scale(a,a),ji(()=>{},n,o);
-{const c=-o*.08,h=t.createRadialGradient(0,c,6,0,c,150);h.addColorStop(0,"rgba(230,250,255,.9)"),h.addColorStop(1,"rgba(120,200,255,0)"),t.fillStyle=h,t.beginPath(),t.arc(0,c,150,0,6.3),t.fill(),t.fillStyle="rgba(255,255,255,.12)",t.beginPath(),t.arc(0,c,70,0,6.3),t.fill(),t.strokeStyle="rgba(255,255,255,.9)",t.lineWidth=4,t.stroke(),Zi(e.hero,0,c,2.1,f)}
-R(i.n.toUpperCase(),0,-o*.08-120,40,"#fff","center",9),R(e.m===3?"BACK TO MENU":e.m?e.bd?"TRACK AND BALL":"GOAL RUSH":"TRAINING",0,-o*.08+130,28,e.m===3?"#8fd0ff":e.m?"#ffd23f":"#7dff8a","center",7),e.rd?(R("RANDOM DRAW: "+(e.bd?"TRACK AND BALL":"GOAL RUSH"),0,-o*.08+158,17,"#ffd23f","center",4),R(e.tip,0,-o*.08+182,13,"#dfe8ff","center",3.2)):R(e.tip,0,-o*.08+158,13,"#dfe8ff","center",3.2);
-{const c=n-40,h=-c/2,u=o/2-70-l*.3;Wo(h,u,c,18,Math.max(.06,s),"#7dff8a","#1fc441","#0b2a78"),R("LOADING "+Math.round(s*100)+"%",0,u-9,15,"#fff","center",4),R((e.lab||"Starting")+(e.b?"":"..."),0,u+36,12.5,"#dfe8ff","center",3.2)}
+const e=Kt,a=uiFit__(),n=ot/a,o=lt/a,l=Math.max(be()/a,0),f=performance.now()/1e3,i=et[e.hero],s=e.b?1:(e.sm=(e.sm||0)+((e.pr||0)-(e.sm||0))*.4),r=e.b?Math.max(0,Math.min(1,((e.m===3?.5:.7)-(e.t-e.b))/.3)):1;
+const mode=e.m===3?"BACK TO MENU":e.m?e.bd?"TRACK AND BALL":"GOAL RUSH":"TRAINING",mc=e.m===3?"#8fd0ff":e.m?"#ffd23f":"#7dff8a";
+t.save(),t.globalAlpha=r,t.translate(ot/2,lt/2),t.scale(a,a);
+{const g=t.createLinearGradient(0,-o/2,0,o/2);g.addColorStop(0,"#3d8bff"),g.addColorStop(.6,"#4a45e6"),g.addColorStop(1,"#241a86"),t.fillStyle=g,t.fillRect(-n/2-2,-o/2-2,n+4,o+4);
+t.save(),t.beginPath(),t.rect(-n/2,-o/2,n,o),t.clip(),t.fillStyle="rgba(255,255,255,.05)";for(let x=-o;x<n;x+=92)t.beginPath(),t.moveTo(-n/2+x,o/2),t.lineTo(-n/2+x+32,o/2),t.lineTo(-n/2+x+32+o,-o/2),t.lineTo(-n/2+x+o,-o/2),t.fill();t.restore()}
+if(LOADLOGO__.complete&&LOADLOGO__.naturalWidth){const lw=Math.min(150,n*.4),lh=lw*350/487;t.drawImage(LOADLOGO__,-n/2+16,-o/2+26,lw,lh)}
+{const c=Math.min(n-40,420),x=-c/2,hh=32,y=o/2-96-l*.3,w=Math.max(0,Math.min(1,s))*(c-8);
+t.fillStyle="#000",t.beginPath(),t.roundRect(x+4,y+5,c,hh,9),t.fill();
+t.fillStyle="#17316f",t.strokeStyle="#000",t.lineWidth=4,t.beginPath(),t.roundRect(x,y,c,hh,9),t.fill(),t.stroke();
+if(w>1){t.save(),t.beginPath(),t.roundRect(x+4,y+4,c-8,hh-8,5),t.clip(),t.fillStyle="#fff",t.fillRect(x+4,y+4,w,(hh-8)*.55),t.fillStyle="#a8dcf6",t.fillRect(x+4,y+4+(hh-8)*.55,w,(hh-8)*.45),t.fillStyle="#000",t.fillRect(x+4+w-3,y+4,3,hh-8),t.restore()}
+const by=y-26;R("LOADING INTO",x+4,by-70,15,"#dfe8ff","left",4),R(mode,x+4,by-24,Math.min(44,n/8),mc,"left",9),e.tip&&R(e.tip,x+4,by+4,13,"#dfe8ff","left",3.2,c-8);
+R((e.lab||"Starting")+(e.b?"":"..."),x+4,y+hh+26,15,"#fff","left",4),R(Math.round(s*100)+"%",x+c-4,y+hh+26,15,"#fff","right",4)}
 t.restore(),ye.push({x:0,y:0,w:ot,h:lt,fn:jn})}
 let vsBg__=null,vsFull__=null,vsSpr__={},vsKey__="",vsLastPaint__=0,vsLay__=null;
 const vsMix__=(hex,to2,a)=>{
@@ -5562,5 +5866,6 @@ M.role==="host"&&ns(e),Ic()}
 return M.role==="guest"&&!M.gi&&gn(),e.apply(this,arguments)}}
 matchMedia("(pointer:coarse)").matches||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||navigator.maxTouchPoints>1&&/Macintosh/.test(navigator.userAgent)?(bt=[],_t=[],Ee=[],Y=[],Me=[],vt=[],$={x:0,y:0,vx:0,vy:0,c:null,lt:0,last:null,rot:0},J=0,oiKick__()):(pe.style.display="none",document.getElementById("blk").style.display="flex")})();
 </script>
+<script>window.__bootReady&&window.__bootReady();</script>
 </body>
 </html>
