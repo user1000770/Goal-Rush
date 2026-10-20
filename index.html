@@ -886,25 +886,46 @@ try{const e=localStorage.getItem("goalrush_coins");e!=null&&(Oe=Math.max(0,+e||0
 const me=50,Ss=20,xo=[20,30,45,65,90,120,160,210,270];
 let Vt=0,pa=et.map(()=>0),$e=0,ve=0,Se=null,Ke=null,Mi="",ki=[];
 try{const e=localStorage.getItem("goalrush_zp");e===null?(Vt=2*me,localStorage.setItem("goalrush_zp",Vt)):Vt=Math.max(0,Math.trunc(+e)||0);const a=JSON.parse(localStorage.getItem("goalrush_hlp")||"null");Array.isArray(a)&&(pa=et.map((n,o)=>Math.max(0,Math.trunc(+a[o])||0)))}catch{}
-function kl(){
-const e=new Date,a=e.getFullYear()+"-"+e.getMonth()+"-"+e.getDate();
-if(a!=Mi){Mi=a;let n=e.getFullYear()*372+e.getMonth()*31+e.getDate()>>>0;const o=()=>{
-n=n+1831565813>>>0;
-let f=n;
-return f=Math.imul(f^f>>>15,f|1),f^=f+Math.imul(f^f>>>7,f|61),((f^f>>>14)>>>0)/4294967296},wp__=i=>({LEGENDARY:.03,EPIC:.008})[gs[et[i].n]]||1,l=et.map((f,i)=>i),pk=[];for(;pk.length<3&&l.length;){let r=o()*l.reduce((s,i)=>s+wp__(i),0),j2=0;for(;j2<l.length-1&&!((r-=wp__(l[j2]))<0);j2++);pk.push(l.splice(j2,1)[0])}ki=pk}
-return ki}
+/* ===================== HERO DRAW (table redesign) =====================
+   EVERY hero can be dealt. Each day 3 cards are dealt onto the table; the dealt ranks cycle day to day
+   (a "featured" rank rotates through STARTER > RARE > SUPER RARE > LEGENDARY > EPIC) but LEGENDARY and EPIC
+   are weighted very low, both for being dealt (SF_POOLW__) and for being the card you actually pull (SF_PULLW__).
+   Tomorrow's 3 cards are computed from the same seeded function, so the stack on the table is exactly what you can pull tomorrow. */
+const SF_RK__=["STARTER","RARE","SUPER RARE","LEGENDARY","EPIC"],
+SF_POOLW__={STARTER:4,RARE:50,"SUPER RARE":30,LEGENDARY:10,EPIC:6},
+SF_PULLW__={STARTER:1,RARE:1,"SUPER RARE":.6,LEGENDARY:.06,EPIC:.03},
+KlC__={};
+const KlT__={};
+function klDay__(off){
+const nw=performance.now();if(KlT__[off]&&nw-KlT__[off].t<1e3)return KlT__[off].v;
+const v=klCalc__(off);return KlT__[off]={t:nw,v},v}
+function klCalc__(off){
+const d=new Date;d.setHours(12,0,0,0),d.setDate(d.getDate()+off);
+const key=d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
+if(KlC__[key])return KlC__[key];
+let n=d.getFullYear()*372+d.getMonth()*31+d.getDate()>>>0;
+const rnd=()=>{n=n+1831565813>>>0;let f=n;return f=Math.imul(f^f>>>15,f|1),f^=f+Math.imul(f^f>>>7,f|61),((f^f>>>14)>>>0)/4294967296},
+feat=Math.floor(d.getTime()/864e5)%5,cnt={};
+et.forEach((_h,i)=>{const r=gi(i);cnt[r]=(cnt[r]||0)+1});
+const w=i=>{const r=gi(i);return(SF_POOLW__[r]||20)*(SF_RK__.indexOf(r)===feat?2.2:1)/cnt[r]},left=et.map((_h,i)=>i),pk=[];
+for(;pk.length<3&&left.length;){let r=rnd()*left.reduce((s,i)=>s+w(i),0),j=0;for(;j<left.length-1&&!((r-=w(left[j]))<0);j++);pk.push(left.splice(j,1)[0])}
+const ks=Object.keys(KlC__);ks.length>6&&delete KlC__[ks[0]];
+return KlC__[key]=pk}
+function kl(){return klDay__(0)}
 function Ts(){
 Mt=3,!Se&&!Ke&&($e=0)}
 function vi(){
 if(Se||Ke||AM__())return;
 if(Vt<me){De("NEED "+me+" ZP","#ff6b6b");return}
-const e=kl().slice(),sn2=e.map(h=>({u:Be(h),l:qt[h],p:pa[h]})),wts__=e.map(h=>({LEGENDARY:.02,EPIC:.005})[gs[et[h].n]]||1),a=(()=>{
+const e=kl().slice(),sn2=e.map(h=>({u:Be(h),l:qt[h],p:pa[h]})),wts__=e.map(h=>SF_PULLW__[gi(h)]||1),a=(()=>{
 let r=Math.random()*wts__.reduce((x,y)=>x+y,0);
 for(let k=0;k<e.length;k++)if((r-=wts__[k])<0)return k;
 return e.length-1})(),n=e[a],o=!Be(n),l=qt[n];
 let f=0,i=0;
-if(Vt-=me,o)Hn.push(n),gl();else if(f=Ss,qt[n]>=10)i=f*5,Oe+=i;else{for(pa[n]+=f;qt[n]<10&&pa[n]>=xo[qt[n]-1];)pa[n]-=xo[qt[n]-1],qt[n]++;qt[n]>=10&&(pa[n]=0)}
-Pn(),Se={t0:performance.now(),pool:e,sn:sn2,pi:a,res:{h:n,isNew:o,lp:f,coins:i,lv0:l,lv1:qt[n]}}}
+Vt-=me;
+if(o)Hn.push(n),gl();else{f=Ss;if(qt[n]>=10)i=f*5,Oe+=i;else{for(pa[n]+=f;qt[n]<10&&pa[n]>=xo[qt[n]-1];)pa[n]-=xo[qt[n]-1],qt[n]++;qt[n]>=10&&(pa[n]=0)}}
+Pn(),Se={t0:performance.now(),pool:e,sn:sn2,pi:a,rk:Math.max(0,SF_RK__.indexOf(gi(n))),la:-1,res:{h:n,isNew:o,lp:f,coins:i,lv0:l,lv1:qt[n]}}}
+
 function vn(e,a,n){
 t.save(),t.translate(e,a),t.scale(n,n),t.rotate(-.2),Ma("zpTicket3",24,Ps),R("ZP",0,4.8,13.5,"#fff","center",4),t.restore()}
 function Ps(){
@@ -2867,23 +2888,35 @@ const rg=t.createRadialGradient(0,0,10,0,0,120);
 rg.addColorStop(0,"rgba(255,255,255,.55)"),rg.addColorStop(1,"rgba(255,255,255,0)"),t.fillStyle=rg,t.beginPath(),t.arc(0,0,120,0,6.3),t.fill(),t.restore(),t.save(),t.translate(0,py),t.scale(pop,pop),R02.hero>=0?Do(R02.hero,0,28,1.7):(t.save(),whIcon__(R02.k,2.9,R02.skin),t.restore()),t.restore(),rare&&R(rare,0,py-110,20,"#ffe066","center",5),R(R02.t,0,py+112,R02.t.length>14?24:32,col,"center",7),R02.sub&&R(R02.sub,0,py+138,13,"#cfe0ff","center",3.2);
 uiLayer__("heroes:wheel:b",()=>"b"+(bb__()|0),e,n,o,E=>{Pe(-gw/2,btnY,gw,btnH,"NICE!","#34d34a","#157a28",26),E(-gw/2,btnY,gw,btnH+4,()=>{
 WHR__=null,whBuild__(),se(2)})})}
+/* ---- STORE hero draw panel: its own cached layer (redraws only when ITS state changes), blitted every frame, freed on leave / background ---- */
+function sfStoreGeo__(n,o,l,i){
+const r=n-12,c=-r/2,h=i+54,lim=o/2-18-46-bb__()-17-14,TH=o<720?86:100,avail=lim-h-TH-62,u0=Math.max(140,Math.min(420,Math.round(avail*.78))),H2=Math.min(200,Math.max(104,avail-u0)),u=u0+H2>avail?Math.max(130,avail-H2):u0;
+return{r,c,h,TH,H2,u}}
 function lf(e,a,n,o,l,f,i){
-const am=AM__(),s=kl(),r=n-12,c=-r/2,h=i+54,lim=o/2-18-46-bb__()-17-14,TH__=o<720?86:100,avail=lim-h-TH__-62,u0=Math.max(140,Math.min(420,Math.round(avail*.78))),H2=Math.min(200,Math.max(104,avail-u0)),u=u0+H2>avail?Math.max(130,avail-H2):u0,ok1=Vt>=me&&!am;
+const G=sfStoreGeo__(n,o,l,i),y2=G.h+G.u+14;
+whCard(e,G.c,y2,G.r,G.H2),homeTiles__(e,G.c,y2+G.H2+14,G.r,G.TH),R("Win every 2 matches to earn 3-9 ZP",0,y2+G.H2+14+G.TH+26,12,"#e6eeff","center",3)}
+function sfPanelLayer__(id,sig,x,y,w,h,e,fn){
+const sc=Math.max(.01,t.getTransform().a),k=sig+"|"+Math.round(w)+"x"+Math.round(h)+"|"+Math.round(sc*100)+"|"+(document.fonts&&document.fonts.status);
+let L=UiL__[id];
+if(!L||L.k!==k){uiLayerFree__(id);const hits=[],cv=Ji(w+16,h+16,x-8,y-8,sc,()=>{t.lineJoin="round",t.lineCap="round",fn((...q)=>{hits.push(q)})});L=UiL__[id]={k,cv,hits}}
+t.drawImage(L.cv,x-8,y-8,w+16,h+16);
+for(const q of L.hits)e(...q)}
+function sfPanelDraw__(E,c,h,r,u,am,ok1){
+const s=kl(),tg=u<230,ax=c+10,ay=h+10,aw=r-20,ah=u-(tg?112:138);
 Ca(c,h,r,u,Te.panel,8,6);
-const tg=u<230,ax=c+10,ay=h+10,aw=r-20,ah=u-(tg?112:138);
-t.save(),t.beginPath(),t.roundRect(ax,ay,aw,ah,10),t.clip(),t.fillStyle="#46c85a",t.fillRect(ax,ay,aw,ah),t.fillStyle="rgba(255,255,255,.12)";
-for(let p=0;p*16<ah;p+=2)t.fillRect(ax,ay+p*16,aw,16);
-const sw=aw/3;
-{const now=performance.now();s.forEach((p,x)=>{
-const tr2=HiTier__(p);
-tr2&&HiAura__(ax+sw*(x+.5),ay+ah*.58,Math.min(sw*.62,ah*.6),tr2,now)})}
-s.forEach((p,x)=>Do(p,ax+sw*(x+.5),ay+ah*.58,Math.min(sw/96,ah/116))),t.restore(),_(ax,ay,aw,ah,10,null,"#000",3);
+t.save(),t.beginPath(),t.roundRect(ax,ay,aw,ah,10),t.clip();
+const g=t.createLinearGradient(0,ay,0,ay+ah);g.addColorStop(0,"#d6ffc2"),g.addColorStop(.6,"#8fe68f"),g.addColorStop(1,"#4fc98a"),t.fillStyle=g,t.fillRect(ax,ay,aw,ah),t.save(),t.translate(ax+aw/2,ay+ah/2),Bi(aw,ah,0),t.restore();
+const sw=aw/3,ch=Math.max(60,Math.min(ah-16,sw*1.3*.92)),cw=Math.round(ch/1.3),RT=[-.06,.02,.06];
+s.forEach((p,j)=>{const u2=Be(p),l2=qt[p],sp=sfSpr__("f"+p+"|"+(u2?1:0)+"|"+l2,cw,Math.round(ch),14,(w2,h2)=>sfFaceDraw__(p,w2,h2,u2,l2));sfBlit__(sp,ax+sw*(j+.5),ay+ah/2+(j===1?-3:2),RT[j],1,1,1)}),t.restore(),_(ax,ay,aw,ah,10,null,"#000",3);
 const ty=ay+ah+10;
 R("HERO DRAW",c+14,ty+25,27,"#fff","left",6.5),tg||R("Random hero from today's pool of 3",c+14,ty+46,12,"#cfe0ff","left",3);
 {const p=c+r-14-92;_(p,ty+4,92,30,15,"#3a0f55","#000",3),vn(p+18,ty+19,.8),FitNum__(Vt,p+56,ty+26,18,"#fff","center",4.5,50)}
 {const bhh=tg?40:46,by=h+u-12-bhh;Pe(c+14,by,r-28,bhh,"",ok1?"#34d34a":"#6b7280",ok1?"#157a28":"#3a3f48",20),R(am?"ALL HEROES MAXED":"TAP TO OPEN",c+r/2-(ok1?10:0),by+bhh/2+8,am?15:21,"#fff","center",4.5),ok1&&xl(c+r-14-28,by+bhh/2,.72)}
-am?(t.save(),t.fillStyle="rgba(70,74,84,.72)",t.beginPath(),t.roundRect(c,h,r,u,12),t.fill(),t.restore()):e(c,h,r,u,()=>{
-$e=2}),whCard(e,c,h+u+14,r,H2),homeTiles__(e,c,h+u+14+H2+14,r,TH__),R("Win every 2 matches to earn 3-9 ZP",0,h+u+14+H2+14+TH__+26,12,"#e6eeff","center",3)}
+am?(t.save(),t.fillStyle="rgba(70,74,84,.72)",t.beginPath(),t.roundRect(c,h,r,u,12),t.fill(),t.restore()):E(c,h,r,u,()=>{$e=2})}
+function sfStorePanel__(e,n,o,l){
+const i=-o/2+HdrH__(l)+3,G=sfStoreGeo__(n,o,l,i),am=AM__(),pool=kl(),sig=[am?1:0,Vt>=me?1:0,Vt,pool.map(p=>(Be(p)?1:0)+":"+qt[p]).join(",")].join("|");
+sfPanelLayer__("heroes:store:draw",sig,G.c,G.h,G.r,G.u,e,E=>sfPanelDraw__(E,G.c,G.h,G.r,G.u,am,Vt>=me&&!am))}
+
 function HiTier__(i){
 const g=gs[et[i].n];
 return g==="LEGENDARY"?{c:"#ffc61a",c2:"#fff2a8"}:g==="EPIC"?{c:"#ff4bd0",c2:"#b57bff"}:null}
@@ -2900,37 +2933,110 @@ t.drawImage(HiSprite__(tr2),cx-d2/2,cy-d2/2,d2,d2)}
 function HiFrame__(x,y,w,h,rd,tr2,now){
 const pu=.5+.5*Math.sin(Math.floor(now/120)*.43);
 t.save(),t.strokeStyle=tr2.c,t.globalAlpha=.18+.14*pu,t.lineWidth=12,t.beginPath(),t.roundRect(x-2,y-2,w+4,h+4,rd+2),t.stroke(),t.globalAlpha=.35+.25*pu,t.lineWidth=7,t.stroke(),t.globalAlpha=1,t.strokeStyle=tr2.c2,t.lineWidth=3,t.beginPath(),t.roundRect(x,y,w,h,rd),t.stroke(),t.restore()}
+/* ---- HERO DRAW screen: a top-down table. UI STANDARD: the table/header/stack are ONE cached layer (drawn once);
+   cards, buttons and pills are cached sprites that are only blitted; everything is freed on leave / when the app is backgrounded. ---- */
+const SF_T__={flip:400,shuf:1100,cyc:2800,rev:3400,end:3900},SF__={m:new Map};
+function sfFree__(){HdrFree__();for(const v of SF__.m.values())v.cv.width=v.cv.height=1;SF__.m.clear();for(const k in UiL__)k.startsWith("heroes:")&&uiLayerFree__(k)}
+uiMenu__("heroes:drawfx",()=>Mt===3&&($e===1||$e===2),sfFree__);
+document.addEventListener("visibilitychange",()=>{document.hidden&&sfFree__()}),addEventListener("pagehide",sfFree__);
+function sfSpr__(key,w,h,pad,fn){
+const sc=Math.max(.5,t.getTransform().a),k=key+"|"+Math.round(w)+"x"+Math.round(h)+"|"+Math.round(sc*100)+"|"+(document.fonts&&document.fonts.status);
+let s=SF__.m.get(k);
+if(!s){
+if(SF__.m.size>48){for(const v of SF__.m.values())v.cv.width=v.cv.height=1;SF__.m.clear()}
+const cv=Ji(w+pad*2,h+pad*2,-pad,-pad,sc,()=>{t.lineJoin="round",t.lineCap="round",fn(w,h)});
+s={cv,pad,w,h},SF__.m.set(k,s)}
+return s}
+function sfBlit__(s,x,y,rot,sx,sy,al){
+t.save(),al!=null&&al<1&&(t.globalAlpha=Math.max(0,al)),t.translate(x,y),rot&&t.rotate(rot),(sx!==1||sy!==1)&&t.scale(sx,sy),t.drawImage(s.cv,-s.w/2-s.pad,-s.h/2-s.pad,s.w+s.pad*2,s.h+s.pad*2),t.restore()}
+function sfLay__(n,o,l){
+const hh=HdrH__(l),top=-o/2+hh+3,btnH=64,btnY=o/2-16-btnH-bb__(),rkH=0,rkY=top+88,bandH=108,bandY=btnY-12-bandH,cTop=rkY+6,cBot=bandY-4,room=Math.max(110,cBot-cTop);
+let cw=Math.min((n-36)/3.2,114),ch=cw*1.3;
+ch>room-16&&(ch=room-16,cw=Math.min(cw,ch/1.3)),cw=Math.round(cw),ch=Math.round(ch);
+const sp=Math.min(cw+14,(n-24-cw)/2),cy=cTop+room/2,chipG=6,chipW=(n-24-4*chipG)/5;
+return{hh,top,btnH,btnY,rkH,rkY,bandH,bandY,cw,ch,chipG,chipW,chipX0:-n/2+12,zpY:top+48,
+pos:[{x:-sp,y:cy+5,r:-.07},{x:0,y:cy-6,r:.03},{x:sp,y:cy+4,r:.065}],stk:{x:n/2-86,y:bandY+bandH/2-13}}}
+/* card face: same look as the HEROES-tab character cards (role colour, burst, hero art, navy side bar, name plate) */
+function sfFaceDraw__(p,w,h,u,lv){
+const BW=170,BH=220,rk=gi(p),rc=ys[rk]||"#9aa4b8",hi=rk==="LEGENDARY"||rk==="EPIC";
+t.save(),t.translate(0,0),t.scale(w/BW,h/BH),hcBody__(p,0,0,BW,BH,!u,!1,lv,lv>=10,0,!1,1);
+if(w>=90){t.font="9px "+qa;const pw=t.measureText(rk).width+14;_(5,BH-27,pw,17,7,"rgba(0,0,30,.78)",rc,2),R(rk,5+pw/2,BH-14.5,9,rc,"center",2.4)}
+hi&&(t.shadowColor=rc,t.shadowBlur=14,_(0,0,BW,BH,10,null,rc,3.4)),t.restore()}
+function sfMiniDraw__(p,w,h){
+const rc=ys[gi(p)]||"#9aa4b8";
+t.fillStyle="rgba(0,0,0,.34)",t.beginPath(),t.roundRect(2,4,w,h,9),t.fill(),t.save(),t.beginPath(),t.roundRect(0,0,w,h,9),t.clip(),t.fillStyle=Ae(p),t.fillRect(0,0,w,h),yl(0,0,w,h,w/2,h*.5,Math.min(w,h)*.36,14),Ol(p,w/2,h*.55,Math.min(w/68,h/92)),t.fillStyle=rc,t.fillRect(0,h-8,w,8),t.fillStyle="rgba(255,255,255,.35)",t.fillRect(0,h-8,w,2.5),t.restore(),_(1.4,1.4,w-2.8,h-2.8,8,null,rc,2.2),_(0,0,w,h,9,null,"#000",2.6)}
+function sfBackDraw__(w,h){
+t.fillStyle="rgba(0,0,0,.16)",t.beginPath(),t.roundRect(-1,5,w+6,h+6,14),t.fill(),t.fillStyle="rgba(0,0,0,.3)",t.beginPath(),t.roundRect(2,6,w,h,12),t.fill();
+t.save(),t.beginPath(),t.roundRect(0,0,w,h,12),t.clip();
+const g=t.createLinearGradient(0,0,0,h);g.addColorStop(0,"#3d8bff"),g.addColorStop(.6,"#4a45e6"),g.addColorStop(1,"#241a86"),t.fillStyle=g,t.fillRect(0,0,w,h),t.strokeStyle="rgba(255,255,255,.12)",t.lineWidth=2,t.beginPath();
+for(let k=-h;k<w+h;k+=16)t.moveTo(k,0),t.lineTo(k+h,h),t.moveTo(k+h,0),t.lineTo(k,h);
+t.stroke(),_(6,6,w-12,h-12,8,null,"rgba(255,255,255,.6)",2),t.save(),t.translate(w/2,h/2),t.fillStyle="#ffd23f",t.strokeStyle="#000",t.lineWidth=3.2,whStar__(w*.26),t.fill(),t.stroke(),t.fillStyle="rgba(255,255,255,.7)",t.beginPath(),t.arc(-w*.06,-w*.06,w*.04,0,6.3),t.fill(),t.restore(),t.restore(),_(0,0,w,h,12,null,"#000",3.4)}
+function sfBtnDraw__(w,st){
+const ok=st===0;
+Pe(0,0,w,64,"",ok?"#34d34a":"#6b7280",ok?"#157a28":"#3a3f48",26),st===2?R("DRAWING...",w/2,42,28,"#fff","center",6.5):(R("DRAW",w/2-54,42,30,"#fff","center",7),vn(w/2+30,31,1.05),R(String(me),w/2+52,42,28,ok?"#fff":"#ff9b9b","left",6.5))}
+/* the static layer: header, wood + felt table, title, rank row, stack of tomorrow's cards. Painted once. */
+function sfStatic__(E,n,o,l){
+const G=sfLay__(n,o,l),h=G.hh,u=-o/2,y=G.top,top=u+h-4;
+let g;
+g=t.createLinearGradient(0,top,0,o/2),g.addColorStop(0,"#d6ffc2"),g.addColorStop(.6,"#8fe68f"),g.addColorStop(1,"#4fc98a"),t.fillStyle=g,t.fillRect(-n/2,top,n,o/2-top),t.save(),t.beginPath(),t.rect(-n/2,top,n,o/2-top),t.clip(),t.translate(0,(top+o/2)/2),Bi(n,o/2-top,0),t.fillStyle="rgba(255,255,255,.12)",Bi(n,o/2-top,5),t.restore();
+/* standard menu header (same as Heroes / Lucky Wheel) + title */
+const hy=zi(E,n,o,l,()=>{Se||Ke||($e=1)});R("HERO DRAW",0,hy+36,36,"#fff","center",8);
+/* shelf: tip + the stack of tomorrow's pulls */
+R("DUPLICATES TURN INTO",-n/2+24,G.bandY+G.bandH/2-4,12.5,"#fff3c4","left",3.2),R("LEVEL POINTS!",-n/2+24,G.bandY+G.bandH/2+14,12.5,"#fff3c4","left",3.2);
+const nx=klDay__(1),S=G.stk,mw2=72,mh2=94;
+nx.forEach((p,j)=>{const u2=Be(p),l2=qt[p],s2=sfSpr__("tm"+p+"|"+(u2?1:0)+"|"+l2,mw2,mh2,10,(w,hh)=>sfFaceDraw__(p,w,hh,u2,l2));sfBlit__(s2,S.x+(j-1)*30,S.y+(j-1)*5,(j-1)*.09,1,1,1)}),R("TOMORROW",S.x,S.y+mh2/2+20,9,"rgba(255,255,255,.75)","center",2.4);
+/* tap targets */
+const cwB=n-12,bx2=-cwB/2;E(bx2,G.btnY,cwB,G.btnH+4,()=>vi())}
+function sfPose__(G,i,ms){
+const b=G.pos[i],T=SF_T__;let x=b.x,y=b.y,r=b.r,sx=1,sc=1,al=1,back=!1,win=!1;
+if(!Se)return{x,y,r,sx,sc,al,back,win};
+back=ms>=T.flip;
+if(ms<T.flip){const u=Math.min(1,Math.max(0,(ms-i*40)/(T.flip-100))),c=Math.cos(u*Math.PI);sx=Math.max(.02,Math.abs(c)),back=u>=.5,sc=1+.06*Math.sin(u*Math.PI)}
+else if(ms<T.shuf){const u=(ms-T.flip)/(T.shuf-T.flip)*3,k=Math.min(2,Math.floor(u)),f=u-k,e2=f<.5?2*f*f:1-Math.pow(-2*f+2,2)/2,A=G.pos[(i+k)%3],B=G.pos[(i+k+1)%3];x=A.x+(B.x-A.x)*e2,y=A.y+(B.y-A.y)*e2-Math.sin(e2*Math.PI)*(i%2?-1:1)*24,r=A.r+(B.r-A.r)*e2}
+else{y+=Math.sin(ms/130+i*2)*(ms<T.cyc?2.5:0),r+=Math.sin(ms/170+i)*(ms<T.cyc?.015:0)}
+if(ms>=T.cyc&&i===Se.pi){win=!0;const u=Math.min(1,(ms-T.cyc)/(T.rev-T.cyc)),c=Math.cos(u*Math.PI),e3=1-Math.pow(1-u,3);sx=Math.max(.02,Math.abs(c)),back=u<.5,y-=Math.sin(Math.min(1,u*1.4)*Math.PI/2)*14,sc=1+.14*e3,r*=1-e3}
+else if(ms>=T.cyc){al=1-.5*Math.min(1,(ms-T.cyc)/(T.rev-T.cyc))}
+return{x,y,r,sx,sc,al,back,win}}
+/* only cached sprites are blitted here: no vector UI is redrawn */
+function sfLive__(e,n,o,l,now){
+const G=sfLay__(n,o,l),pool=Se?Se.pool:kl(),ms=Se?now-Se.t0:0,T=SF_T__;
+{const s=sfSpr__("zp"+Vt,140,32,8,()=>{_(0,0,140,32,16,"#3a0f55","#000",3),vn(22,16,.85),FitNum__(Vt,82,23,20,"#fff","center",4.5,80)});sfBlit__(s,0,G.zpY+16,0,1,1,1)}
+let act=-1;
+if(Se){if(ms>=T.cyc)act=Se.rk;else if(ms>=T.shuf){const u=(ms-T.shuf)/(T.cyc-T.shuf);act=Math.floor((1-Math.pow(1-u,3))*(15+Se.rk)+1e-6)%5}
+if(act!==Se.la){Se.la=act;if(act>=0)try{at.whTick(.95+.25*Math.min(1,ms/T.cyc))}catch{}}}
+const back=sfSpr__("back",G.cw,G.ch,14,(w,hh)=>sfBackDraw__(w,hh)),order=[0,1,2];
+Se&&ms>=T.cyc&&(order.splice(order.indexOf(Se.pi),1),order.push(Se.pi));
+const poses=order.map(i=>({i,P:sfPose__(G,i,ms)}));
+if(Se&&act>=0){const tr={c:ys[SF_RK__[act]],c2:"#fff"};t.save();for(const{i,P}of poses){const k=P.win?1.35:1;t.globalAlpha=(P.win?1:.8*P.al),t.drawImage(HiSprite__(tr),P.x-G.cw*1.05*k,P.y-G.ch*.85*k,G.cw*2.1*k,G.ch*1.7*k)}t.restore()}
+for(const{i,P}of poses){
+const h=pool[i],st=Se?Se.sn[i]:{u:Be(h),l:qt[h]},sp=P.back?back:sfSpr__("f"+h+"|"+(st.u?1:0)+"|"+st.l,G.cw,G.ch,14,(w,hh)=>sfFaceDraw__(h,w,hh,st.u,st.l));
+sfBlit__(sp,P.x,P.y,P.r,P.sx*P.sc,P.sc,P.al)}
+if(ke){const p=(now-ke.at)/1e3;p<1.4?(t.save(),t.globalAlpha=Math.min(1,(1.4-p)*2),FitNum__(ke.t,0,G.btnY-40-p*26,24,ke.c,"center",5,n-20),t.restore()):ke=null}
+const bs=sfSpr__("btn"+(Se?2:Vt>=me&&!Ke?0:1),n-12,64,10,(w,hh)=>sfBtnDraw__(w,Se?2:Vt>=me&&!Ke?0:1));sfBlit__(bs,0,G.btnY+32,0,1,1,1);
+Se&&e(-n/2,-o/2,n,o,jn)}
+/* result popup: one cached layer, a short glow pop on top (blitted) */
+function sfResult__(e,n,o,l,now){
+const p=Ke,x=et[p.h],rk=gi(p.h),rc=ys[rk]||"#9aa4b8",T=n-24,C=Math.min(o-2*Math.max(l+14,24),396),m=-T/2,L=-C/2,W=Math.max(90,Math.min(140,C-244)),v=L+62;
+uiLayer__("heroes:draw:res",()=>["r",p.h,p.isNew?1:0,p.rdm?1:0,p.lp|0,p.coins|0,p.lv0,p.lv1,pa[p.h],RdmQ__.length,Vt>=me?1:0,l|0].join("|"),e,n,o,E=>{
+t.fillStyle="rgba(4,8,24,.82)",t.fillRect(-n/2,-o/2,n,o),E(-n/2,-o/2,n,o,jn),Ca(m,L,T,C,Te.panel,8,7),E(m,L,T,C,()=>{}),ua(p.isNew?"NEW HERO!":"DUPLICATE!",m,L+12,T*.8,40,24,p.isNew?"#7dff8a":"#ffd23f","l");
+t.save(),t.beginPath(),t.roundRect(m+14,v,T-28,W,10),t.clip(),t.fillStyle=Ae(p.h),t.fillRect(m+14,v,T-28,W),yl(m+14,v,T-28,W,0,v+W*.5,W*.36,24),t.save(),t.globalAlpha=.35,t.fillStyle=rc;
+for(let A=0;A<12;A++){const a2=A*.5236+.3;t.beginPath(),t.moveTo(0,v+W*.5),t.arc(0,v+W*.5,T,a2,a2+.13),t.closePath(),t.fill()}
+t.restore(),Ol(p.h,0,v+W*.55,Math.min(W/92,1.7)),t.restore(),_(m+14,v,T-28,W,10,null,"#000",3.5),R(x.n.toUpperCase(),0,v+W+26,24,"#fff","center",6),R(rk+"  -  "+x.r,0,v+W+40,10,"#a9ccff","center",2.6);
+let P=v+W+62;
+if(p.isNew)R("UNLOCKED!",0,P+4,20,"#7dff8a","center",5),R(p.rdm?"From a redeem code":"Find it in your HEROES tab",0,P+22,11,"#e6eeff","center",3);
+else if(p.coins)R("MAX LEVEL: +"+p.coins+" COINS",0,P+4,16,"#ffd23f","center",4.5),Ja(-t.measureText("MAX LEVEL: +"+p.coins+" COINS").width/2-14,P-2,.6);
+else if(R("+"+p.lp+" LEVEL POINTS",0,P+4,19,"#7de8ff","center",5),p.lv1>p.lv0&&R("LEVEL UP!  "+p.lv0+" to "+p.lv1,0,P+26,16,"#ffd23f","center",4.5),p.lv1<10){const A=xo[p.lv1-1],B=T-70;lvBar__(-B/2+12,P+(p.lv1>p.lv0?34:18),B-12,20,pa[p.h]/A,p.lv1,pa[p.h]+" / "+A)}
+const by=L+C-12-44;
+if(p.rdm){const B=T-28;Pe(m+14,by,B,44,RdmQ__.length?"NEXT":"OK","#2b8cff","#0b4bb8",20),E(m+14,by,B,48,()=>{RdmQ__.length?(Ke=RdmQ__.shift(),Oa=performance.now()):(Ke=null,$e=0,Ce=p.h),se(90)})}
+else{const B=(T-36)/2;Pe(m+14,by,B,44,"OK","#2b8cff","#0b4bb8",20),E(m+14,by,B,48,()=>{Ke=null});const k=Vt>=me;Pe(m+22+B,by,B,44,"",k?"#ffc61a":"#6b7280",k?"#b8760a":"#3a3f48",16),R("AGAIN",m+22+B+B*.36,by+29,16,"#fff","center",4),vn(m+22+B+B*.7,by+22,.7),R(String(me),m+22+B+B*.7+14,by+28,14,k?"#fff":"#ff9b9b","left",3.5),E(m+22+B,by,B,48,()=>{Ke=null,vi()})}});
+const age=now-Oa;
+if(age<650){const u=age/650;t.save(),t.globalAlpha=1-u,HiAura__(0,v+W*.55,W*(.7+1.1*u),{c:rc,c2:"#fff"}),t.restore()}}
 function sf(e,a,n,o,l,f){
-const i=performance.now(),s=Se?Se.pool:kl();
-let c=-1;
-if(Se){const p=(i-Se.t0)/2200;if(p>=1){Ke=Se.res,Se=null,Oa=i;try{at.supReady()}catch{}}else{const x=1-Math.pow(1-p,3),b2=12+Se.pi;c=Math.min(b2,Math.floor(x*(b2+1)))%3}}
-{const p=c>=0?s[c]:Ke?Ke.h:s[0],x=nf(Ae(p)).map(m=>Math.round(m*.82));(!rn||!Se&&!Ke)&&(rn=x.slice());for(let m=0;m<3;m++)rn[m]+=(x[m]-rn[m])*.08;const b2=rn.map(m=>Math.min(255,Math.round(m*1.12))),S2=rn.map(m=>Math.round(m*.7)),T=t.createLinearGradient(0,-o/2,0,o/2);T.addColorStop(0,"rgb("+b2+")"),T.addColorStop(1,"rgb("+S2+")"),t.fillStyle=T,t.fillRect(-n/2,-o/2,n,o);const C=i/120%120;for(let m=-1;m<Math.ceil(o/120)+1;m++)for(let L=-1;L<Math.ceil(n/120)+2;L++){const W=-n/2+L*120+(m%2?60:0)+C*.5,v=-o/2+m*120;t.fillStyle="rgba(0,0,0,.09)",t.beginPath(),t.arc(W,v,26,0,6.3),t.fill(),t.fillStyle="rgb("+b2+")",t.globalAlpha=.55,t.beginPath(),t.arc(W-9,v-4,5.5,0,6.3),t.arc(W+9,v-4,5.5,0,6.3),t.fill(),t.fillRect(W-7,v+9,14,5),t.globalAlpha=1}e(-n/2,-o/2,n,o,jn)}
-uiLayer__("heroes:draw",()=>[Vt,Se?1:0,Ke?1:0,l|0,bb__()|0].join("|"),e,n,o,E=>SfChrome__(E,a,n,o,l));
-const h=l+44,u=-o/2,y=u+h,btnH=64,btnY=o/2-16-btnH-bb__(),b=Math.min((n-24)/3,128),S=-b*1.5;
-{const room=btnY-70-(y+144),ch=Math.max(120,Math.min(340,room)),top2=y+144+Math.max(0,room-ch)/2;s.forEach((W,v)=>{
-const P=S+b*(v+.5),A=c==v,E=et[W],k=Se&&!A,O=A?1.06:1,cw=(b-10)*O,chh=ch*O,cx0=P-cw/2,cy1=top2+ch/2-chh/2;
-t.save(),k&&(t.globalAlpha=.5),t.fillStyle="rgba(0,0,0,.3)",t.beginPath(),t.roundRect(cx0+3,cy1+7,cw,chh,16),t.fill();
-const U=t.createLinearGradient(0,cy1,0,cy1+chh);
-U.addColorStop(0,en(Ae(W),1)),U.addColorStop(1,en(Ae(W),.65)),t.fillStyle=U,t.beginPath(),t.roundRect(cx0,cy1,cw,chh,16),t.fill(),t.fillStyle="rgba(255,255,255,.2)",t.beginPath(),t.roundRect(cx0+6,cy1+6,cw-12,12,6),t.fill();
-const hiT=HiTier__(W);
-hiT&&(HiAura__(P,cy1+chh*.44,chh*.42,hiT,i),HiFrame__(cx0,cy1,cw,chh,16,hiT,i)),A&&(t.save(),t.shadowColor="#fff",t.shadowBlur=16,t.strokeStyle="#fff",t.lineWidth=6,t.beginPath(),t.roundRect(cx0,cy1,cw,chh,16),t.stroke(),t.restore()),Do(W,P,cy1+chh*.44,Math.min(cw*.62,chh*.34)/42*(1+(A?.04*Math.sin(i/90):0)));
-const py=cy1+chh-38;
-t.fillStyle="rgba(0,0,0,.55)",t.beginPath(),t.roundRect(cx0+6,py,cw-12,30,8),t.fill(),R(E.n.toUpperCase(),P,py+22,18,"#fff","center",4.5),t.strokeStyle="#000",t.lineWidth=4,t.beginPath(),t.roundRect(cx0,cy1,cw,chh,16),t.stroke(),t.restore(),of(W,P-b/2,cy1+chh+4,b,Se?Se.sn[v]:null)})}
-if(ke){const p=(i-ke.at)/1e3;p<1.4?(t.save(),t.globalAlpha=Math.min(1,(1.4-p)*2),FitNum__(ke.t,0,btnY-40-p*26,24,ke.c,"center",5,n-20),t.restore()):ke=null}
-if(Ke){const p=Ke,x=et[p.h],b2=Math.min(1,(i-Oa)/260),S2=1+.12*Math.sin(b2*Math.PI)*(1-b2*.3),T=n-24,C=Math.min(o-2*Math.max(l+14,24),396),m=-T/2,L=-C/2;t.fillStyle="rgba(4,8,24,.82)",t.fillRect(-n/2,-o/2,n,o),e(-n/2,-o/2,n,o,jn),t.save(),t.translate(0,0),t.scale(S2,S2),Ca(m,L,T,C,Te.panel,8,7),e(m,L,T,C,()=>{}),ua(p.isNew?"NEW HERO!":"DUPLICATE!",m,L+12,T*.8,40,24,p.isNew?"#7dff8a":"#ffd23f","l");const W=Math.max(90,Math.min(140,C-244)),v=L+62;t.save(),t.beginPath(),t.roundRect(m+14,v,T-28,W,10),t.clip(),t.fillStyle=Ae(p.h),t.fillRect(m+14,v,T-28,W),yl(m+14,v,T-28,W,0,v+W*.5,W*.36,24),t.save(),t.globalAlpha=.35,t.fillStyle="#fff";for(let A=0;A<12;A++){const E=A*.5236+f*.4;t.beginPath(),t.moveTo(0,v+W*.5),t.arc(0,v+W*.5,T,E,E+.13),t.closePath(),t.fill()}t.restore(),Do(p.h,0,v+W*.55,Math.min(W/92,1.7),(i-Oa)/900),t.restore(),_(m+14,v,T-28,W,10,null,"#000",3.5),R(x.n.toUpperCase(),0,v+W+26,24,"#fff","center",6),R(x.r,0,v+W+40,10,"#a9ccff","center",2.6);let P=v+W+62;if(p.isNew)R("UNLOCKED!",0,P+4,20,"#7dff8a","center",5),R(p.rdm?"From a redeem code":"Find it in your HEROES tab",0,P+22,11,"#e6eeff","center",3);else if(p.coins)R("MAX LEVEL: +"+p.coins+" COINS",0,P+4,16,"#ffd23f","center",4.5),Ja(-t.measureText("MAX LEVEL: +"+p.coins+" COINS").width/2-14,P-2,.6);else if(R("+"+p.lp+" LEVEL POINTS",0,P+4,19,"#7de8ff","center",5),p.lv1>p.lv0&&R("LEVEL UP!  "+p.lv0+" to "+p.lv1,0,P+26,16,Math.floor(i/200)%2?"#ffd23f":"#fff","center",4.5),p.lv1<10){const A=xo[p.lv1-1],E=T-70;lvBar__(-E/2+12,P+(p.lv1>p.lv0?34:18),E-12,20,pa[p.h]/A,p.lv1,pa[p.h]+" / "+A)}if(p.rdm){const A=L+C-12-44,E=T-28;Pe(m+14,A,E,44,RdmQ__.length?"NEXT":"OK","#2b8cff","#0b4bb8",20),e(m+14,A,E,48,()=>{
-RdmQ__.length?(Ke=RdmQ__.shift(),Oa=performance.now()):(Ke=null,$e=0,Ce=p.h),se(90)})}else{const A=L+C-12-44,E=(T-36)/2;Pe(m+14,A,E,44,"OK","#2b8cff","#0b4bb8",20),e(m+14,A,E,48,()=>{
-Ke=null});const k=Vt>=me;Pe(m+22+E,A,E,44,"",k?"#ffc61a":"#6b7280",k?"#b8760a":"#3a3f48",16),R("AGAIN",m+22+E+E*.36,A+29,16,"#fff","center",4),vn(m+22+E+E*.7,A+22,.7),R(String(me),m+22+E+E*.7+14,A+28,14,k?"#fff":"#ff9b9b","left",3.5),e(m+22+E,A,E,48,()=>{
-Ke=null,vi()})}t.restore()}}
+const now=performance.now();
+Se&&now-Se.t0>=SF_T__.end&&(Ke=Se.res,Se=null,Oa=now,(()=>{try{at.supReady()}catch{}})());
+uiLayer__("heroes:draw",()=>[l|0,bb__()|0,klDay__(0).join(","),klDay__(1).join(","),klDay__(1).map(p=>(Be(p)?1:0)+":"+qt[p]).join(",")].join("|"),e,n,o,E=>sfStatic__(E,n,o,l));
+sfLive__(e,n,o,l,now),Ke?sfResult__(e,n,o,l,now):UiL__["heroes:draw:res"]&&uiLayerFree__("heroes:draw:res")}
 
-function SfChrome__(e,a,n,o,l){
-const r=!!Se||!!Ke;
-const h=l+44,u=-o/2;
-t.fillStyle="#000",t.fillRect(-n/2,u,n,h-8),tf(-n/2-4,u,62,h+2,"l"),t.strokeStyle="#fff",t.lineWidth=6,t.lineCap="round",t.lineJoin="round",t.beginPath(),t.moveTo(-n/2+34,u+l+10),t.lineTo(-n/2+20,u+l+23),t.lineTo(-n/2+34,u+l+36),t.stroke(),e(-n/2,u,74,h+10,()=>{
-r||($e=1)});
-const y=u+h,cwB=n-12,btnH=64,btnY=o/2-16-btnH-bb__();
-_(-60,y+12,120,26,7,"#34d34a","#000",3),R("DAILY",0,y+31,16,"#fff","center",4),R("HERO DRAW",0,y+76,42,"#fff","center",9),_(-140/2,y+96,140,32,16,"#3a0f55","#000",3),vn(-140/2+22,y+112,.85),FitNum__(Vt,12,y+119,20,"#fff","center",4.5,80);
-R("Duplicates turn into level points!",0,btnY-14,12.5,"#fff3c4","center",3.2);
-{const b2=Vt>=me&&!r,bx2=-cwB/2;Pe(bx2,btnY,cwB,btnH,"",b2?"#34d34a":"#6b7280",b2?"#157a28":"#3a3f48",26),Se?R("DRAWING...",0,btnY+42,28,"#fff","center",6.5):(R("DRAW",-54,btnY+42,30,"#fff","center",7),vn(30,btnY+31,1.05),R(String(me),52,btnY+42,28,b2?"#fff":"#ff9b9b","left",6.5)),e(bx2,btnY,cwB,btnH+4,()=>vi())}}
 let HW__=1,HP__=0,HF__=null;
 function HFade__(n,o,vt2,vb){
 const sc2=Fi*Qe,FH=Math.max(1,Math.round(30*sc2))/sc2,SN__=y=>(Math.round((lt/2+y*Fi)*Qe)/Qe-lt/2)/Fi;
@@ -2943,7 +3049,7 @@ function ff(e,a,n,o,l,f){
 if(HLs__=null,HW__=99,HP__=0,Zt=null,$e||(ke=null),$e==2){sf(e,a,n,o,l,f);return}
 if($e==3){whScreen(e,a,n,o,l,f);return}if($e==4){bjxScreen__(e,a,n,o,l,f);return}
 uiLayer__($e?"heroes:store":"heroes:list",()=>HeroesSig__(l),e,n,o,E=>HeroesRaw__(E,a,n,o,l,f));
-if($e)return;
+if($e){$e===1&&sfStorePanel__(e,n,o,l);return}
 const i=-o/2+HdrH__(l)+3;
 const s=12,GW__=n-32,r=Math.floor((GW__-s)/2),c=i+54,h=Math.ceil(et.length/2),u=-(GW__+26)/2,y=Math.round(Math.max(184,Math.min(248,Math.floor((o/2-30-c-(h-1)*s)/h)+94))/4)*4,vt__=c-6,vb__=o/2-86-bb__(),HH__=48,pos__=[],hd__=[];
 let cy__=c;
@@ -2975,7 +3081,7 @@ if($e){lf(e,a,n,o,l,f,i);return}
 }
 function HeroesSig__(l){
 const b=[$e,Oe,Da,he,Vt>=me?1:0,AM__()?1:0,Se?1:0,Ke?1:0,l|0,bb__()|0];
-return $e&&b.push(kl().join(","),Vt,whLeft__(),BjxOwn__.length),b.join("|")}
+return $e&&b.push(whLeft__(),BjxOwn__.length),b.join("|")}
 let Bz__=-1;
 document.addEventListener("visibilitychange",()=>{
 document.hidden&&(Bz__=-1,TryPick__=-1)});
