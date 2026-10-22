@@ -799,7 +799,8 @@ function tkBuild(){jo=[];const W=1600,K=TKK,
  two(1248,768,64,64);two(768,1248,64,64);
  two(210,700,56,56,true);two(210,844,56,56,true);two(700,1334,56,56,true);two(844,1334,56,56,true);
  two(1130,770,56,56,true);two(770,1130,56,56,true);
- gr(425,553,553,425,54);gr(350,458,458,350,46)}
+ gr(425,553,553,425,54);gr(400,440,440,400,46);
+ two(590,860,100,46);two(300,590,50,100);two(900,520,56,56,true);gr(640,400,720,420,40)}
 function tkFloor(a){const R=700,P=6.2832,W=TKW,C=800;
  a.fillStyle="#000";a.fillRect(0,0,W,W);
  a.save();a.translate(TKC,TKC);a.scale(TKK,TKK);a.translate(-800,-800);
@@ -810,7 +811,8 @@ function tkFloor(a){const R=700,P=6.2832,W=TKW,C=800;
  a.fillStyle="#000";a.beginPath();a.arc(C,C,R-30,0,P);a.fill();
  a.fillStyle="#4f5f90";a.beginPath();a.arc(C,C,R-34,0,P);a.fill();
  a.strokeStyle="rgba(255,255,255,.07)";a.lineWidth=14;for(const q of[.34,.62]){a.beginPath();a.arc(C,C,R*q,0,P);a.stroke()}
- a.restore()}
+ a.restore();
+ TKSP.forEach((q,i)=>{const c=i<3?"76,201,240":"230,57,70";a.fillStyle="rgba("+c+",.28)";a.beginPath();a.arc(q[0],q[1],46,0,P);a.fill();a.strokeStyle="rgba("+c+",.95)";a.lineWidth=5;a.stroke()})}
 function tkOuter(o,n){o.fillStyle="#000";o.fillRect(-ga,-ga,n,n)}
 function tkInit(){tkR=1,tkRt=TKT,tkOver=false,tkLast=false}
 function tkSp(){let b=null;for(const p of Y)if(p.alive&&p.tk===d.tk){b=p;break}if(!b)for(const p of Y)if(p.alive){b=p;break}return b?[b.x,b.y]:[d.x,d.y]}
