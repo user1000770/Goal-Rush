@@ -122,8 +122,8 @@ uiScreen__(14,"stadium",(...a)=>SqUI__(...a),()=>{SqPg__=0,SqGeo__=null,SqMsg__=
    Per-hero quests -> Frame Tokens -> unlock background frames for that hero's card. */
 const FRK__="goalrush_fr";
 const FRF__=[{n:"CLASSIC",c:0},{n:"STRIPES",c:1000},{n:"CHECKERED",c:1100},{n:"SUNBURST",c:1250},{n:"POLKA POP",c:1400},{n:"ZIGZAG",c:1550},{n:"DIAMONDS",c:1700},{n:"GOLD RUSH",c:1850},{n:"BULLSEYE",c:2000}];
-const FRST__=["p","w","k","g","s","bk","bg","ws","bws","ak"];
-const FrEmpty__={t:0,c:[],f:[],e:0,s:{p:0,w:0,k:0,g:0,s:0,bk:0,bg:0,ws:0,bws:0,ak:0}};
+const FRST__=["p","w","k","g","s","bk","bg","ws","bws","ak","mk"];
+const FrEmpty__={t:0,c:[],f:[],e:0,s:{p:0,w:0,k:0,g:0,s:0,bk:0,bg:0,ws:0,bws:0,ak:0,mk:0}};
 let FR__={},FrPrev__=null,FrSvT__=0,FrDirty__=false,FrVer__=0,FrRc__={};
 function FrNorm__(o){o=o&&typeof o==="object"?o:{};const s={};for(const k of FRST__)s[k]=Math.max(0,Math.min(99999,Math.trunc(+(o.s||{})[k])||0));const f=Array.isArray(o.f)?[...new Set(o.f.map(Number))].filter(x=>x>0&&x<FRF__.length):[];let e=Math.max(0,Math.min(FRF__.length-1,Math.trunc(+o.e)||0));e>0&&!f.includes(e)&&(e=0);return{t:Math.max(0,Math.min(999999,Math.trunc(+o.t)||0)),c:Array.isArray(o.c)?[...new Set(o.c.filter(x=>typeof x==="string"))].slice(0,600):[],f,e,s}}
 function FrLoad__(){try{const v=JSON.parse(localStorage.getItem(FRK__)||"null");if(v&&typeof v==="object")for(const k in v){const h=+k;h>=0&&h<et.length&&(FR__[h]=FrNorm__(v[k]))}}catch{}}
@@ -145,7 +145,7 @@ function FrQuests__(h){
  [[1,2],[5,6],[10,4],[20,12],[35,8],[50,25],[75,15],[100,40],[150,25],[250,40],[400,55],[600,70],[1000,90],[1500,225],[2000,300],[3000,450],[4500,675],[7000,975]].forEach(([n,r])=>add("ko"+n,"ko","Get "+n+" KOs with "+hn,n,st.k,r));
  [[2,6],[3,12],[4,8],[5,24],[6,15],[8,36],[10,30],[12,40],[15,55],[20,80],[25,150],[30,225],[40,375],[50,600]].forEach(([n,r])=>add("st"+n,"st","Win "+n+" matches in a row with "+hn,n,st.bws,r));
  [[5,3],[10,6],[20,5],[30,12],[50,10],[75,24],[110,16],[150,40],[250,30],[400,45],[650,60],[1000,80],[1500,225],[2200,375],[3000,525],[4500,750]].forEach(([n,r])=>add("sk"+n,"sk","Use "+hn+"'s skill "+n+" times",n,st.s,r));
- [[5,5],[20,10],[50,20],[100,40],[200,70],[400,100],[800,160],[1500,250],[2500,400],[4000,600],[6000,800]].forEach(([n,r])=>add("gl"+n,"gl","Score "+n+" goals with "+hn,n,st.g,r));
+ [[5,5],[20,10],[50,20],[100,40],[200,70],[400,100],[800,160],[1500,250],[2500,400],[4000,600],[6000,800]].forEach(([n,r])=>add("mk"+n,"mk","Get a KO in "+n+" matches with "+hn,n,st.mk,r));
  [[3,8],[4,4],[5,12],[6,6],[7,8],[8,20],[9,12],[10,35]].forEach(([n,r])=>add("lv"+n,"lv","Reach level "+n+" with "+hn,n,qt[h],r));
  [[1,5],[2,10],[3,15]].forEach(([n,r])=>add("pk"+n,"pk","Unlock "+n+(n==1?" perk slot":" perk slots")+" for "+hn,n,ca[h],r));
  const sg=FRSIG__[et[h].r];sg&&add("sg","sg",sg[2]+" with "+hn,sg[1],st[sg[0]],20);
@@ -160,7 +160,7 @@ function FrMatch__(win,goals,kos){
  s.p=Math.min(99999,s.p+1);
  if(win){s.w=Math.min(99999,s.w+1);s.ws++;s.bws=Math.max(s.bws,s.ws)}else s.ws=0;
  s.k=Math.min(99999,s.k+kos);s.g=Math.min(99999,s.g+goals);s.bk=Math.max(s.bk,kos);s.bg=Math.max(s.bg,goals);
- kos>=1&&goals>=1&&s.ak++;
+ kos>=1&&(s.mk=Math.min(99999,s.mk+1));kos>=1&&goals>=1&&s.ak++;
  FrVer__++;FrSave__();
  FrReady__(h)>before&&setTimeout(()=>{try{De("FRAME ROAD QUEST READY: "+et[h].n.toUpperCase(),"#7de8ff")}catch{}},1700)}
 function FrClaim__(h,id){const H=FrH__(h);if(H.c.includes(id))return 0;const q=FrQuests__(h).find(z=>z.id===id);if(!q||q.v<q.n)return 0;H.c.push(id);H.t+=q.r;FrVer__++;FrSave__();return q.r}
