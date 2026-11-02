@@ -293,9 +293,9 @@ let FrOv__=null,FrTab__=0,FrSel__=0,FrHero__=0,FrCv__=[],FrBigF__=-1,FrTm__=0;
 function FrClose__(){if(!FrOv__)return;const o=FrOv__;FrOv__=null;clearTimeout(FrTm__);document.removeEventListener("keydown",o._k,true);o.querySelectorAll("canvas").forEach(c=>{c.width=c.height=1});FrCv__.forEach(c=>{c.width=c.height=1});FrCv__=[];o.remove();FrBigF__=-1;se(90)}
 uiMenu__("froad",()=>!!FrOv__&&Mt===5,()=>FrClose__(),["frOv"]);
 function FrDrawCard__(h,f,cv,k){
- const W=186,H=240;cv.width=Math.ceil(W*k);cv.height=Math.ceil(H*k);
+ const W=186,H=262;cv.width=Math.ceil(W*k);cv.height=Math.ceil(H*k);
  const cx=cv.getContext("2d");if(!cx)return;
- cx.setTransform(k,0,0,k,6*k,14*k);cx.lineJoin="round";cx.lineCap="round";
+ cx.setTransform(k,0,0,k,6*k,36*k);cx.lineJoin="round";cx.lineCap="round";
  const sv=t,l2=qt[h],mx=l2>=10;t=cx;FrPrev__={h,f};
  try{hcBody__(h,0,0,170,218,false,false,l2,mx,mx?0:Ml[l2-1],false,1)}catch{}finally{t=sv;FrPrev__=null}}
 const FRQI__={
@@ -328,9 +328,12 @@ function FrOpen__(h){
 #frOv .ftk b{font-weight:400;font-size:19px;line-height:1;-webkit-text-stroke:4px #000;paint-order:stroke fill}
 #frOv .fhero{flex:none;display:flex;gap:12px;align-items:center;margin:12px 12px 0;padding:10px 12px 10px 10px;background:linear-gradient(#17208a,#0a1048);border:3px solid #000;border-radius:14px;box-shadow:0 4px 0 rgba(4,4,40,.5);width:calc(100% - 24px);max-width:760px;align-self:center;position:relative}
 #frOv .fhero::before{content:"";position:absolute;left:5px;right:5px;top:4px;height:9px;border-radius:6px;background:rgba(255,255,255,.14);pointer-events:none}
-#frOv .fbw{--s:.62;position:relative;flex:none;width:calc(170px*var(--s));height:calc(218px*var(--s));overflow:visible;border-radius:12px;border:3px solid #000;box-sizing:content-box;background:radial-gradient(circle at 50% 35%,#7b8bff,#2a2fb8);box-shadow:0 4px 0 rgba(4,4,40,.5),0 0 0 3px rgba(255,225,77,.7)}
-#frOv .fbig{position:absolute;left:calc(-6px*var(--s));top:calc(-14px*var(--s));width:calc(186px*var(--s));height:auto}
-#frOv .finfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+#frOv .fbw{--s:.62;position:relative;flex:none;width:calc(170px*var(--s));height:calc(218px*var(--s));margin:calc(26px*var(--s)) calc(14px*var(--s)) 0 calc(8px*var(--s))}
+#frOv .fbw::before{content:"";position:absolute;left:-46%;right:-46%;top:-18%;bottom:-14%;border-radius:50%;background:radial-gradient(closest-side,rgba(125,232,255,.38),rgba(125,160,255,.14) 55%,rgba(125,160,255,0) 100%);pointer-events:none}
+#frOv .fbw::after{content:"";position:absolute;left:8%;right:8%;bottom:-9px;height:12px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,30,.55),rgba(0,0,30,0));pointer-events:none}
+#frOv canvas{background:none}
+#frOv .fbig{position:absolute;z-index:1;pointer-events:none;left:calc(-6px*var(--s));top:calc(-36px*var(--s));width:calc(186px*var(--s));height:auto;filter:drop-shadow(0 4px 0 rgba(0,0,30,.45))}
+#frOv .finfo{margin-top:calc(26px*var(--s,.62));flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 #frOv .fhn{font-size:15px;color:#a9ccff;-webkit-text-stroke:3px #000;paint-order:stroke fill;letter-spacing:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #frOv .ffn{font-size:26px;line-height:1;color:#ffe14d;-webkit-text-stroke:6px #000;paint-order:stroke fill;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #frOv .fst{font-size:12px;color:#a9ccff;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-transform:uppercase}
@@ -344,21 +347,21 @@ function FrOpen__(h){
 #frOv .ftabs button{position:relative;flex:1;height:46px;border-radius:14px;border:3px solid #000;background:linear-gradient(#4f93ff,#2368e8);box-shadow:0 5px 0 #0b3a98;font-size:18px}
 #frOv .ftabs button.on{background:linear-gradient(#ffd84a,#ffb81a);box-shadow:0 5px 0 #b8760a}
 #frOv .fdot{position:absolute;right:-4px;top:-9px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:#ff3b4e;border:3px solid #000;font-style:normal;font-size:12px;line-height:16px;text-align:center;-webkit-text-stroke:2.4px #000;paint-order:stroke fill}
-#frOv .flist{--ta:0;--ba:0;-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,calc(1 - var(--ta))) 0,rgba(0,0,0,calc(1 - var(--ta)*.82)) 7px,rgba(0,0,0,calc(1 - var(--ta)*.5)) 15px,rgba(0,0,0,calc(1 - var(--ta)*.18)) 23px,#000 30px,#000 calc(100% - 30px),rgba(0,0,0,calc(1 - var(--ba)*.18)) calc(100% - 23px),rgba(0,0,0,calc(1 - var(--ba)*.5)) calc(100% - 15px),rgba(0,0,0,calc(1 - var(--ba)*.82)) calc(100% - 7px),rgba(0,0,0,calc(1 - var(--ba))) 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,calc(1 - var(--ta))) 0,rgba(0,0,0,calc(1 - var(--ta)*.82)) 7px,rgba(0,0,0,calc(1 - var(--ta)*.5)) 15px,rgba(0,0,0,calc(1 - var(--ta)*.18)) 23px,#000 30px,#000 calc(100% - 30px),rgba(0,0,0,calc(1 - var(--ba)*.18)) calc(100% - 23px),rgba(0,0,0,calc(1 - var(--ba)*.5)) calc(100% - 15px),rgba(0,0,0,calc(1 - var(--ba)*.82)) calc(100% - 7px),rgba(0,0,0,calc(1 - var(--ba))) 100%);flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch;padding:14px 12px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:26px}
+#frOv .flist{--ta:1;--ba:1;transform:translateZ(0);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,calc(1 - var(--ta))) 0,rgba(0,0,0,calc(1 - var(--ta)*.82)) 7px,rgba(0,0,0,calc(1 - var(--ta)*.5)) 15px,rgba(0,0,0,calc(1 - var(--ta)*.18)) 23px,#000 30px,#000 calc(100% - 30px),rgba(0,0,0,calc(1 - var(--ba)*.18)) calc(100% - 23px),rgba(0,0,0,calc(1 - var(--ba)*.5)) calc(100% - 15px),rgba(0,0,0,calc(1 - var(--ba)*.82)) calc(100% - 7px),rgba(0,0,0,calc(1 - var(--ba))) 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,calc(1 - var(--ta))) 0,rgba(0,0,0,calc(1 - var(--ta)*.82)) 7px,rgba(0,0,0,calc(1 - var(--ta)*.5)) 15px,rgba(0,0,0,calc(1 - var(--ta)*.18)) 23px,#000 30px,#000 calc(100% - 30px),rgba(0,0,0,calc(1 - var(--ba)*.18)) calc(100% - 23px),rgba(0,0,0,calc(1 - var(--ba)*.5)) calc(100% - 15px),rgba(0,0,0,calc(1 - var(--ba)*.82)) calc(100% - 7px),rgba(0,0,0,calc(1 - var(--ba))) 100%);flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch;padding:36px 12px calc(34px + env(safe-area-inset-bottom,0px));margin-top:-4px;display:flex;flex-direction:column;gap:26px}
 #frOv .flist>*{width:100%;max-width:760px;margin-left:auto;margin-right:auto;flex:none}
 #frOv .fsum{display:flex;justify-content:flex-end;margin-bottom:-6px}
 #frOv .froad{display:flex;flex-direction:column;gap:26px}
 /* card design (same colour on every card) */
-#frOv .fq,#frOv .fr{position:relative;filter:drop-shadow(0 5px 0 rgba(0,0,0,.4))}
-#frOv .fq.rdy,#frOv .fr.sel{filter:drop-shadow(0 0 2px #ffe14d) drop-shadow(0 0 3px #ffe14d) drop-shadow(0 5px 0 rgba(0,0,0,.4))}
+#frOv .fq,#frOv .fr{position:relative}
+#frOv .fqc{box-shadow:0 5px 0 rgba(0,0,0,.4)}
 #frOv .fq.clm{opacity:.62}
 #frOv .fqc{position:relative;display:flex;align-items:stretch;min-height:92px;background:#8f6cf3;border:3px solid #000;border-radius:18px;overflow:hidden}
 #frOv .ftb{position:absolute;left:20px;top:-17px;z-index:2;height:20px;min-width:46px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:5px;background:#8f6cf3;border:3px solid #000;border-bottom:0;border-radius:10px 10px 0 0}
 #frOv .ftb i{width:7px;height:7px;border-radius:50%;background:#1c0f55}
 #frOv .fqi{align-self:center;width:62px;height:62px;flex:none;margin:0 0 0 12px;display:flex;align-items:center;justify-content:center;background:#6a47d9;border:3px solid #000;border-radius:16px}
 #frOv .fqi img{width:46px;height:46px}
-#frOv .frc{--s:.4;align-self:center;position:relative;flex:none;margin:12px 0 12px 12px;width:calc(170px*var(--s));height:calc(218px*var(--s));overflow:visible;border-radius:10px;border:3px solid #000;box-sizing:content-box;background:#6a47d9}
-#frOv .frc canvas{position:absolute;left:calc(-6px*var(--s));top:calc(-14px*var(--s));width:calc(186px*var(--s));height:auto}
+#frOv .frc{--s:.4;align-self:center;position:relative;flex:none;margin:calc(12px + 26px*var(--s)) 6px 12px 12px;width:calc(170px*var(--s));height:calc(218px*var(--s))}
+#frOv .frc canvas{position:absolute;pointer-events:none;left:calc(-6px*var(--s));top:calc(-36px*var(--s));width:calc(186px*var(--s));height:auto}
 #frOv .fqm{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:10px 10px 10px 12px;text-align:left}
 #frOv .fqt{font-size:19px;line-height:1.05;color:#fff;-webkit-text-stroke:5px #2a1470;paint-order:stroke fill;text-transform:uppercase;overflow-wrap:anywhere}
 #frOv .fqs{font-size:13px;line-height:1.15;color:#efe8ff;-webkit-text-stroke:3px #2a1470;paint-order:stroke fill;overflow-wrap:anywhere}
@@ -377,14 +380,14 @@ function FrOpen__(h){
 #frOv button:disabled{background:linear-gradient(#8a919d,#6b7280)!important;box-shadow:0 3px 0 #3a3f48!important;cursor:default}
 #frOv .ftoast{position:absolute;left:0;right:0;bottom:calc(96px + env(safe-area-inset-bottom,0px));text-align:center;font-size:22px;pointer-events:none;opacity:0;transform:translateY(10px);transition:opacity .2s,transform .2s;-webkit-text-stroke:5px #000;paint-order:stroke fill}
 #frOv .ftoast.on{opacity:1;transform:none}
-@media (max-height:480px){#frOv .fhero{margin-top:8px;padding:6px 10px}#frOv .fbw{--s:.36}#frOv .frc{--s:.32}#frOv .ftabs{padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}#frOv .flist{gap:24px}}
+@media (max-height:480px){#frOv .fhero{margin-top:8px;padding:6px 10px}#frOv .fbw{--s:.36}#frOv .finfo{margin-top:9px}#frOv .frc{--s:.32}#frOv .ftabs{padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}#frOv .flist{gap:24px}}
 </style>
 <div class="ftop"><button class="fb" data-a="x" aria-label="Back"><svg width="26" height="26" viewBox="0 0 26 26"><path d="M16 4L7 13l9 9" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="ft">FRAME ROAD</div><div class="ftk"><img src="${TK}" width="38" height="38" alt=""><b class="fN">0</b></div></div>
 <div class="fhero"><div class="fbw"><canvas class="fbig"></canvas></div><div class="finfo"><div class="fhn"></div><div class="ffn"></div><div class="fst"></div><div class="fnx"></div></div></div>
 <div class="flist"></div>
 <div class="ftabs"><button data-a="t" data-t="0">Quests<i class="fdot"></i></button><button data-a="t" data-t="1">Frames</button></div><div class="ftoast"></div>`;
  o.addEventListener("pointerdown",e=>e.stopPropagation());
- const frFade=()=>{const l=o.querySelector(".flist");if(!l)return;l.style.setProperty("--ta",Math.min(1,l.scrollTop/22));l.style.setProperty("--ba",Math.max(0,Math.min(1,(l.scrollHeight-l.clientHeight-l.scrollTop)/22)))};
+ const frFade=()=>{};
  o.querySelector(".flist").addEventListener("scroll",frFade,{passive:true});
  const toast=(m,c)=>{const el=o.querySelector(".ftoast");el.textContent=m;el.style.color=c||"#fff";el.classList.add("on");clearTimeout(FrTm__);FrTm__=setTimeout(()=>el.classList.remove("on"),1600)};
  const qIcon=q=>`<div class="fqi"><img src="${frIconUrl__(q.ty)}" alt=""></div>`;
