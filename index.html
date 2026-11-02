@@ -302,12 +302,12 @@ const FRQI__={
  pl:'<path d="M7 4l13 8-13 8z"/>',
  wn:'<path d="M12 2l3 7 7.5.6-5.7 4.9 1.8 7.4L12 18l-6.6 3.9 1.8-7.4L1.5 9.6 9 9z"/>',
  ko:'<path d="M6 6l12 12M18 6L6 18" fill="none" stroke-width="6.4" stroke-linecap="round"/><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
- gl:'<circle cx="12" cy="12" r="9"/><path d="M12 7.6l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z" fill="#000" stroke="none"/>',
+ mk:'<path d="M12 2l2.6 6.4L21 9l-5 4.4L17.5 20 12 16.5 6.5 20 8 13.4 3 9l6.4-.6z"/>', gl:'<circle cx="12" cy="12" r="9"/><path d="M12 7.6l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z" fill="#000" stroke="none"/>',
  sk:'<path d="M13.5 2L4.5 14H10l-1 8 9-12h-5.5z"/>',
  lv:'<path d="M12 3l8 9h-5v9H9v-9H4z"/>',
  pk:'<path d="M12 2l8.5 5v10L12 22l-8.5-5V7z"/><path d="M12 8v8M8 12h8" fill="none" stroke-width="2.6"/>',
  sg:'<path d="M3 19l-1-12 5 4 5-7 5 7 5-4-1 12z"/>'};
-const FRQC__={pl:"#2f8bff",wn:"#ffb400",ko:"#ff3b30",gl:"#19c24a",sk:"#b57bff",lv:"#ff8a1f",pk:"#1fa5b8",sg:"#ff4fb8"};
+const FRQC__={pl:"#2f8bff",wn:"#ffb400",ko:"#ff3b30",gl:"#19c24a",mk:"#ff3b30",sk:"#b57bff",lv:"#ff8a1f",pk:"#1fa5b8",sg:"#ff4fb8"};
 function FrOpen__(h){
  if(FrOv__)return;
  FrHero__=h;FrTab__=0;FrSel__=FrR__(h).e;FrBigF__=-1;FrCv__=[];
@@ -328,7 +328,7 @@ function FrOpen__(h){
 #frOv .ftk b{font-weight:400;font-size:19px;line-height:1;-webkit-text-stroke:4px #000;paint-order:stroke fill}
 #frOv .fhero{flex:none;display:flex;gap:12px;align-items:center;margin:12px 12px 0;padding:10px 12px 10px 10px;background:linear-gradient(#17208a,#0a1048);border:3px solid #000;border-radius:14px;box-shadow:0 4px 0 rgba(4,4,40,.5);width:calc(100% - 24px);max-width:760px;align-self:center;position:relative}
 #frOv .fhero::before{content:"";position:absolute;left:5px;right:5px;top:4px;height:9px;border-radius:6px;background:rgba(255,255,255,.14);pointer-events:none}
-#frOv .fbw{--s:.62;position:relative;flex:none;width:calc(170px*var(--s));height:calc(218px*var(--s));overflow:hidden;border-radius:12px;border:3px solid #000;box-sizing:content-box;background:radial-gradient(circle at 50% 35%,#7b8bff,#2a2fb8);box-shadow:0 4px 0 rgba(4,4,40,.5),0 0 0 3px rgba(255,225,77,.7)}
+#frOv .fbw{--s:.62;position:relative;flex:none;width:calc(170px*var(--s));height:calc(218px*var(--s));overflow:visible;border-radius:12px;border:3px solid #000;box-sizing:content-box;background:radial-gradient(circle at 50% 35%,#7b8bff,#2a2fb8);box-shadow:0 4px 0 rgba(4,4,40,.5),0 0 0 3px rgba(255,225,77,.7)}
 #frOv .fbig{position:absolute;left:calc(-6px*var(--s));top:calc(-14px*var(--s));width:calc(186px*var(--s));height:auto}
 #frOv .finfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 #frOv .fhn{font-size:15px;color:#a9ccff;-webkit-text-stroke:3px #000;paint-order:stroke fill;letter-spacing:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -357,7 +357,7 @@ function FrOpen__(h){
 #frOv .ftb i{width:7px;height:7px;border-radius:50%;background:#1c0f55}
 #frOv .fqi{align-self:center;width:62px;height:62px;flex:none;margin:0 0 0 12px;display:flex;align-items:center;justify-content:center;background:#6a47d9;border:3px solid #000;border-radius:16px}
 #frOv .fqi img{width:46px;height:46px}
-#frOv .frc{--s:.4;align-self:center;position:relative;flex:none;margin:12px 0 12px 12px;width:calc(170px*var(--s));height:calc(218px*var(--s));overflow:hidden;border-radius:10px;border:3px solid #000;box-sizing:content-box;background:#6a47d9}
+#frOv .frc{--s:.4;align-self:center;position:relative;flex:none;margin:12px 0 12px 12px;width:calc(170px*var(--s));height:calc(218px*var(--s));overflow:visible;border-radius:10px;border:3px solid #000;box-sizing:content-box;background:#6a47d9}
 #frOv .frc canvas{position:absolute;left:calc(-6px*var(--s));top:calc(-14px*var(--s));width:calc(186px*var(--s));height:auto}
 #frOv .fqm{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:10px 10px 10px 12px;text-align:left}
 #frOv .fqt{font-size:19px;line-height:1.05;color:#fff;-webkit-text-stroke:5px #2a1470;paint-order:stroke fill;text-transform:uppercase;overflow-wrap:anywhere}
