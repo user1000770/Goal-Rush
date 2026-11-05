@@ -316,7 +316,7 @@ t.fillStyle="rgba(0,0,0,.35)";t.fillRect(-6*k,-4*k,12*k,2.4*k)}
 t.restore();
 n>0&&xl(bx+bw-3,by+3,.6);
 e(bx,by,bw,bh+4,()=>{FrOpen__(i),se(40)})}
-let FrOv__=null,FrTab__=0,FrSel__=0,FrHero__=0,FrCv__=[],FrBigF__=-1,FrTm__=0;
+let FrOv__=null,FrTab__=0,FrSel__=0,FrHero__=0,FrCv__=[],FrBigF__=-1,FrTm__=0,FrOpenG__={};
 function FrClose__(){if(!FrOv__)return;const o=FrOv__;FrOv__=null;clearTimeout(FrTm__);document.removeEventListener("keydown",o._k,true);o.querySelectorAll("canvas").forEach(c=>{c.width=c.height=1});FrCv__.forEach(c=>{c.width=c.height=1});FrCv__=[];o.remove();FrBigF__=-1;se(90)}
 uiMenu__("froad",()=>!!FrOv__&&Mt===5,()=>FrClose__(),["frOv"]);
 function FrDrawCard__(h,f,cv,k){
@@ -327,7 +327,7 @@ const sv=t,l2=qt[h],mx=l2>=10;t=cx;FrPrev__={h,f};
 try{hcBody__(h,0,0,170,218,false,false,l2,mx,mx?0:Ml[l2-1],false,1)}catch{}finally{t=sv;FrPrev__=null}}
 function FrOpen__(h){
 if(FrOv__)return;
-FrHero__=h;FrTab__=0;FrSel__=FrR__(h).e;FrBigF__=-1;FrCv__=[];
+FrHero__=h;FrTab__=0;FrSel__=FrR__(h).e;FrBigF__=-1;FrCv__=[];FrOpenG__={};
 const o=document.createElement("div");uiPopup__(o);o.id="frOv";FrOv__=o;
 const zTop=Math.max((document.getElementById("topbar__")||{}).offsetHeight||0,parseFloat(getComputedStyle(document.getElementById("sa")).paddingTop)||0)+4,TK=frTokUrl__();
 o.innerHTML=`<style>
@@ -366,6 +366,32 @@ o.innerHTML=`<style>
 #frOv .fdot{position:absolute;right:-4px;top:-9px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:#ff3b4e;border:3px solid #000;font-style:normal;font-size:12px;line-height:16px;text-align:center;-webkit-text-stroke:2.4px #000;paint-order:stroke fill}
 #frOv .flist{--ta:1;--ba:1;transform:translateZ(0);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,calc(1 - var(--ta))) 0,rgba(0,0,0,calc(1 - var(--ta)*.82)) 7px,rgba(0,0,0,calc(1 - var(--ta)*.5)) 15px,rgba(0,0,0,calc(1 - var(--ta)*.18)) 23px,#000 30px,#000 calc(100% - 30px),rgba(0,0,0,calc(1 - var(--ba)*.18)) calc(100% - 23px),rgba(0,0,0,calc(1 - var(--ba)*.5)) calc(100% - 15px),rgba(0,0,0,calc(1 - var(--ba)*.82)) calc(100% - 7px),rgba(0,0,0,calc(1 - var(--ba))) 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,calc(1 - var(--ta))) 0,rgba(0,0,0,calc(1 - var(--ta)*.82)) 7px,rgba(0,0,0,calc(1 - var(--ta)*.5)) 15px,rgba(0,0,0,calc(1 - var(--ta)*.18)) 23px,#000 30px,#000 calc(100% - 30px),rgba(0,0,0,calc(1 - var(--ba)*.18)) calc(100% - 23px),rgba(0,0,0,calc(1 - var(--ba)*.5)) calc(100% - 15px),rgba(0,0,0,calc(1 - var(--ba)*.82)) calc(100% - 7px),rgba(0,0,0,calc(1 - var(--ba))) 100%);flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch;padding:36px 12px calc(34px + env(safe-area-inset-bottom,0px));margin-top:-4px;display:flex;flex-direction:column;gap:26px}
 #frOv .flist>*{width:100%;max-width:760px;margin-left:auto;margin-right:auto;flex:none}
+#frOv .fgp .fqc{cursor:pointer}
+#frOv .ftw{position:absolute;left:20px;top:-17px;z-index:2;display:flex;align-items:flex-end;gap:5px}
+#frOv .ftw .ftb{position:static}
+#frOv .fgt{height:20px;min-width:46px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:6px;background:#8f6cf3;border:3px solid #000;border-bottom:0;border-radius:10px 10px 0 0;font-size:13px;line-height:1;color:#fff;-webkit-text-stroke:3px #1c0f55;paint-order:stroke fill;pointer-events:none}
+#frOv .fgt u{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #fff;filter:drop-shadow(0 0 1px #1c0f55);transition:transform .15s}
+#frOv .fq.op .fgt u{transform:rotate(180deg)}
+#frOv .fq.op .fqc{border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:none}
+#frOv .fgw:has(.fxp) .fq{margin-bottom:0}
+#frOv .fxp{margin:0;padding:10px 10px 12px;display:flex;flex-direction:column;gap:8px;background:#8f6cf3;border:3px solid #000;border-top:3px solid #5a3cc4;border-radius:0 0 18px 18px;box-shadow:0 5px 0 rgba(0,0,0,.4)}
+#frOv .fxr{display:flex;align-items:center;gap:8px;padding:6px 8px;background:#6a47d9;border:3px solid #000;border-radius:14px}
+#frOv .fxr.cur{background:#5a3cc4}
+#frOv .fxr.rdy{border-color:#ffe14d}
+#frOv .fxr.clm{opacity:.62}
+#frOv .fxs{flex:none;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#3a2390;border:3px solid #000}
+#frOv .fxs i{font-style:normal;font-size:14px;line-height:1;color:#fff;-webkit-text-stroke:3px #000;paint-order:stroke fill}
+#frOv .fxs .fck{width:24px;height:24px}
+#frOv .fxm{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;text-align:left}
+#frOv .fxt{font-size:13px;line-height:1.1;color:#fff;-webkit-text-stroke:3px #2a1470;paint-order:stroke fill;overflow-wrap:anywhere}
+#frOv .fxb .fbar{height:18px;background:#26294d;border:3px solid #000;border-radius:9px}
+#frOv .fxb .fbar i{background:linear-gradient(#ffd84a,#f5a01c 55%,#ee7d1a);border-radius:6px}
+#frOv .fxb .fbar b{font-size:11px}
+#frOv .fxb .fg{height:22px;font-size:13px}
+#frOv .fxb .fcl{font-size:13px}
+#frOv .fxc{flex:none;min-width:58px;display:flex;justify-content:flex-end}
+#frOv .fxc .fch img{width:22px;height:22px}
+#frOv .fxc .fch b{font-size:20px;-webkit-text-stroke:5px #000}
 #frOv .fsum{display:flex;justify-content:flex-end;margin-bottom:-6px}
 #frOv .froad{display:flex;flex-direction:column;gap:26px}
 #frOv .fq,#frOv .fr{position:relative}
@@ -425,12 +451,20 @@ const rd=FrReady__(h),tb=o.querySelectorAll(".ftabs button"),dot=o.querySelector
 tb.forEach((b,k)=>b.classList.toggle("on",k===FrTab__));dot.style.display=rd>0?"block":"none";dot.textContent=rd;
 const L=o.querySelector(".flist");
 if(FrTab__===0){
-const TN=["BEGINNER","ROOKIE","AMATEUR","CHALLENGER","VETERAN","EXPERT","ELITE","MASTER","CHAMPION","LEGEND","MYTHIC","IMMORTAL","ETERNAL","GODLIKE","CELESTIAL","COSMIC","OMEGA","ULTIMATE","INFINITE"],tc={};const qs=FrQuests__(h).map(q=>{q.tr=q.ty==="sg"?4:(tc[q.ty]=(tc[q.ty]||0)+1)-1;return{q,clm:H.c.includes(q.id),dn:q.v>=q.n}});
-qs.sort((a,b)=>((b.dn&&!b.clm)-(a.dn&&!a.clm))||(a.clm-b.clm)||(a.q.r-b.q.r));
+const TN=["BEGINNER","ROOKIE","AMATEUR","CHALLENGER","VETERAN","EXPERT","ELITE","MASTER","CHAMPION","LEGEND","MYTHIC","IMMORTAL","ETERNAL","GODLIKE","CELESTIAL","COSMIC","OMEGA","ULTIMATE","INFINITE"];
+const grp={},ord=[];FrQuests__(h).forEach(q=>{let g=grp[q.ty];if(!g){g=grp[q.ty]={ty:q.ty,L:[]};ord.push(g)}g.L.push(q)});
+const gs=ord.map(g=>{g.L.forEach((q,i)=>{q.tr=q.ty==="sg"?4:i;q.cl=H.c.includes(q.id)});g.ci=g.L.findIndex(q=>!q.cl);g.all=g.ci<0;g.cur=g.all?g.L[g.L.length-1]:g.L[g.ci];g.rdy=!g.all&&g.cur.v>=g.cur.n;g.nc=g.L.filter(q=>q.cl).length;return g});
+gs.sort((a,b)=>((b.rdy)-(a.rdy))||(a.all-b.all)||(a.cur.r-b.cur.r));
 let s=rd>1?'<div class="fsum"><button data-a="ca">Claim all</button></div>':"";
-qs.forEach((z,ix)=>{const q=z.q,pc=Math.min(100,q.v/q.n*100),base=(FRQD__[q.ty]||FRQD__.pl)[0];
-const band=z.clm?'<div class="fcl">CLAIMED</div>':z.dn?`<button class="fg" data-a="c" data-id="${q.id}">Claim</button>`:bar(pc,q.v+"/"+q.n);
-s+=card("fq"+(z.clm?" clm":z.dn?" rdy":""),"",Math.min(5,q.tr+1),qIcon(q),(q.ty==="sg"?"SIGNATURE":TN[Math.min(q.tr,TN.length-1)])+" "+hn,q.t,band,chip(q.r))});
+gs.forEach(g=>{const q=g.cur,pc=Math.min(100,q.v/q.n*100),multi=g.L.length>1,open=multi&&!!FrOpenG__[g.ty];
+const band=g.all?'<div class="fcl">COMPLETED</div>':g.rdy?`<button class="fg" data-a="c" data-id="${q.id}">Claim</button>`:bar(pc,q.v+"/"+q.n);
+const tag=multi?`<div class="fgt">${g.nc}/${g.L.length}<u></u></div>`:"";
+let c=card("fq"+(g.all?" clm":g.rdy?" rdy":"")+(multi?" fgp":"")+(open?" op":""),multi?`data-a="g" data-ty="${g.ty}"`:"",Math.min(5,q.tr+1),qIcon(q),(q.ty==="sg"?"SIGNATURE":TN[Math.min(q.tr,TN.length-1)])+" "+hn,q.t,band,g.all?CK:chip(q.r));
+multi&&(c=c.replace(/<div class="ftb">(.*?)<\/div>/,(m)=>'<div class="ftw">'+m+tag+'</div>'));
+let x="";
+if(open){x='<div class="fxp">'+g.L.map((z,k)=>{const dn=z.v>=z.n,st=z.cl?'<div class="fcl">COMPLETED</div>':dn?`<button class="fg" data-a="c" data-id="${z.id}">Claim</button>`:bar(Math.min(100,z.v/z.n*100),z.v+"/"+z.n);
+return `<div class="fxr${z.cl?" clm":dn?" rdy":""}${!z.cl&&z===q?" cur":""}"><div class="fxs">${z.cl?CK:"<i>"+(k+1)+"</i>"}</div><div class="fxm"><div class="fxt">${z.t}</div><div class="fxb">${st}</div></div><div class="fxc">${chip(z.r)}</div></div>`}).join("")+"</div>"}
+s+='<div class="fgw">'+c+x+"</div>"});
 L.innerHTML=s;
 }else{
 let s='<div class="froad">';
@@ -450,6 +484,7 @@ if(a==="x"){FrClose__();return}
 if(a==="t"){const t2=+b.dataset.t;if(t2!==FrTab__){FrTab__=t2;L._keep=0;render();L.scrollTop=0;se(2)}return}
 L._keep=L.scrollTop;
 if(a==="c"){const r=FrClaim__(h,b.dataset.id);if(r){toast("+"+r+" FRAME TOKENS","#7de8ff");se(60);render()}return}
+if(a==="g"){const t3=b.dataset.ty;FrOpenG__[t3]=!FrOpenG__[t3];render();se(2);return}
 if(a==="ca"){let sum=0;for(const q of FrQuests__(h))q.v>=q.n&&(sum+=FrClaim__(h,q.id));if(sum){toast("+"+sum+" FRAME TOKENS","#7de8ff");se(60);render()}return}
 const f=+b.dataset.f;
 if(a==="s"){if(FrSel__!==f){FrSel__=f;render();se(2)}return}
